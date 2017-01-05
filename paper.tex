@@ -13,6 +13,10 @@
 \usepackage{color}
 \usepackage{url}
 \usepackage[colorlinks=true,allcolors=black,urlcolor=blue]{hyperref}
+%\usepackage{caption}
+%\usepackage{subcaption}
+
+%\captionsetup[figure]{textfont=footnotesize,labelfont=footnotesize}
 
 \graphicspath{{images/}}
 \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
@@ -326,8 +330,8 @@ We now state the main result of this paper.
 	For a source localization problem as defined in
 	section~\ref{sec:source-localization} with sensor noise and a spatial
 	impulse response that is $\kappa$-Lipschitz continuous and has restricted
-	support of width $w$, the minimax risk in estimating the location of a
-	point source is lower bounded by:
+	support of width $w$, the asymptotic minimax risk in estimating the
+	location of a point source is lower bounded by:
 	\begin{equation}
 		\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{128} \frac{\sigma^2 T}{nm\kappa^2w}
 	\end{equation}
@@ -393,16 +397,25 @@ right edge of the domain. Also note that the two signals $x(t;\theta_0)$ and
 $x(t;\theta_1)$ overlap at most once, since $w < T/2$, as stated in
 section~\ref{sec:signal-model}.
 
-\begin{figure}[tp] %  figure placement: here, top, bottom, or page
+\begin{figure}[tbp]
 	\centering
 	\includegraphics[width=2.8in]{overlap-middle-pics}
-	\caption{Depiction of the impulse responses corresponding to two
-	hypotheses, $\theta_0$ and $\theta_1$. Note that each impulse response has
-a support of size $w$, and the two are separated by a distance $2\delta$. The
-total size of the support of the difference signal (subtracting one impulse
-response from the other, pointwise) $\Delta(t)$ is therefore at most $w +
-2\delta$.}
+	\caption{Depiction of the continuous-space signals produced by two
+		hypotheses, $\theta_0$ and $\theta_1$. Note that each signal is a
+		shifted impulse response, and therefore has a support of size $w$.
+		The set $\{\theta_0, \theta_1\}$ is a $2\delta$-packing of
+		$\Theta$, so the signals are separated by a distance $2\delta$.}
 	\label{fig:overlap-middle}
+\end{figure}
+
+\begin{figure}[tbp]
+	\centering
+	\includegraphics[width=2.8in]{delta-sampled-pics}
+	\caption{Plot of the samples of the difference signal, $\Delta(k)$. The
+		total size of the support of the difference signal is $w+2\delta$,
+		hence at most $\floor*{\frac{(w + 2\delta)m}{T}}$ samples of
+		$\Delta(k)$ are non-zero.}
+	\label{fig:delta-sampled}
 \end{figure}
 
 The upper bound in equation~\eqref{eq:delta-bound} translates into a lower

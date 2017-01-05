@@ -1,0 +1,47 @@
+\documentclass[border=12pt]{standalone}
+
+\usepackage{auto-pst-pdf}
+\usepackage{pst-plot}
+\usepackage{pstricks-add}
+
+\begin{document}
+
+\begin{pspicture}(-3, -2)(9, 2)
+	% x-axis
+	\psaxes[yAxis=false,ticks=none,labels=none]{->}(-0.5, 0)(5.5, 0)
+	\rput(5.7, 0){$k$}
+	\psxTick[linewidth=3\pslinewidth, ticksize=0pt 0pt](0){0}
+	\psxTick[linewidth=3\pslinewidth, ticksize=0pt 0pt](1){1}
+	\psxTick[linewidth=3\pslinewidth, ticksize=-2pt 2pt](2){2}
+	\psxTick[linewidth=3\pslinewidth, ticksize=-2pt 2pt](3){3}
+	\psxTick[linewidth=3\pslinewidth, ticksize=0pt 0pt](4){4}
+	\psxTick[linewidth=3\pslinewidth, ticksize=-4pt 4pt](5){m}
+
+	% Region before start of signal
+	\psplot[plotstyle=dots,plotpoints=5]{0}{0.8}{0}
+	% Region with only g_0(t)
+	\psplot[plotstyle=dots,linecolor=blue,plotpoints=3]{1.0}{1.4}{x 180 mul cos 1 add 0.5 mul}
+	% Overlapping region
+	\psplot[plotstyle=dots,linecolor=green,plotpoints=8]{1.6}{3.0}{x 180 mul cos 1 add 0.5 mul x 0.6 sub 180 mul cos 1 add 0.5 mul sub}
+	% Region with only g_1(t)
+	\psplot[plotstyle=dots,linecolor=red,plotpoints=3]{3.2}{3.6}{x 0.6 sub 180 mul cos 1 add -0.5 mul}
+	% Region after end of signal
+	\psplot[plotstyle=dots,plotpoints=6]{3.8}{4.8}{0}
+
+	% Tick labels and function annotations
+	\rput(1, 0.8){$\Delta(k)$}
+
+	% Width specification
+	\pnode(1, -1.2){wll}
+	\pnode(1.7, -1.2){wl}
+	\ncline{<-}{wll}{wl}
+	\ncline{|-}{wll}{wl}
+	\pnode(2.9, -1.2){wr}
+	\pnode(3.6, -1.2){wrr}
+	\ncline{->}{wr}{wrr}
+	\ncline{-|}{wr}{wrr}
+	\rput(2.3, -1.2){$w+2\delta$}
+\end{pspicture}
+
+\end{document}
+
