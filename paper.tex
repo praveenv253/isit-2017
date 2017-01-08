@@ -123,7 +123,7 @@ applicable bounds in this paper. The Cramer-Rao lower bound is not in itself a
 completely satisfactory answer to the question of fundamental limits for source
 localization accuracy. This is because Cramer-Rao bounds only apply to unbiased
 estimators (or to estimators of \emph{known} bias). In practice, however, many
-popular source localization algorithms have been shown to be biased, for e.g.\
+popular source localization algorithms have been shown to be biased, e.g.\
 the Minimum Norm Estimate (MNE)~\cite{Hamalainen1994Interpreting} is known to
 bias the solution towards the surface of the head~\cite{Lin2006Assessing}. It
 is also known that unbiased estimators can have worse mean-squared-error
@@ -196,11 +196,11 @@ that it can be represented by a spatial impulse response (blurring would then
 correspond to low-pass filtering). Let this impulse response be given by
 $g(t)$. Then, the noiseless, continuous-space signal (post-filtering and
 pre-sampling) is given by the convolution, $x(t; \theta) = (g*f)(t) = g(t -
-\theta)$. Here, we further make the simplifying assumption that $g(t)$ has
-restricted support, so that aliasing effects are avoided, and $x(t; \theta)$ is
-always well-defined. To be precise, $g(t) = 0$ when $\abs{t} > w/2$, where the
-``width'' $w$ of the impulse response satisfies $w < T / 2$ (the reason for the
-factor of $1/2$ will become clear in a later section).
+\theta)$. Here, we further make the simplifying assumption that $g(t)$ has a
+sufficiently restricted support, so that aliasing effects are avoided, and
+$x(t; \theta)$ is always well-defined. To be precise, $g(t) = 0$ when $\abs{t}
+> w/2$, where the ``width'' $w$ of the impulse response satisfies $w < T / 2$
+(the reason for the factor of $1/2$ will become clear in a later section).
 
 The sensors sample this continuous-space shifted impulse response, with some
 additive noise. We denote the noiseless sampled version of $x(t; \theta)$ by
@@ -260,13 +260,14 @@ Consider the following estimation problem: we have $n$ i.i.d.\ random samples
 $Y^n$ from a distribution $P$, which is indexed by a parameter $\theta \in
 \Theta$.  Denote the set of these distributions by $\mathcal{P} = \{P(\theta) :
 \theta \in \Theta\}$. Suppose we now wish to estimate $\theta$ from $Y^n$.
-Define a loss metric $\rho(\theta, \hat\theta)$. For this metric, we can define
-the minimax risk over all possible estimators $\hat\theta(Y^n)$ and all
-possible $\theta \in \Theta$:
+Define a loss metric $\rho(\theta, \hat\theta)$ (e.g.\ $\rho(\theta,
+\hat\theta) = \abs{\theta - \hat\theta}$). For this metric, we can define the
+minimax risk over all possible estimators $\hat\theta(Y^n)$ and all possible
+$\theta \in \Theta$:
 \begin{equation} \label{eq:minimax-expr}
 	\mathfrak{M}_n(\mathcal{P}, \Phiorho) = \inf_{\hat\theta} \sup_{\theta \in \Theta} \mathbb E[\Phiorho (\hat\theta(Y^n), \theta)]
 \end{equation}
-where $\Phi$ is any non-decreasing function (e.g. $\Phi(\rho) = \rho^2$) and
+where $\Phi$ is any non-decreasing function (e.g.\ $\Phi(\rho) = \rho^2$) and
 $Y^n$ is the random vector corresponding to a noisy realization of sensor
 values.
 
@@ -298,7 +299,7 @@ We now need to lower bound the probability of error in the hypothesis testing
 problem. The simplest way to do this is to consider a binary hypothesis test
 ($\abs{\mathcal{V}} = 2$) and use what is known as Le Cam's method:
 \begin{theorem} \label{thm:le-cam}
-	For a binary hypothesis test, i.e., $\mathcal{V} = \{0, 1\}$,
+	For a binary hypothesis test, i.e., when $\mathcal{V} = \{0, 1\}$,
 	\begin{equation}
 		\inf_\psi \mathbb P(\psi(Y^n) \neq V) = 1 - \norm{P_0 - P_1}_{TV}
 	\end{equation}
@@ -341,17 +342,39 @@ We now state the main result of this paper.
 Starting from equation~\eqref{eq:le-cam-bound} and working on the setting
 described in Section~\ref{sec:source-localization}, we proceed to derive the
 total variation distance for the distributions of interest. Using Pinsker's
-inequality~\cite{Pinsker} and the convenient tensorization of the KL
-divergence~\cite{tensorization}, we see that:
+inequality~\cite{Pinsker} and the convenient tensorization of the
+KL-divergence~\cite{tensorization}, we see that:
 \begin{equation} \label{eq:pinsker-tensorization}
-	\norm{P_1^n - P_0^n}_{TV} \geq \frac{1}{2} D_{KL}(P_0^n \Vert P_1^n) = \frac{n}{2} D_{KL}(P_0 \Vert P_1)
+	\norm{P_1^n - P_0^n}_{TV}^2 \leq \frac{1}{2} D_{KL}(P_0^n \Vert P_1^n) = \frac{n}{2} D_{KL}(P_0 \Vert P_1)
 \end{equation}
-For multivariate normal distributions with the same covariance, the KL
-divergence is given by
+For multivariate normal distributions with the same covariance, the
+KL-divergence is given by
 \begin{equation} \label{eq:kl-div-normal}
 	D_{KL}(P_0 \Vert P_1) = (\v \mu_0 - \v \mu_1)^T \m \Sigma^{-1} (\v \mu_0 - \v \mu_1)
 \end{equation}
-where $\v \mu_0$ and $\v \mu_1$ are the means of the two Gaussians~\cite{KLDivNormal}.
+where $\v \mu_0$ and $\v \mu_1$ are the means of $P_0$ and $P_1$
+respectively~\cite{KLDivNormal}.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=2.8in]{overlap-middle-pics}
+	\caption{Depiction of the continuous-space signals produced by two
+		hypotheses, $\theta_0$ and $\theta_1$. Note that each signal is a
+		shifted impulse response, and therefore has a support of size $w$.
+		The set $\{\theta_0, \theta_1\}$ is a $2\delta$-packing of
+		$\Theta$, so the signals are separated by a distance $2\delta$.}
+	\label{fig:overlap-middle}
+\end{figure}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=2.8in]{delta-sampled-pics}
+	\caption{Plot of the samples of the difference signal, $\Delta(k)$. The
+		total size of the support of the difference signal is $w+2\delta$,
+		hence at most $\floor*{\frac{(w + 2\delta)m}{T}}$ samples of
+		$\Delta(k)$ are non-zero.}
+	\label{fig:delta-sampled}
+\end{figure}
 
 For the case of sensor noise, $P_i = \mathcal{N}(\v x(\theta_i), \sigma^2 \m
 I)$, as described in section~\ref{sec:channel-model}. Hence, combining
@@ -360,8 +383,10 @@ equations~\eqref{eq:le-cam-bound}, \eqref{eq:pinsker-tensorization} and
 \begin{equation} \label{eq:lb-after-pinsker}
 	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{ \frac{n}{2\sigma^2} \norm*{\v x(\theta_0) - \v x(\theta_1)}^2 } \Bigg]
 \end{equation}
-Let $\v \Delta = \v x(\theta_0) - \v x(\theta_1)$ for brevity. Denoting the
-$k$-th component of $\v\Delta$ as $\Delta(k)$, we see that
+Let $\v \Delta \overset{\text{def.}}{=} \v x(\theta_0) - \v x(\theta_1)$ for
+brevity. Also, let $\Delta(k)$ denote the $k$-th element of $\v\Delta$, and
+$\mathbb I_A(k)$ denote the indicator function of $k$ belonging to the set $A$
+(i.e., $\mathbb I_A(k) = 1$ if $k \in A$, and is $0$ otherwise). Then, we have
 \begin{align}
 	&\norm{\v\Delta}^2 = \sum_{k=0}^{m-1} \abs{\Delta(k)}^2 = \sum_{k=0}^{m-1} \abs{\Delta(k)}^2 \, \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k) \\
 	&= \sum_{k=0}^{m-1} \abs[\Big]{x\Big(\frac{kT}{m}; \theta_0\Big) - x\Big(\frac{kT}{m}; \theta_1\Big)}^2 \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k) \\
@@ -374,68 +399,79 @@ summation:
 \begin{equation}
 	\abs[\Big]{g\Big(\frac{kT}{m} - \theta_0\Big) - g\Big(\frac{kT}{m} - \theta_1\Big)} \leq \kappa \abs{\theta_0 - \theta_1} = \kappa \cdot 2\delta
 \end{equation}
-since $\theta_1 = \theta_0 + 2\delta$ (by virtue of the $2\delta$ packing).
+since $\abs{\theta_0 - \theta_1} = 2\delta$ by virtue of the $2\delta$ packing.
 Hence,
 \begin{equation}
 	\norm{\v\Delta}^2 \leq 4 \kappa^2 \delta^2 \sum_{k=0}^{m-1} \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k) = 4 \kappa^2 \delta^2 \norm{\v\Delta}_0.
 \end{equation}
-$\norm{\v\Delta}_0$ counts the number of non-zero elements in $\v\Delta$, which
-is equal to the number of sensors in the total region covered by the signals
-$x(t;\theta_0)$ and $x(t;\theta_1)$ (see figures~\ref{fig:overlap-middle} and
+$\norm{\v\Delta}_0$ is the number of non-zero elements in $\v\Delta$, which is
+equal to the number of sensors in the total region covered by the signals
+$x(t;\theta_0)$ and $x(t;\theta_1)$ (see Figs.~\ref{fig:overlap-middle} and
 \ref{fig:delta-sampled}). Therefore, $\norm{\v\Delta}_0 = \floor[\big]{\frac{(w
-+ 2\delta)m}{T}}$, since at most a fraction $(w + 2\delta) / T$ of sensors can
-lie in the region covered by the two impulse responses. The final upper bound
-on $\norm{\v\Delta}^2$ is therefore
++ 2\delta)m}{T} + 1}$, since at most a fraction $(w + 2\delta) / T$ of the $m$
+sensors (plus 1, to account for edge-effects) can lie in the region covered by
+the two impulse responses. The final upper bound on $\norm{\v\Delta}^2$ is
+hence
 \begin{equation} \label{eq:delta-bound}
-	\norm{\v\Delta}^2 \leq 4 \kappa^2 \delta^2 \floor*{\frac{(w + 2\delta)m}{T}} \leq 4 \kappa^2 \delta^2 \frac{m (w + 2\delta)}{T}.
+	\norm{\v\Delta}^2 \leq 4 \kappa^2 \delta^2 \floor*{\frac{(w + 2\delta)m}{T} + 1} \leq 4 \kappa^2 \delta^2 \Big(\frac{(w + 2\delta) m}{T} + 1\Big).
 \end{equation}
 Since sensors are uniformly distributed, and since the domain is periodic, this
 holds even if $\theta_0$ lies at the edge of the domain (close to $t=0$, for
-e.g.). One part of the signal $x(t;\theta_0)$ will appear at the left edge of
-the domain, and the repetition from the period $[T, 2T)$ will appear at the
-right edge of the domain. Also note that the two signals $x(t;\theta_0)$ and
-$x(t;\theta_1)$ overlap at most once, since $w < T/2$, as stated in
-section~\ref{sec:signal-model}.
+example). In such a case, one part of the signal $x(t;\theta_0)$ will appear at
+the left edge of the domain, and the repetition from the period $[T, 2T)$ will
+appear at the right edge of the domain. Also note that the two signals
+$x(t;\theta_0)$ and $x(t;\theta_1)$ overlap at most once, since $w < T/2$, as
+stated in section~\ref{sec:signal-model}.
 
-\begin{figure}[tbp]
-	\centering
-	\includegraphics[width=2.8in]{overlap-middle-pics}
-	\caption{Depiction of the continuous-space signals produced by two
-		hypotheses, $\theta_0$ and $\theta_1$. Note that each signal is a
-		shifted impulse response, and therefore has a support of size $w$.
-		The set $\{\theta_0, \theta_1\}$ is a $2\delta$-packing of
-		$\Theta$, so the signals are separated by a distance $2\delta$.}
-	\label{fig:overlap-middle}
-\end{figure}
-
-\begin{figure}[tbp]
-	\centering
-	\includegraphics[width=2.8in]{delta-sampled-pics}
-	\caption{Plot of the samples of the difference signal, $\Delta(k)$. The
-		total size of the support of the difference signal is $w+2\delta$,
-		hence at most $\floor*{\frac{(w + 2\delta)m}{T}}$ samples of
-		$\Delta(k)$ are non-zero.}
-	\label{fig:delta-sampled}
-\end{figure}
-
-The upper bound in equation~\eqref{eq:delta-bound} translates into a lower
-bound for equation~\eqref{eq:lb-after-pinsker}:
+The upper bound in~\eqref{eq:delta-bound} translates into a lower
+bound for~\eqref{eq:lb-after-pinsker}:
 \begin{align}
 	\mathfrak{M}_n(\mathcal{P}, \Phiorho) &\geq \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{n}{2\sigma^2 T} 4 \kappa^2 \delta^2 (w + 2\delta) m} \Bigg] \\
 	&= \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{2nm \kappa^2 \delta^2 (w + 2\delta)}{\sigma^2 T}} \Bigg] \label{eq:lb-after-delta-bound}
 \end{align}
-
 Asymptotically, we choose smaller values of $\delta$ for larger number of
 sensors. Hence, neglecting terms of order $\delta^3$, we tighten the bound by
 choosing $\delta$ as a function of the remaining variables in order to have
-$\sqrt{\frac{2nm\kappa^2\delta^2 }{\sigma^2}} = \frac{1}{2}$. This is achieved
-for $\delta = \sqrt{\frac{\sigma^2T}{8nm\kappa^2 w}}$, so that for
+$\sqrt{\frac{2nm\kappa^2\delta^2 w}{\sigma^2 T}} = \frac{1}{2}$. This is
+achieved for $\delta = \sqrt{\frac{\sigma^2T}{8nm\kappa^2 w}}$, so that for
 $\Phi(\delta) = \delta^2$, equation~\eqref{eq:lb-after-delta-bound} becomes
 \begin{equation}
 	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{128} \frac{\sigma^2 T}{nm\kappa^2 w}.
 \end{equation}
 This completes the proof.
 \end{IEEEproof}
+
+\section{Extensions}
+
+\subsection{Linear domain (in place of a circle)}
+
+So far, we've relied on the presence of a circular domain for to make the
+arguments in the proof. However, the most important requirement was that
+\emph{all} parts of the impulse response should get \emph{sensed} uniformly.
+So, if $\theta$ were restricted to the region $[0, T)$ (now on a linear,
+non-periodic domain), and if sensors were available to sense the signal from
+$[-w/2, T{+}w/2)$ (for an impulse response with restricted support as described
+in section~\ref{sec:signal-model}), then the proof for sensor noise would still
+fall through, albeit with slightly different constants.
+
+\subsection{From Lipschitz to $\alpha$-Holder continuous impulse responses}
+
+We can trivially expand the domain of impulse responses to which the lower
+bound applies to include $\alpha$-Holder continuous functions. These are
+functions which satisfy
+\begin{equation}
+	\abs{g(u) - g(v)} \leq \kappa \norm{u - v}^\alpha \, \forall \, u, v \in \text{dom} \; g
+\end{equation}
+for some constant $\kappa$, and for $\alpha > 0$.
+
+\subsection{From a one-dimensional domain to a $d$-dimensional domain}
+
+Another simple extension takes our problem from a one-dimensional setting to a
+$d$-dimensional setting. Here, we would have $\v\theta \in [0, T)^d$, and the
+$\ell_2$ loss function, $\Phiorho(\v\theta, \vhat\theta) = \norm{\v\theta -
+\vhat\theta}^2$. Then, using Assouad's method~\cite{Duchi2015Information}, we
+can split the minimax risk along each of the $d$ dimensions, and bound each
+separately using Le Cam's method.
 
 \section{Discussion}
 \label{sec:discussion}
