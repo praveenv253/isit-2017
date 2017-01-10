@@ -14,8 +14,6 @@
 \usepackage{url}
 \usepackage[colorlinks=true,allcolors=black,urlcolor=blue]{hyperref}
 
-\urlstyle{tt}
-
 %\usepackage{caption}
 %\usepackage{subcaption}
 
@@ -165,10 +163,10 @@ activity, do not exist. ``Spherical head
 models''~\cite{Nunez2006Electric,Grover2016Information} \emph{do} have
 analytical solutions, but are still not easily amenable to analytical lower
 bounds because the spherical surface does not permit uniform
-sampling~\cite{ImpossibilityOfSphereSampling}, and because the solution is
-expressed in terms of special functions. We therefore restrict our analysis to
-a source localization problem on a one-dimensional domain (to be described in
-detail in Section~\ref{sec:source-localization}).
+sampling~\cite{Heath1956Thirteen}, and because the solution is expressed in
+terms of special functions. We therefore restrict our analysis to a source
+localization problem on a one-dimensional domain (to be described in detail in
+Section~\ref{sec:source-localization}).
 
 The one-dimensional toy problem is an effective tool for understanding bounds
 on source localization accuracy in other settings as well, such as
@@ -442,8 +440,8 @@ We now state the main result of this paper.
 Starting from equation~\eqref{eq:le-cam-bound} and working on the setting
 described in Section~\ref{sec:source-localization}, we proceed to derive the
 total variation distance for the distributions of interest. Using Pinsker's
-inequality~\cite{Pinsker} and the convenient tensorization of the
-KL-divergence~\cite{tensorization}, we see that:
+inequality~\cite{Kullback1967Lower} and the convenient tensorization of the
+KL-divergence~\cite{Duchi2015Information}, we see that:
 \begin{equation} \label{eq:pinsker-tensorization}
 	\norm{P_1^n - P_0^n}_{TV}^2 \leq \frac{1}{2} D_{KL}(P_0^n \Vert P_1^n) = \frac{n}{2} D_{KL}(P_0 \Vert P_1)
 \end{equation}
@@ -453,7 +451,7 @@ KL-divergence is given by
 	D_{KL}(P_0 \Vert P_1) = (\v \mu_0 - \v \mu_1)^T \m \Sigma^{-1} (\v \mu_0 - \v \mu_1)
 \end{equation}
 where $\v \mu_0$ and $\v \mu_1$ are the means of $P_0$ and $P_1$
-respectively~\cite{KLDivNormal}.
+respectively~\cite{DuchiDerivation}.
 
 \begin{figure}[t]
 	\centering
@@ -570,9 +568,9 @@ for some constant $\kappa$, and for $\alpha > 0$.
 Another simple extension takes our problem from a one-dimensional setting to a
 $d$-dimensional setting. Here, we would have $\v\theta \in [0, T)^d$, and the
 $\ell_2$ loss function, $\Phiorho(\v\theta, \vhat\theta) = \norm{\v\theta -
-\vhat\theta}^2$. Then, using Assouad's lemma~\cite{Tsybakov} in the manner
-described in~\cite{Duchi2015Information}, we can split the minimax risk
-along each of the $d$ dimensions, and bound each separately using Le Cam's
+\vhat\theta}^2$. Then, using Assouad's lemma~\cite{Tsybakov2009Introduction} in
+the manner described in~\cite{Duchi2015Information}, we can split the minimax
+risk along each of the $d$ dimensions, and bound each separately using Le Cam's
 method.
 
 \section{Discussion}
