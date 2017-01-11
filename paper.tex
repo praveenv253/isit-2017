@@ -125,32 +125,38 @@ bounds are the first to give a scaling in terms of sensor density.
 %  of circular data)
 
 The source localization problem is one that appears in many fields where it is
-of interest to find the position of a source (which emits some kind of signal)
-using an array of sensors.
+of interest to find the position of a source using an array of sensors.
 
 Our principal motivation comes from an application in brain activity
 measurement, where one wishes to use modalities such as electroencephalography
-(EEG) and magnetoencephalography (MEG) to record the activity inside the
+(EEG) and magnetoencephalography (MEG) to record activity inside the
 brain~\cite{Baillet2001Electromagnetic}.  For example, current EEG systems use
-anywhere between 10 and 250 sensors (electrodes), placed on the scalp, to sense
+anywhere between 10 and 250 sensors (electrodes) placed on the scalp, to sense
 electric potentials produced by neuronal activity within the
-brain~\cite{Nunez2006Electric}.
+brain~\cite{Nunez2006Electric}. The neurons (or groups of neurons) which
+produce this activity are frequently modeled as current dipoles. For a single
+activated dipole within the brain (which is modeled as being localized to a
+point), the electrodes effectively sense a diffuse (blurred-out) representation
+of the point source, as a result of the spatial low-pass filtering effect of
+the different layers between the brain surface and scalp surface (cerebrospinal
+fluid, skull and skin).
 
 Recent developments~\cite{Grover2016Information} have suggested that source
 localization can benefit greatly from an increase in sensor density. This
-conclusion is based primarily on a Nyquist rate analysis, and on
-information-theoretic bounds (which are possibly very loose) on the accuracy of
-source localization algorithms. These bounds, first derived
-in~\cite{Grover2016Fundamental}, do not capture scaling in number of sensors,
-however, as the derivation effectively assumes the presence of an infinite
-number of sensors to derive the bound.
+conclusion is based primarily on a Nyquist rate analysis, and on an
+information-theoretic bound (which are possibly very loose) on the accuracy of
+source localization algorithms. In deriving this bound, however, the scalp
+potential was never sampled; equivalently, it was assumed that an
+\emph{infinite} number of sensors was available to sample the EEG signal at
+every point on the scalp. Hence, the dependence of the bound on the number of
+sensors is lost.
 
 Earlier work by Mosher et al.~\cite{Mosher1993Error}, which seeks to address
 this issue by deriving Cramer-Rao lower bounds, is also not completely
 satisfactory because these bounds do not apply to biased estimators. Commonly
 used source localization algorithms (such as the Minimum Norm
-Estimate~\cite{Hamalainen1994Interpreting}) on the other hand, are known to be
-biased~\cite{Lin2006Assessing}.
+Estimate~\cite{Hamalainen1994Interpreting}) on the other hand, are \emph{known}
+to be biased~\cite{Lin2006Assessing}.
 
 This paper seeks to address the shortcomings of earlier methods by deriving
 minimax lower bounds for the source localization problem, which apply to
@@ -171,7 +177,7 @@ Section~\ref{sec:source-localization}).
 The one-dimensional toy problem is an effective tool for understanding bounds
 on source localization accuracy in other settings as well, such as
 \textcolor{red}{<insert other applications>}. A vast literature on linear
-inverse problems (refer~\cite{Bal2012Introduction} for an introduction to this
+inverse problems (see~\cite{Bal2012Introduction} for an introduction to this
 field) and deconvolution algorithms exists, and has addressed the reduced
 one-dimensional problem in broad settings
 (see~\cite{Cavalier2002Sharp,Efromovich1997Robust,Ibragimov1981Statistical} and
@@ -179,17 +185,16 @@ references therein). However, our setting and interpretation appears to be
 unique, since most prior work focuses on recovering a whole function (given
 certain smoothness constraints), rather than locating a point source. Work that
 does address point sources, to our knowledge, does not address scaling in the
-number of sensors, since their problem setting and application is very
-different.
+number of sensors, since problem settings and applications differ greatly.
 
 Hence, we believe that this paper is the first to give lower bounds on source
-localization error (measured in an $ell_2$-distance sense) in estimating the
+localization error (measured in an $\ell_2$-distance sense) in estimating the
 location of a one-dimensional point source, which is observed by sensors
 through a diffusive medium (treated as a low-pass filter), and corrupted by
 additive Gaussian noise. We describe the problem setting in detail in
-Section~\ref{sec:source-localization}, describe the minimax technique used and
-give our main result in Section~\ref{sec:minimax-lower-bounds}, describe a few
-straightforward extensions in Section~\ref{sec:extensions}, and conclude with a
+Section~\ref{sec:source-localization}, the minimax techniques and our main
+result in Section~\ref{sec:minimax-lower-bounds} and a few straightforward
+extensions in Section~\ref{sec:extensions}. Finally, we conclude with a
 discussion on implications for sensor placement and future work in
 Section~\ref{sec:discussion}.
 
@@ -351,8 +356,12 @@ realizations) of the noisy sensor observations $\v y$.
 
 \subsection{Preliminaries}
 
-We follow the excellent tutorial given in~\cite{Duchi2015Information} to
-outline the preliminary steps in deriving bounds on the minimax risk.
+\textcolor{blue}{
+Several techniques for deriving lower bounds on the minimax risk are described
+in~\cite{Tsybakov2009Introduction}. We follow the excellent tutorial written by
+John Duchi~\cite{Duchi2015Information} to briefly outline the steps involved in
+deriving these bounds.
+}
 
 Consider the following estimation problem: we have $n$ i.i.d.\ random samples
 $Y^n$ from a distribution $P$, which is indexed by a parameter $\theta \in
@@ -375,8 +384,10 @@ to define a $2\delta$-packing:%
 \begin{definition}
 	A set $\Theta_{\mathcal{V}} = \{ \theta_v : v \in \mathcal{V} \}$ for some
 	finite index set $\mathcal{V} \subset \mathbb N$ is said to be a
-	$2\delta$-packing in the $\rho$-metric if $\rho(\theta_i, \theta_j) \geq
-	2\delta \, \forall \, \theta_i, \theta_j \in \Theta_{\mathcal{V}}$.
+	$2\delta$-packing in the $\rho$-metric if
+	\begin{equation}
+		\rho(\theta_i, \theta_j) \geq 2\delta \qquad \forall \;\; \theta_i, \theta_j \in \Theta_{\mathcal{V}}.
+	\end{equation}
 \end{definition}
 \begin{theorem} \label{thm:est-to-testing}%
 	If we can find a $2\delta$-packing $\Theta_{\mathcal{V}}$ of $\Theta$, then
@@ -425,13 +436,13 @@ P_0^n}_{TV}$ appropriately, to derive the tightest possible bound.
 \subsection{Lower bounds using Le Cam's method}
 
 We now state the main result of this paper.
-\begin{theorem}
+\begin{theorem} \label{thm:main-lb}
 	For a source localization problem as defined in
 	section~\ref{sec:source-localization} with sensor noise and a spatial
 	impulse response that is $\kappa$-Lipschitz continuous and has restricted
-	support of width $w$, the asymptotic minimax risk in estimating the
+	support of width $w$, the \textcolor{blue}{asymptotic} minimax risk in estimating the
 	location of a point source is lower bounded by:
-	\begin{equation}
+	\begin{equation} \label{eq:main-lower-bound}
 		\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{128} \frac{\sigma^2 T}{nm\kappa^2w}
 	\end{equation}
 \end{theorem}
@@ -507,7 +518,7 @@ equal to the number of sensors in the total region covered by the signals
 $x(t;\theta_0)$ and $x(t;\theta_1)$ (see Figs.~\ref{fig:overlap-middle} and
 \ref{fig:delta-sampled}). Therefore, $\norm{\v\Delta}_0 = \floor[\big]{\frac{(w
 + 2\delta)m}{T} + 1}$, since at most a fraction $(w + 2\delta) / T$ of the $m$
-sensors (plus 1, to account for edge-effects) can lie in the region covered by
+sensors \textcolor{blue}{(plus 1, to account for edge-effects)} can lie in the region covered by
 the two impulse responses. The final upper bound on $\norm{\v\Delta}^2$ is
 hence
 \begin{equation} \label{eq:delta-bound}
@@ -515,26 +526,27 @@ hence
 \end{equation}
 Since sensors are uniformly distributed, and since the domain is periodic, this
 holds even if $\theta_0$ lies at the edge of the domain (close to $t=0$, for
-example). In such a case, one part of the signal $x(t;\theta_0)$ will appear at
-the left edge of the domain, and the repetition from the period $[T, 2T)$ will
-appear at the right edge of the domain. Also note that the two signals
-$x(t;\theta_0)$ and $x(t;\theta_1)$ overlap at most once, since $w < T/2$, as
-stated in section~\ref{sec:signal-model}.
+example). \textcolor{blue}{In such a case, one part of the signal $x(t;\theta_0)$ will appear at
+the left edge of the domain, and the remaining part will appear as the
+repetition from the period $[T, 2T)$, at the right edge of the domain.} Also
+note that the two signals $x(t;\theta_0)$ and $x(t;\theta_1)$ overlap at most
+once, since $w < T/2$, as stated in section~\ref{sec:signal-model}.
 
 The upper bound in~\eqref{eq:delta-bound} translates into a lower
 bound for~\eqref{eq:lb-after-pinsker}:
 \begin{align}
-	\mathfrak{M}_n(\mathcal{P}, \Phiorho) &\geq \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{n}{2\sigma^2 T} 4 \kappa^2 \delta^2 (w + 2\delta) m} \Bigg] \\
-	&= \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{2nm \kappa^2 \delta^2 (w + 2\delta)}{\sigma^2 T}} \Bigg] \label{eq:lb-after-delta-bound}
+	\mathfrak{M}_n(\mathcal{P}, \Phiorho) &\geq \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{n \cdot 4 \kappa^2 \delta^2}{2\sigma^2} \bigg( \frac{(w + 2\delta) m}{T} + 1\bigg)} \Bigg] \\
+	&= \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{2n \kappa^2 \delta^2}{\sigma^2} \bigg( \frac{(w + 2\delta) m}{T} + 1\bigg)} \Bigg] \label{eq:lb-after-delta-bound}
 \end{align}
-Asymptotically, we choose smaller values of $\delta$ for larger number of
-sensors. Hence, neglecting terms of order $\delta^3$, we tighten the bound by
-choosing $\delta$ as a function of the remaining variables in order to have
-$\sqrt{\frac{2nm\kappa^2\delta^2 w}{\sigma^2 T}} = \frac{1}{2}$. This is
-achieved for $\delta = \sqrt{\frac{\sigma^2T}{8nm\kappa^2 w}}$, so that for
-$\Phi(\delta) = \delta^2$, equation~\eqref{eq:lb-after-delta-bound} becomes
+Asymptotically, we choose smaller values of $\delta$ as the number of sensors
+grows large. Hence, \textcolor{blue}{neglecting edge effects} and terms of order $\delta^3$, we
+tighten the bound by choosing $\delta$ as a function of the remaining variables
+in order to have $\sqrt{\frac{2nm\kappa^2\delta^2 w}{\sigma^2 T}} =
+\frac{1}{2}$. This is achieved for $\delta = \sqrt{\frac{\sigma^2T}{8nm\kappa^2
+w}}$, so that for $\Phi(\delta) = \delta^2$,
+equation~\eqref{eq:lb-after-delta-bound} becomes
 \begin{equation}
-	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{128} \frac{\sigma^2 T}{nm\kappa^2 w}.
+	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \textcolor{blue}{\frac{1}{32}} \frac{\sigma^2 T}{nm\kappa^2 w}.
 \end{equation}
 This completes the proof.
 \end{IEEEproof}
@@ -556,12 +568,22 @@ fall through, albeit with slightly different constants.
 \subsection{From Lipschitz to $\alpha$-Holder continuous impulse responses}
 
 We can trivially expand the domain of impulse responses to which the lower
-bound applies to include $\alpha$-Holder continuous functions. These are
-functions which satisfy
+bound in~\eqref{eq:main-lower-bound} applies to include $\alpha$-Holder
+continuous functions. These are functions which satisfy
 \begin{equation}
-	\abs{g(u) - g(v)} \leq \kappa \norm{u - v}^\alpha \, \forall \, u, v \in \text{dom} \; g
+	\abs{g(u) - g(v)} \leq \kappa \abs{u - v}^\alpha \, \forall \, u, v \in \text{dom} \; g
 \end{equation}
-for some constant $\kappa$, and for $\alpha > 0$.
+for some constant $\kappa$, and for $\alpha > 0$. Using this property,
+equation~\eqref{eq:delta-bound} reads
+\begin{equation} \label{eq:holder-delta-bound}
+	\norm{\v\Delta}^2 \leq \kappa^2 (2 \delta)^{2\alpha} \bigg(\frac{(w + 2\delta) m}{T} + 1\bigg).
+\end{equation}
+Hence, we choose $\delta = (\frac{\sigma^2 T}{2^{2\alpha + 1} nm \kappa^2
+w})^{1/2\alpha}$, to procure an asymptotic lower bound
+\begin{equation}
+	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{4} \bigg(\frac{\sigma^2 T}{2^{2\alpha + 1} nm \kappa^2
+w}\bigg)^{1/\alpha}.
+\end{equation}
 
 \subsection{From a one-dimensional domain to a $d$-dimensional domain}
 
@@ -576,22 +598,45 @@ method.
 \section{Discussion}
 \label{sec:discussion}
 
-\textcolor{red}{Needs rewrite.}
+The lower bound given by Theorem~\ref{thm:main-lb} goes to zero as the number
+of sensors, $m$, goes to infinity, \emph{even if} the total number of trials
+$n$ is kept \emph{fixed}. This would mean that a high sensor density can
+overcome the effect of noise in a single trial. The reason this happens is that
+we assume sensors are affected by i.i.d. noise, no matter what sampling density
+we use. This is an increasingly poor assumption as sensor density increases,
+however; we expect noise to become correlated if sensors are extremely close
+(due to inductive/capacitive coupling, for example). A more realistic lower
+bound will show the benefit of increasing sensor density up to a point only,
+beyond which it will have to scale alongside the number of trials.
 
-The reason that the local Fano method gives a poorer bound than Le Cam's method
-is that we're using the local Fano method on a bounded domain, making $V$ as a
-function of the packing size $\delta$.  It is evident even from examining
-equations \eqref{eq:fano-lb} and \eqref{eq:mutual-info-kl-reln} that taking
-just two hypotheses with a suitable separation will yield tighter bounds, since
-the cardinality of the packing set $V$ will no longer be dependent on $\delta$.
-This will allow us to make use of the expression in equation
-\eqref{kl-vi-vj-final} to choose $\delta$, which will yield the rate we saw in
-Le Cam's method. It is to be seen whether using the global Fano
-method~\cite{Duchi2015Information} will improve the rate, or at least, the
-constants that we attained with Le Cam's technique. A more rigorous treatment,
-which finds an upper bound for the sum, rather than using integrals, so as to
-give bounds for even moderate numbers of sensors is also delegated to future
-work.
+The lower bounding \emph{technique} gives certain inisights on the issue of
+sensor placement. Suppose we wanted to achieve a higher resolution in a
+restricted interval of the parameter space, i.e.\ $\theta \in [a, b] \subset
+\Theta$, such that $\abs{b - a} \ll w$. Then, it might be of greatest benefit
+to place sensors \emph{not} precisely over the region, but rather in the region
+corresponding to the \emph{largest change} in the impulse response. Indeed, it
+is possible to derive an  approximate lower bound using Taylor's approximation,
+which shows that the KL-divergence between distributions is maximized (and
+hence error minimized) at regions where the slope of $x(t;\theta)$ is largest.
+
+Another point on sensor placement bears repeating: the bounds derived in this
+paper apply to only a specific sensor configuration, i.e., the uniform one.
+This would intuitively seem to be an appropriate choice in the minimax setting,
+however, since any non-uniform placement will have one or more points which is
+far from all sensors. The ``maximization'' over $\theta \in \Theta$ would then
+select such a point, where the value of the impulse response so produced at the
+sensors is smallest, so that SNR is minimized.
+
+For the application of EEG source localization, it might be possible to find
+algorithms which achieve similar scalings as the lower bounds presented here.
+It is also hoped that the techniques presented here will help us derive
+analytical bounds in the more difficult setting.
+
+\section*{Acknowledgements}
+
+Praveen Venkatesh is partially supported by the Dowd Fellowship from the
+College of Engineering at Carnegie Mellon University. The authors would like to
+thank Philip and Marsha Dowd for their support and encouragement.
 
 %\IEEEtriggeratref{8}
 
