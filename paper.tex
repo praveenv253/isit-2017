@@ -265,21 +265,21 @@ medium using a sensor array.
 
 \subsection{Description of the domain}
 
-We assume that the point source is located on a circle of circumference $T$ (a
+We assume that the point source is located on a circle of circumference $S$ (a
 circular domain enables us to use symmetry arguments to simplify the proof). We
-can view this domain as a line, on which signals are periodic with period $T$.
+can view this domain as a line, on which signals are periodic with period $S$.
 The point source is therefore located somewhere within one period. We denote
-the set of possible locations by $\Theta = [0, T)$. Due to the periodic nature
+the set of possible locations by $\Theta = [0, S)$. Due to the periodic nature
 of the domain, a source located at position $\theta \in \Theta$ implies the
-presence of sources at $t = \theta + kT$,~$\forall \, k \in \mathbb Z$.
+presence of sources at $s = \theta + kS$,~$\forall \, k \in \mathbb Z$.
 
 \subsection{Sensor configuration}
 
 Sensors are assumed to be uniformly distributed over the domain, i.e., if there
-are $m$ sensors, they are placed at locations $t = 0$, $T/m$, $2T/m$,~\dots,
-$(m{-}1)T/m$ (the offset of the first sensor is arbitrary, so without loss of
+are $m$ sensors, they are placed at locations $s = 0$, $S/m$, $2S/m$,~\dots,
+$(m{-}1)S/m$ (the offset of the first sensor is arbitrary, so without loss of
 generality we take it to be 0). The periodicity of the space ensures that we
-automatically also have sensors at $T$, $T{+}T/m$,~\dots\@ The lower bounds we
+automatically also have sensors at $S$, $S{+}S/m$,~\dots\@ The lower bounds we
 provide, therefore, are for \emph{this specific sensor configuration}. For a
 discussion on why this configuration might be an appropriate choice in the
 minimax setting, and on non-uniform sensor placement, see
@@ -290,25 +290,25 @@ section~\ref{sec:discussion}.
 
 All signals on the aforementioned circular domain are of the form
 $f:\Theta\mapsto\mathbb{R}$.  The point source located at $\theta$ is
-represented by the impulse signal, $f(t;\theta) = \delta(t - \theta)$, where
+represented by the impulse signal, $f(s;\theta) = \delta(s - \theta)$, where
 $\delta(\cdot)$ is the Dirac delta function.  The sensors observe this signal
 through the diffusive medium, which, intuitively speaking, blurs the impulse.
 More concretely, we assume that the medium is linear and shift-invariant, so
 that it can be represented by a spatial impulse response (blurring would then
 correspond to low-pass filtering). Let this impulse response be given by
-$g(t)$. Then, the noiseless, continuous-space signal (post-filtering and
-pre-sampling) is given by the convolution, $x(t; \theta) = (g*f)(t) = g(t -
-\theta)$. Here, we further make the simplifying assumption that $g(t)$ has a
+$g(s)$. Then, the noiseless, continuous-space signal (post-filtering and
+pre-sampling) is given by the convolution, $x(s; \theta) = (g*f)(s) = g(s -
+\theta)$. Here, we further make the simplifying assumption that $g(s)$ has a
 sufficiently restricted support, so that aliasing effects are avoided, and
-$x(t; \theta)$ is always well-defined. To be precise, $g(t) = 0$ when $\abs{t}
-> w/2$, where the ``width'' $w$ of the impulse response satisfies $w < T / 2$
+$x(s; \theta)$ is always well-defined. To be precise, $g(s) = 0$ when $\abs{s}
+> w/2$, where the ``width'' $w$ of the impulse response satisfies $w < S / 2$
 (the reason for the factor of $1/2$ will become clear in a later section).
 
 The sensors sample this continuous-space shifted impulse response, with some
-additive noise. We denote the noiseless sampled version of $x(t; \theta)$ by
+additive noise. We denote the noiseless sampled version of $x(s; \theta)$ by
 the $m$-length vector $\v x(\theta)$:
 \begin{equation} \label{eq:sampled-signal}
-	\v x(\theta) = \bigg[x(0; \theta), \ldots, x\Big(\frac{kT}{m}; \theta\Big), \ldots, x\Big(\frac{(m-1)T}{m}; \theta\Big)\bigg]^T
+	\v x(\theta) = \bigg[x(0; \theta), \ldots, x\Big(\frac{kS}{m}; \theta\Big), \ldots, x\Big(\frac{(m-1)S}{m}; \theta\Big)\bigg]^T
 \end{equation}
 where $m$ is the number of sensors and $k \in \{0, 1, \ldots, m-1\}$. The
 additive noise is given by $\v \epsilon$ (to be described shortly), and the
@@ -443,7 +443,7 @@ We now state the main result of this paper.
 	support of width $w$, the \textcolor{blue}{asymptotic} minimax risk in estimating the
 	location of a point source is lower bounded by:
 	\begin{equation} \label{eq:main-lower-bound}
-		\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{128} \frac{\sigma^2 T}{nm\kappa^2w}
+		\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{32} \frac{\sigma^2 S}{nm\kappa^2w}
 	\end{equation}
 \end{theorem}
 
@@ -480,7 +480,7 @@ respectively~\cite{DuchiDerivation}.
 	\includegraphics[width=2.8in]{delta-sampled-pics}
 	\caption{Plot of the samples of the difference signal, $\Delta(k)$. The
 		total size of the support of the difference signal is $w+2\delta$,
-		hence at most $\floor*{\frac{(w + 2\delta)m}{T}}$ samples of
+		hence at most $\floor*{\frac{(w + 2\delta)m}{S}}$ samples of
 		$\Delta(k)$ are non-zero.}
 	\label{fig:delta-sampled}
 \end{figure}
@@ -498,15 +498,15 @@ $\mathbb I_A(k)$ denote the indicator function of $k$ belonging to the set $A$
 (i.e., $\mathbb I_A(k) = 1$ if $k \in A$, and is $0$ otherwise). Then, we have
 \begin{align}
 	&\norm{\v\Delta}^2 = \sum_{k=0}^{m-1} \abs{\Delta(k)}^2 = \sum_{k=0}^{m-1} \abs{\Delta(k)}^2 \, \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k) \\
-	&= \sum_{k=0}^{m-1} \abs[\Big]{x\Big(\frac{kT}{m}; \theta_0\Big) - x\Big(\frac{kT}{m}; \theta_1\Big)}^2 \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k) \\
-	&= \sum_{k=0}^{m-1} \abs[\Big]{g\Big(\frac{kT}{m} - \theta_0\Big) - g\Big(\frac{kT}{m} - \theta_1\Big)}^2 \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k)
+	&= \sum_{k=0}^{m-1} \abs[\Big]{x\Big(\frac{kS}{m}; \theta_0\Big) - x\Big(\frac{kS}{m}; \theta_1\Big)}^2 \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k) \\
+	&= \sum_{k=0}^{m-1} \abs[\Big]{g\Big(\frac{kS}{m} - \theta_0\Big) - g\Big(\frac{kS}{m} - \theta_1\Big)}^2 \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k)
 \end{align}
-where $x(t;\theta_i)$ is the continuous-space filtered signal described in
+where $x(s;\theta_i)$ is the continuous-space filtered signal described in
 section~\ref{sec:signal-model}. For an impulse response $g$ which is Lipschitz
 continuous with parameter $\kappa$, we can upper bound the term within the
 summation:
 \begin{equation}
-	\abs[\Big]{g\Big(\frac{kT}{m} - \theta_0\Big) - g\Big(\frac{kT}{m} - \theta_1\Big)} \leq \kappa \abs{\theta_0 - \theta_1} = \kappa \cdot 2\delta
+	\abs[\Big]{g\Big(\frac{kS}{m} - \theta_0\Big) - g\Big(\frac{kS}{m} - \theta_1\Big)} \leq \kappa \abs{\theta_0 - \theta_1} = \kappa \cdot 2\delta
 \end{equation}
 since $\abs{\theta_0 - \theta_1} = 2\delta$ by virtue of the $2\delta$ packing.
 Hence,
@@ -515,38 +515,38 @@ Hence,
 \end{equation}
 $\norm{\v\Delta}_0$ is the number of non-zero elements in $\v\Delta$, which is
 equal to the number of sensors in the total region covered by the signals
-$x(t;\theta_0)$ and $x(t;\theta_1)$ (see Figs.~\ref{fig:overlap-middle} and
+$x(s;\theta_0)$ and $x(s;\theta_1)$ (see Figs.~\ref{fig:overlap-middle} and
 \ref{fig:delta-sampled}). Therefore, $\norm{\v\Delta}_0 = \floor[\big]{\frac{(w
-+ 2\delta)m}{T} + 1}$, since at most a fraction $(w + 2\delta) / T$ of the $m$
++ 2\delta)m}{S} + 1}$, since at most a fraction $(w + 2\delta) / S$ of the $m$
 sensors \textcolor{blue}{(plus 1, to account for edge-effects)} can lie in the region covered by
 the two impulse responses. The final upper bound on $\norm{\v\Delta}^2$ is
 hence
 \begin{equation} \label{eq:delta-bound}
-	\norm{\v\Delta}^2 \leq 4 \kappa^2 \delta^2 \floor*{\frac{(w + 2\delta)m}{T} + 1} \leq 4 \kappa^2 \delta^2 \Big(\frac{(w + 2\delta) m}{T} + 1\Big).
+	\norm{\v\Delta}^2 \leq 4 \kappa^2 \delta^2 \floor*{\frac{(w + 2\delta)m}{S} + 1} \leq 4 \kappa^2 \delta^2 \Big(\frac{(w + 2\delta) m}{S} + 1\Big).
 \end{equation}
 Since sensors are uniformly distributed, and since the domain is periodic, this
-holds even if $\theta_0$ lies at the edge of the domain (close to $t=0$, for
-example). \textcolor{blue}{In such a case, one part of the signal $x(t;\theta_0)$ will appear at
+holds even if $\theta_0$ lies at the edge of the domain (close to $s=0$, for
+example). \textcolor{blue}{In such a case, one part of the signal $x(s;\theta_0)$ will appear at
 the left edge of the domain, and the remaining part will appear as the
-repetition from the period $[T, 2T)$, at the right edge of the domain.} Also
-note that the two signals $x(t;\theta_0)$ and $x(t;\theta_1)$ overlap at most
-once, since $w < T/2$, as stated in section~\ref{sec:signal-model}.
+repetition from the period $[S, 2S)$, at the right edge of the domain.} Also
+note that the two signals $x(s;\theta_0)$ and $x(s;\theta_1)$ overlap at most
+once, since $w < S/2$, as stated in section~\ref{sec:signal-model}.
 
 The upper bound in~\eqref{eq:delta-bound} translates into a lower
 bound for~\eqref{eq:lb-after-pinsker}:
 \begin{align}
-	\mathfrak{M}_n(\mathcal{P}, \Phiorho) &\geq \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{n \cdot 4 \kappa^2 \delta^2}{2\sigma^2} \bigg( \frac{(w + 2\delta) m}{T} + 1\bigg)} \Bigg] \\
-	&= \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{2n \kappa^2 \delta^2}{\sigma^2} \bigg( \frac{(w + 2\delta) m}{T} + 1\bigg)} \Bigg] \label{eq:lb-after-delta-bound}
+	\mathfrak{M}_n(\mathcal{P}, \Phiorho) &\geq \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{n \cdot 4 \kappa^2 \delta^2}{2\sigma^2} \bigg( \frac{(w + 2\delta) m}{S} + 1\bigg)} \Bigg] \\
+	&= \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{2n \kappa^2 \delta^2}{\sigma^2} \bigg( \frac{(w + 2\delta) m}{S} + 1\bigg)} \Bigg] \label{eq:lb-after-delta-bound}
 \end{align}
 Asymptotically, we choose smaller values of $\delta$ as the number of sensors
 grows large. Hence, \textcolor{blue}{neglecting edge effects} and terms of order $\delta^3$, we
 tighten the bound by choosing $\delta$ as a function of the remaining variables
-in order to have $\sqrt{\frac{2nm\kappa^2\delta^2 w}{\sigma^2 T}} =
-\frac{1}{2}$. This is achieved for $\delta = \sqrt{\frac{\sigma^2T}{8nm\kappa^2
-w}}$, so that for $\Phi(\delta) = \delta^2$,
+in order to have $\sqrt{\frac{2nm\kappa^2\delta^2 w}{\sigma^2 S}} =
+\frac{1}{2}$. This is achieved for $\delta = \sqrt{\frac{\sigma^2
+S}{8nm\kappa^2 w}}$, so that for $\Phi(\delta) = \delta^2$,
 equation~\eqref{eq:lb-after-delta-bound} becomes
 \begin{equation}
-	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \textcolor{blue}{\frac{1}{32}} \frac{\sigma^2 T}{nm\kappa^2 w}.
+	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \textcolor{blue}{\frac{1}{32}} \frac{\sigma^2 S}{nm\kappa^2 w}.
 \end{equation}
 This completes the proof.
 \end{IEEEproof}
@@ -559,9 +559,9 @@ This completes the proof.
 So far, we've relied on the presence of a circular domain for to make the
 arguments in the proof. However, the most important requirement was that
 \emph{all} parts of the impulse response should get \emph{sensed} uniformly.
-So, if $\theta$ were restricted to the region $[0, T)$ (now on a linear,
+So, if $\theta$ were restricted to the region $[0, S)$ (now on a linear,
 non-periodic domain), and if sensors were available to sense the signal from
-$[-w/2, T{+}w/2)$ (for an impulse response with restricted support as described
+$[-w/2, S{+}w/2)$ (for an impulse response with restricted support as described
 in section~\ref{sec:signal-model}), then the proof for sensor noise would still
 fall through, albeit with slightly different constants.
 
@@ -576,19 +576,19 @@ continuous functions. These are functions which satisfy
 for some constant $\kappa$, and for $\alpha > 0$. Using this property,
 equation~\eqref{eq:delta-bound} reads
 \begin{equation} \label{eq:holder-delta-bound}
-	\norm{\v\Delta}^2 \leq \kappa^2 (2 \delta)^{2\alpha} \bigg(\frac{(w + 2\delta) m}{T} + 1\bigg).
+	\norm{\v\Delta}^2 \leq \kappa^2 (2 \delta)^{2\alpha} \bigg(\frac{(w + 2\delta) m}{S} + 1\bigg).
 \end{equation}
-Hence, we choose $\delta = (\frac{\sigma^2 T}{2^{2\alpha + 1} nm \kappa^2
+Hence, we choose $\delta = (\frac{\sigma^2 S}{2^{2\alpha + 1} nm \kappa^2
 w})^{1/2\alpha}$, to procure an asymptotic lower bound
 \begin{equation}
-	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{4} \bigg(\frac{\sigma^2 T}{2^{2\alpha + 1} nm \kappa^2
+	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{4} \bigg(\frac{\sigma^2 S}{2^{2\alpha + 1} nm \kappa^2
 w}\bigg)^{1/\alpha}.
 \end{equation}
 
 \subsection{From a one-dimensional domain to a $d$-dimensional domain}
 
 Another simple extension takes our problem from a one-dimensional setting to a
-$d$-dimensional setting. Here, we would have $\v\theta \in [0, T)^d$, and the
+$d$-dimensional setting. Here, we would have $\v\theta \in [0, S)^d$, and the
 $\ell_2$ loss function, $\Phiorho(\v\theta, \vhat\theta) = \norm{\v\theta -
 \vhat\theta}^2$. Then, using Assouad's lemma~\cite{Tsybakov2009Introduction} in
 the manner described in~\cite{Duchi2015Information}, we can split the minimax
@@ -617,7 +617,7 @@ to place sensors \emph{not} precisely over the region, but rather in the region
 corresponding to the \emph{largest change} in the impulse response. Indeed, it
 is possible to derive an  approximate lower bound using Taylor's approximation,
 which shows that the KL-divergence between distributions is maximized (and
-hence error minimized) at regions where the slope of $x(t;\theta)$ is largest.
+hence error minimized) at regions where the slope of $x(s;\theta)$ is largest.
 
 Another point on sensor placement bears repeating: the bounds derived in this
 paper apply to only a specific sensor configuration, i.e., the uniform one.
