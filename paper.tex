@@ -434,6 +434,7 @@ the effect due to a small value of $\delta$ and a large value of $\norm{P_1^n -
 P_0^n}_{TV}$ appropriately, to derive the tightest possible bound.
 
 \subsection{Lower bounds using Le Cam's method}
+\label{sec:lecam-lb}
 
 We now state the main result of this paper.
 \begin{theorem} \label{thm:main-lb}
@@ -550,6 +551,87 @@ equation~\eqref{eq:lb-after-delta-bound} becomes
 \end{equation}
 This completes the proof.
 \end{IEEEproof}
+
+\subsection{Towards a more realistic sensor model}
+
+The bound in Theorem~\ref{thm:main-lb} indicates that the error in source
+localization goes to zero, as the number of sensors goes to infinity. This
+observation is distinct from the lower bound given
+in~\cite{Grover2016Fundamental}, where even with an infinite number of sensors,
+the lower bound is strictly greater than zero. This indicates that the bound
+in section~\ref{sec:lecam-lb} is loose for large numbers of sensors.
+
+The looseness lies in a poor sensor model: we assume that an arbitrarily large
+number of sensors can be squeezed into a finite amount of space, and that these
+sensors \emph{still} give us i.i.d.\ observations, with the same noise
+variance. This is an impractical expectation. In reality, sensors have a
+certain width, and the signal measured by them is the integral of the
+continuous-space signal within that width (this is similar to a sample-and-hold
+circuit, which integrates a continuous-\emph{time} signal over a short period).
+If the width of a sensor is decreased, then effectively, its signal-to-noise
+ratio reduces \textcolor{red}{<Need to add reference or explanation>} (this is
+intuitively evident in the sample-and-hold analogy: to compute the signal
+value, the integral must be divided by the time interval over which the
+integration is performed; this division amplifies noise as the time interval
+gets smaller).
+
+We performed a preliminary study to understand the effect of viewing sensors
+as integrators. The bounding technique used in section~\ref{sec:lecam-lb} no
+longer easily admits a solution which gives a bound for all values of $m$. We
+can compute the bound numerically, however, using exact expressions for error
+probability in a binary hypothesis test. For gaussian distributions of equal
+variance, the expression is a Q-function in the distance between their means:
+\begin{equation}
+	P_e = \inf_\psi \mathbb P(\psi(Y^n) \neq V) = Q\bigg(\frac{\norm{\v\mu_1 - \v\mu_2}}{2\sigma}\bigg)
+\end{equation}
+\textcolor{red}{Is this definitely correct? i.e.\ the best test is a linear
+separator? I think this is coming from Neyman-Pearson. Should I cite?}
+The minimax estimation risk is lower bounded by the risk in hypothesis testing,
+so
+\begin{equation}
+	\mathfrak{M}_n(\mathcal{P}, \Phiorho) = \Phi(\delta) P_e = \delta^2 Q\bigg(\frac{\norm{\v x(\theta_0) - \v x(\theta_1)}}{2\sigma}\bigg).
+\end{equation}
+This bound is valid for any pair of hypotheses $\theta_0$ and $\theta_1$,
+separated by a distance of $2\delta$. As the $\delta$ increases, it becomes
+easier to distinguish between the two hypotheses, so $P_e$ falls. When
+numerically evaluating the bound, therefore, we have to \emph{manually}
+trade-off between $\delta$ and $P_e$ to find the tightest possible bound. This
+comes down to choosing $\theta_0$ and $\theta_1$ so that they are the hardest
+hypotheses to distinguish between. To make the simulation easier, we can relax
+the process of finding the least discernable hypothesis pair by fixing
+$\theta_0$. Then, we need only optimize over $\delta$, making the process more
+tractable. This comes at the cost of loosening the lower bound.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=3.2in]{lb-vs-numsensors-int}
+	\caption{A numerically generated plot of the lower bound on minimax risk of
+	source localization, against the number of uniformly distributed sensors
+used to estimate the location. The different curves are for different numbers
+of ``trials'' (i.i.d.\ sensor observations). The bound saturates for large $m$,
+indicating that for a fixed number of trials (or equivalently, for a fixed
+SNR), there is reduced benefit in increasing the number of sensors beyond a
+point. However, with more trials, the bound saturates at increasingly larger
+numbers of sensors. Thus, there is benefit to increasing the number of sensors,
+provided SNR can be increased by leveraging larger numbers of trials.}
+	\label{fig:numerical}
+\end{figure}
+
+Plotting this numerically computed bound for different numbers of trials (see
+Fig.~\ref{fig:numerical}) reveals some interesting trends. First, the bound
+saturates as $m$ grows large, matching the behaviour presented
+in~\cite{Grover2016Fundamental}. Second, the lower bound on error is larger for
+smaller numbers of sensors, as we expect. With fewer sensors, it is harder to
+estimate the location of the point source. Third and most importantly, the
+point at which the bound begins to saturate appears to increase when we use
+more trials. Recall that the number of ``trials'' is the number of i.i.d.\
+sensor observations we receive. Intuitively, estimation is eased with more
+trials, as we could perform more averaging, and increase SNR. \emph{With higher
+SNR, there is greater benefit in using a larger number of sensors.} This
+matches the intuition given in~\cite{Grover2016Information}, where it is
+propounded that using more sensors allows us to sample a greater number of
+high-frequency components of the source signal, and hence get a better estimate
+of its location.
 
 \section{Extensions}
 \label{sec:extensions}
