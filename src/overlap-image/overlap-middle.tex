@@ -9,9 +9,9 @@
 \begin{pspicture}(-3, -2)(9, 2)
 	% x-axis
 	\psaxes[yAxis=false,ticks=none,labels=none]{->}(-0.5, 0)(5.5, 0)
-	\rput(5.7, 0){$t$}
+	\rput(5.7, 0){$s$}
 	\psxTick[linewidth=3\pslinewidth, ticksize=-2pt 2pt](0){0}
-	\psxTick[linewidth=3\pslinewidth, ticksize=-2pt 2pt](5){T}
+	\psxTick[linewidth=3\pslinewidth, ticksize=-2pt 2pt](5){S}
 
 	% g_0(t)
 	\psplot[linecolor=blue]{1}{3}{x 180 mul cos 1 add 0.5 mul}
@@ -22,9 +22,9 @@
 
 	% Tick labels and function annotations
 	\rput(2, 0.4){$\theta_0$}
-	\rput[textcolor=blue](0.8, 1){$x(t; \theta_0)$}
+	\rput[textcolor=blue](0.8, 1){$x(s; \theta_0)$}
 	\rput(2.6, 0.4){$\theta_1$}
-	\rput[textcolor=red](3.8, 1){$x(t; \theta_1)$}
+	\rput[textcolor=red](3.8, 1){$x(s; \theta_1)$}
 
 	% Distance specifier
 	\pnode(2, -0.6){deltal}

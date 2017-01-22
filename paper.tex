@@ -155,9 +155,9 @@ by this analysis, since it does not provide a lower bound showing improvement
 with increasing sensor density.
 
 Earlier work by Mosher et al.~\cite{Mosher1993Error} also sought to derive
-lower bounds on source localization accuracy by deriving Cramer-Rao lower
-bounds. They also have some preliminary numerical results showing improvement
-with increased numbers of sensors. However, this result is also not completely
+lower bounds on source localization error by deriving Cramer-Rao lower bounds.
+They also give some preliminary numerical results showing improvement with
+increased numbers of sensors. However, this result is also not completely
 satisfactory because Cramer-Rao bounds do not apply to biased estimators.
 Commonly used source localization algorithms (such as the Minimum Norm
 Estimate~\cite{Hamalainen1994Interpreting}) on the other hand, are \emph{known}
@@ -180,11 +180,13 @@ localization problem on a one-dimensional domain (to be described in detail in
 Section~\ref{sec:source-localization}).
 
 The one-dimensional toy problem is an effective tool for understanding bounds
-on source localization accuracy in other settings as well, such as
-\textcolor{red}{<insert other applications>}. A vast literature on linear
-inverse problems (see~\cite{Bal2012Introduction} for an introduction to this
-field) and deconvolution algorithms exists, and has addressed the reduced
-one-dimensional problem in broad settings
+on source localization accuracy in other settings as well, such as auditory
+localization of a sound using a microphone array (although typically, very
+different approaches are employed there, when compared to EEG source
+localization). A vast literature on linear inverse problems
+(see~\cite{Bal2012Introduction} for an introduction to this field) and
+deconvolution algorithms exists, and has addressed the reduced one-dimensional
+problem in broad settings
 (see~\cite{Cavalier2002Sharp,Efromovich1997Robust,Ibragimov1981Statistical} and
 references therein). However, our setting and interpretation appears to be
 unique, since most prior work focuses on recovering a whole function (given
@@ -273,7 +275,8 @@ can view this domain as a line, on which signals are periodic with period $S$.
 The point source is therefore located somewhere within one period. We denote
 the set of possible locations by $\Theta = [0, S)$. Due to the periodic nature
 of the domain, a source located at position $\theta \in \Theta$ implies the
-presence of sources at $s = \theta + kS$,~$\forall \, k \in \mathbb Z$.
+presence of sources at $s = \theta + kS$,~$\forall \, k \in \mathbb Z$ (using
+`$s$' for the spatial variable).
 
 \subsection{Sensor configuration}
 
@@ -282,10 +285,9 @@ are $m$ sensors, they are placed at locations $s = 0$, $S/m$, $2S/m$,~\dots,
 $(m{-}1)S/m$ (the offset of the first sensor is arbitrary, so without loss of
 generality we take it to be 0). The periodicity of the space ensures that we
 automatically also have sensors at $S$, $S{+}S/m$,~\dots\@ The lower bounds we
-provide, therefore, are for \emph{this specific sensor configuration}. For a
-discussion on why this configuration might be an appropriate choice in the
-minimax setting, and on non-uniform sensor placement, see
-section~\ref{sec:discussion}.
+provide are for \emph{this specific sensor configuration}. For a discussion on
+why this configuration might be an appropriate choice in the minimax setting,
+and on non-uniform sensor placement, see section~\ref{sec:discussion}.
 
 \subsection{Signal model}
 \label{sec:signal-model}
@@ -330,8 +332,8 @@ $\v \epsilon$ is zero-mean and Gaussian, $\v \epsilon \sim \mathcal{N}(\v 0, \m
 \Sigma)$. Two kinds of covariance matrices are of particular interest. The
 first is dubbed the ``sensor noise'' setting, wherein $\m\Sigma = \sigma^2 \m
 I$, i.e. the sensors are afflicted by i.i.d.\ noise. The second is called the
-``source noise'' setting, wherein $\m\Sigma$ has off-diagonal terms.
-\textcolor{red}{Insert description of source noise.}
+``source noise'' setting, wherein $\m\Sigma$ has off-diagonal terms. \textcolor{blue}{We
+restrict our attention to the sensor noise setting in this paper.}
 
 With the addition of Gaussian noise, each possible source location $\theta$
 gives rise to a different distribution at the sensors, denoted by
@@ -371,14 +373,12 @@ $Y^n$ from a distribution $P$, which is indexed by a parameter $\theta \in
 \theta \in \Theta\}$. Suppose we now wish to estimate $\theta$ from $Y^n$.
 Define a loss metric $\rho(\theta, \hat\theta)$ (e.g.\ $\rho(\theta,
 \hat\theta) = \abs{\theta - \hat\theta}$). For this metric, we can define the
-minimax risk over all possible estimators $\hat\theta(Y^n)$ and all possible
+minimax risk over all possible estimators $\hat\theta(Y^n)$ and all parameters
 $\theta \in \Theta$:
 \begin{equation} \label{eq:minimax-expr}
 	\mathfrak{M}_n(\mathcal{P}, \Phiorho) = \inf_{\hat\theta} \sup_{\theta \in \Theta} \mathbb E[\Phiorho (\hat\theta(Y^n), \theta)]
 \end{equation}
-where $\Phi$ is any non-decreasing function (e.g.\ $\Phi(\rho) = \rho^2$) and
-$Y^n$ is the random vector corresponding to a noisy realization of sensor
-values.
+where $\Phi$ is any non-decreasing function (e.g.\ $\Phi(\rho) = \rho^2$).
 
 We start by lower bounding the minimax risk of the estimation problem with the
 risk incurred in a multiple hypothesis testing problem. For this, we first need
@@ -397,20 +397,20 @@ to define a $2\delta$-packing:%
 	\begin{equation}
 		\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \Phi(\delta) \inf_\psi \mathbb P (\psi(Y^n) \neq V)
 	\end{equation}
-	where $V$ is the unknown, true hypothesis, and $\psi$ is our estimate of
-	the hypothesis.
+	where $V$ is the unknown true hypothesis which takes values uniformly from
+	$\mathcal{V}$, and $\psi$ is our estimate of the hypothesis.
 \end{theorem}
 For a proof of this theorem, we refer the reader to Proposition~13.3
 in~\cite{Duchi2015Information}.  Intuitively, Theorem~\ref{thm:est-to-testing}
 says that the error in estimating $\theta_i$ is likely to be more if it is
 difficult to distinguish $\theta_i$ from $\theta_j$, i.e.\ if the probability
-of error is high (where $\theta_j$ has been selected to be suitably close).
+of error is high.
 
 We now need to lower bound the probability of error in the hypothesis testing
 problem. The simplest way to do this is to consider a binary hypothesis test
-($\abs{\mathcal{V}} = 2$) and use what is known as Le Cam's method:
+and use what is known as Le Cam's method:
 \begin{theorem} \label{thm:le-cam}
-	For a binary hypothesis test, i.e., when $\mathcal{V} = \{0, 1\}$,
+	For a binary hypothesis test, i.e., $\mathcal{V} = \{0, 1\}$,
 	\begin{equation}
 		\inf_\psi \mathbb P(\psi(Y^n) \neq V) = 1 - \norm{P_0 - P_1}_{TV}
 	\end{equation}
@@ -420,10 +420,9 @@ problem. The simplest way to do this is to consider a binary hypothesis test
 \end{theorem}
 For a proof, we refer the reader to Proposition~2.11
 in~\cite{Duchi2015Information}.  Intuitively, Theorem~\ref{thm:le-cam} states
-that the minimum probability of error that any estimator must make in a binary
-hypothesis testing problem is related to the distance between the distributions
-corresponding to the two hypotheses. The closer the two distributions, the
-higher the chance of making an error in distinguishing between them.
+that the minimum achievable error probability in a binary hypothesis testing
+problem is related to the distance between the distributions corresponding to
+the two hypotheses.
 
 Thus, the final lower bound can be written as:
 \begin{equation} \label{eq:le-cam-bound}
@@ -444,28 +443,11 @@ We now state the main result of this paper.
 	section~\ref{sec:source-localization} with sensor noise and a spatial
 	impulse response that is $\kappa$-Lipschitz continuous and has restricted
 	support of width $w$, the \textcolor{blue}{asymptotic} minimax risk in estimating the
-	location of a point source is lower bounded by:
+	location of a point source is lower bounded by
 	\begin{equation} \label{eq:main-lower-bound}
-		\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{32} \frac{\sigma^2 S}{nm\kappa^2w}
+		\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{32} \frac{\sigma^2 S}{nm\kappa^2w}.
 	\end{equation}
 \end{theorem}
-
-\begin{IEEEproof}
-Starting from equation~\eqref{eq:le-cam-bound} and working on the setting
-described in Section~\ref{sec:source-localization}, we proceed to derive the
-total variation distance for the distributions of interest. Using Pinsker's
-inequality~\cite{Kullback1967Lower} and the convenient tensorization of the
-KL-divergence~\cite{Duchi2015Information}, we see that:
-\begin{equation} \label{eq:pinsker-tensorization}
-	\norm{P_1^n - P_0^n}_{TV}^2 \leq \frac{1}{2} D_{KL}(P_0^n \Vert P_1^n) = \frac{n}{2} D_{KL}(P_0 \Vert P_1)
-\end{equation}
-For multivariate normal distributions with the same covariance, the
-KL-divergence is given by
-\begin{equation} \label{eq:kl-div-normal}
-	D_{KL}(P_0 \Vert P_1) = (\v \mu_0 - \v \mu_1)^T \m \Sigma^{-1} (\v \mu_0 - \v \mu_1)
-\end{equation}
-where $\v \mu_0$ and $\v \mu_1$ are the means of $P_0$ and $P_1$
-respectively~\cite{DuchiDerivation}.
 
 \begin{figure}[t]
 	\centering
@@ -483,13 +465,28 @@ respectively~\cite{DuchiDerivation}.
 	\includegraphics[width=2.8in]{delta-sampled-pics}
 	\caption{Plot of the samples of the difference signal, $\Delta(k)$. The
 		total size of the support of the difference signal is $w+2\delta$,
-		hence at most $\floor*{\frac{(w + 2\delta)m}{S}}$ samples of
+		hence at most $\floor*{\frac{(w + 2\delta)m}{S} + 1}$ samples of
 		$\Delta(k)$ are non-zero.}
 	\label{fig:delta-sampled}
 \end{figure}
 
-For the case of sensor noise, $P_i = \mathcal{N}(\v x(\theta_i), \sigma^2 \m
-I)$, as described in section~\ref{sec:channel-model}. Hence, combining
+\begin{IEEEproof}
+Starting from equation~\eqref{eq:le-cam-bound}, we proceed to derive the total
+variation distance for the distributions of interest. Using Pinsker's
+inequality~\cite{Kullback1967Lower} and the convenient tensorization of the
+KL-divergence~\cite{Duchi2015Information}, we see that:
+\begin{equation} \label{eq:pinsker-tensorization}
+	\norm{P_1^n - P_0^n}_{TV}^2 \leq \frac{1}{2} D_{KL}(P_0^n \Vert P_1^n) = \frac{n}{2} D_{KL}(P_0 \Vert P_1)
+\end{equation}
+For multivariate normal distributions with the same covariance, the
+KL-divergence is given by
+\begin{equation} \label{eq:kl-div-normal}
+	D_{KL}(P_0 \Vert P_1) = (\v \mu_0 - \v \mu_1)^T \m \Sigma^{-1} (\v \mu_0 - \v \mu_1)
+\end{equation}
+where $\v \mu_0$ and $\v \mu_1$ are the means of $P_0$ and $P_1$
+respectively~\cite{DuchiDerivation}. For the case of sensor noise, $P_i =
+\mathcal{N}(\v x(\theta_i), \sigma^2 \m I)$, as described in
+section~\ref{sec:channel-model}. Hence, combining
 equations~\eqref{eq:le-cam-bound}, \eqref{eq:pinsker-tensorization} and
 \eqref{eq:kl-div-normal}, we see that
 \begin{equation} \label{eq:lb-after-pinsker}
@@ -498,11 +495,11 @@ equations~\eqref{eq:le-cam-bound}, \eqref{eq:pinsker-tensorization} and
 Let $\v \Delta \overset{\text{def.}}{=} \v x(\theta_0) - \v x(\theta_1)$ for
 brevity. Also, let $\Delta(k)$ denote the $k$-th element of $\v\Delta$, and
 $\mathbb I_A(k)$ denote the indicator function of $k$ belonging to the set $A$
-(i.e., $\mathbb I_A(k) = 1$ if $k \in A$, and is $0$ otherwise). Then, we have
+(i.e., $\mathbb I_A(k) = 1$ if $k \in A$, and $0$ otherwise). Then, we have
 \begin{align}
-	&\norm{\v\Delta}^2 = \sum_{k=0}^{m-1} \abs{\Delta(k)}^2 = \sum_{k=0}^{m-1} \abs{\Delta(k)}^2 \, \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k) \\
-	&= \sum_{k=0}^{m-1} \abs[\Big]{x\Big(\frac{kS}{m}; \theta_0\Big) - x\Big(\frac{kS}{m}; \theta_1\Big)}^2 \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k) \\
-	&= \sum_{k=0}^{m-1} \abs[\Big]{g\Big(\frac{kS}{m} - \theta_0\Big) - g\Big(\frac{kS}{m} - \theta_1\Big)}^2 \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k)
+	&\norm{\v\Delta}^2 = \sum_{k=0}^{m-1} \abs{\Delta(k)}^2 = \sum_{k=0}^{m-1} \abs{\Delta(k)}^2 \, \mathbb I_{\{\ell: \abs{\Delta(\ell)} \neq 0\}}(k) \\
+	&= \sum_{k=0}^{m-1} \abs[\Big]{x\Big(\frac{kS}{m}; \theta_0\Big) - x\Big(\frac{kS}{m}; \theta_1\Big)}^2 \mathbb I_{\{\ell: \abs{\Delta(\ell)} \neq 0\}}(k) \\
+	&= \sum_{k=0}^{m-1} \abs[\Big]{g\Big(\frac{kS}{m} - \theta_0\Big) - g\Big(\frac{kS}{m} - \theta_1\Big)}^2 \mathbb I_{\{\ell: \abs{\Delta(\ell)} \neq 0\}}(k)
 \end{align}
 where $x(s;\theta_i)$ is the continuous-space filtered signal described in
 section~\ref{sec:signal-model}. For an impulse response $g$ which is Lipschitz
@@ -514,7 +511,7 @@ summation:
 since $\abs{\theta_0 - \theta_1} = 2\delta$ by virtue of the $2\delta$ packing.
 Hence,
 \begin{equation}
-	\norm{\v\Delta}^2 \leq 4 \kappa^2 \delta^2 \sum_{k=0}^{m-1} \mathbb I_{\{\ell: \abs{\Delta(\ell)} > 0\}}(k) = 4 \kappa^2 \delta^2 \norm{\v\Delta}_0.
+	\norm{\v\Delta}^2 \leq 4 \kappa^2 \delta^2 \sum_{k=0}^{m-1} \mathbb I_{\{\ell: \abs{\Delta(\ell)} \neq 0\}}(k) = 4 \kappa^2 \delta^2 \norm{\v\Delta}_0.
 \end{equation}
 $\norm{\v\Delta}_0$ is the number of non-zero elements in $\v\Delta$, which is
 equal to the number of sensors in the total region covered by the signals
@@ -554,7 +551,7 @@ equation~\eqref{eq:lb-after-delta-bound} becomes
 This completes the proof.
 \end{IEEEproof}
 
-\subsection{Towards a more \textcolor{blue}{physical} sensor model}
+\subsection{Towards a more physical sensor model}
 
 The bound in Theorem~\ref{thm:main-lb} indicates that the error in source
 localization goes to zero, as the number of sensors goes to infinity. This
@@ -568,7 +565,7 @@ number of sensors can be squeezed into a finite amount of space, and that these
 sensors \emph{still} give us i.i.d.\ observations, with the same noise
 variance. This is an impractical expectation. In reality, sensors have a
 certain width, and the signal measured by them is the integral of the
-continuous-space signal within that width (this is similar to a sample-and-hold
+continuous-space signal within that width (analogous to a sample-and-hold
 circuit, which integrates a continuous-\emph{time} signal over a short period).
 If the width of a sensor is decreased, then effectively, its signal-to-noise
 ratio reduces (this is intuitively evident in the sample-and-hold analogy: to
@@ -581,13 +578,16 @@ as integrators. In the new sensor model, sensors have a finite width, which
 decreases as the number of sensors increases, in order to allow their number to
 grow unbounded. Concretely, the $k$-th sensor which is located at $s = kS/m$
 extends from $(k{-}\frac{1}{2})S/m$ to $(k{+}\frac{1}{2})S/m$. The signal
-sensed by this sensor is the $k$-th element of $\v x(\theta)$, given by
+sensed by this sensor is the $k$-th element of $\v x(\theta)$, now given by
 \begin{equation}
 	x_k(\theta) = \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} x(s;\theta) ds
 \end{equation}
-\textcolor{red}{Also need to talk about noise here - sensor obs. are still iid
-because we assume wss noise, and integrating over distinct regions of this
-process retains iid nature}
+The noise vector $\v \epsilon$ is also generated similarly, by integrating over
+small sections of a wide-sense-stationary white noise process, which is assumed
+to additively corrupt the signal. This leads to i.i.d.\ noise values at sensors
+(since they do not overlap), with variance inversely proportional to $m$, i.e.,
+$\sigma(m) \propto 1/\sqrt{m}$.
+
 The bounding technique used in section~\ref{sec:lecam-lb} no longer easily
 admits a solution which gives a bound for all values of $m$. We can compute the
 bound numerically, however, using exact expressions for error probability in a
@@ -595,14 +595,14 @@ binary hypothesis test. For gaussian distributions of equal variance, the best
 possible error probability (over all tests) is a Q-function in the distance
 between their means:
 \begin{equation}
-	P_e = \inf_\psi \mathbb P(\psi(Y^n) \neq V) = Q\bigg(\frac{\norm{\v\mu_0 - \v\mu_1}}{2\sigma}\bigg)
+	P_e = \inf_\psi \mathbb P(\psi(Y^n) \neq V) = Q\bigg(\frac{\norm{\v\mu_0 - \v\mu_1}}{2\sigma(m)}\bigg)
 \end{equation}
 \textcolor{red}{Is this definitely correct? i.e.\ the best test is a linear
 separator? I think this is coming from Neyman-Pearson. Should I cite?}
 The minimax estimation risk is lower bounded by the risk in hypothesis testing,
 hence
 \begin{equation}
-	\mathfrak{M}_n(\mathcal{P}, \Phiorho) = \Phi(\delta) P_e = \delta^2 Q\bigg(\frac{\norm{\v x(\theta_0) - \v x(\theta_1)}}{2\sigma}\bigg).
+	\mathfrak{M}_n(\mathcal{P}, \Phiorho) = \Phi(\delta) P_e = \delta^2 Q\bigg(\frac{\norm{\v x(\theta_0) - \v x(\theta_1)}}{2\sigma(m)}\bigg).
 \end{equation}
 This bound is valid for any pair of hypotheses $\theta_0$ and $\theta_1$,
 separated by a distance of $2\delta$. As the $\delta$ increases, it becomes
