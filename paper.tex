@@ -647,25 +647,25 @@ $[-w/2, S{+}w/2)$ (for an impulse response with restricted support as described
 in section~\ref{sec:signal-model}), then the proof for sensor noise would still
 fall through, albeit with slightly different constants.
 
-\subsection{From Lipschitz to $\alpha$-Holder continuous impulse responses}
+%\subsection{From Lipschitz to $\alpha$-Holder continuous impulse responses}
 
-We can trivially expand the domain of impulse responses to which the lower
-bound in~\eqref{eq:main-lower-bound} applies to include $\alpha$-Holder
-continuous functions. These are functions which satisfy
-\begin{equation}
-	\abs{g(u) - g(v)} \leq \kappa \abs{u - v}^\alpha \, \forall \, u, v \in \text{dom} \; g
-\end{equation}
-for some constant $\kappa$, and for $\alpha > 0$. Using this property,
-equation~\eqref{eq:delta-bound} reads
-\begin{equation} \label{eq:holder-delta-bound}
-	\norm{\v\Delta}^2 \leq \kappa^2 (2 \delta)^{2\alpha} \bigg(\frac{(w + 2\delta) m}{S} + 1\bigg).
-\end{equation}
-Hence, we choose $\delta = (\frac{\sigma^2 S}{2^{2\alpha + 1} nm \kappa^2
-w})^{1/2\alpha}$, to procure an asymptotic lower bound
-\begin{equation}
-	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{4} \bigg(\frac{\sigma^2 S}{2^{2\alpha + 1} nm \kappa^2
-w}\bigg)^{1/\alpha}.
-\end{equation}
+%We can trivially expand the domain of impulse responses to which the lower
+%bound in~\eqref{eq:main-lower-bound} applies to include $\alpha$-Holder
+%continuous functions. These are functions which satisfy
+%\begin{equation}
+%    \abs{g(u) - g(v)} \leq \kappa \abs{u - v}^\alpha \, \forall \, u, v \in \text{dom} \; g
+%\end{equation}
+%for some constant $\kappa$, and for $\alpha > 0$. Using this property,
+%equation~\eqref{eq:delta-bound} reads
+%\begin{equation} \label{eq:holder-delta-bound}
+%    \norm{\v\Delta}^2 \leq \kappa^2 (2 \delta)^{2\alpha} \bigg(\frac{(w + 2\delta) m}{S} + 1\bigg).
+%\end{equation}
+%Hence, we choose $\delta = (\frac{\sigma^2 S}{2^{2\alpha + 1} nm \kappa^2
+%w})^{1/2\alpha}$, to procure an asymptotic lower bound
+%\begin{equation}
+%    \mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{4} \bigg(\frac{\sigma^2 S}{2^{2\alpha + 1} nm \kappa^2
+%w}\bigg)^{1/\alpha}.
+%\end{equation}
 
 \subsection{From a one-dimensional domain to a $d$-dimensional domain}
 
