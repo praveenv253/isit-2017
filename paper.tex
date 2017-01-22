@@ -51,7 +51,7 @@
 % correct bad hyphenation here
 %\hyphenation{op-tical net-works semi-conduc-tor}
 
-\title{Minimax lower bounds for source localization}
+\title{Lower Bounds on the Minimax Risk for the \\ Source Localization Problem}
 
 \author{
 	\IEEEauthorblockN{
@@ -75,23 +75,27 @@
 
 \begin{abstract}
 
-The ``source localization'' problem is one that arises in several fields. For
-instance, in neuroscience, one might wish to use electroencephalography (EEG)
-measurements to locate the source of brain activity.
-\textcolor{red}{<Briefly mention other applications>}.
+The ``source localization'' problem is one in which we wish to estimate the
+location of a point source observed through a diffusive medium using an array
+of sensors. The diffusive medium is modeled as a low-pass filter, and the noise
+is taken to be additive, white and gaussian.
 
-The common underlying factor in each of these problems is the presence of a
-point source, whose signal passes through a diffusive medium and is sensed by
-an array of sensors. We then wish to recover the location of the source using
-noisy sensed values. The diffusive medium is modeled as acting like a low-pass
-filter. The noise is taken to be additive gaussian noise \textcolor{red}{which
-may have a non-diagonal covariance matrix}.
+We give lower bounds on the minimax risk (mean squared-error in location) in
+estimating the location of the source, which applies to all estimators, for
+\textcolor{red}{compactly supported (am I using this correctly?)} Lipschitz-continuous impulse responses of
+the low-pass filter, when using a unformly distributed sensor array. We show
+that the minimax error decays to zero inversely in the number of sensors. We
+also perform a preliminary numerical analysis for a more physical model that
+views sensors as integrators, wherein the bound saturates before going to zero
+for large sensor numbers. The benefit of increased sensor density is seen only
+when the signal-to-noise ratio is high. Our bounds are the first to give a
+scaling in terms of the number of sensors used.
 
-\textcolor{red}{Rephrase this para.}
-We give minimax lower bounds on the squared error in estimating the location of
-the source, which applies to all estimators, when using unformly distributed
-sensors and for certain classes of impulse response of the low-pass filter. Our
-bounds are the first to give a scaling in terms of sensor density.
+While our results are shown for sources located on a one-dimensional circular
+domain, they can be easily extended to sources on one-dimensional line segments
+and d-dimensional boxes. The technique for deriving these minimax bounds also
+sheds light on the sensor placement problem: increased resolution in a narrow
+region can be obtained by placing sensors \emph{around} the region of interest.
 
 \end{abstract}
 
