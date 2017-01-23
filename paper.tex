@@ -75,28 +75,27 @@
 
 \begin{abstract}
 
-The ``source localization'' problem is one in which we wish to estimate the
-location of a point source observed through a diffusive medium using an array
-of sensors. The diffusive medium is modeled as a low-pass filter, and the noise
-is taken to be additive, white and gaussian.
+The ``source localization'' problem is one in which we estimate the location of
+a point source observed through a diffusive medium using an array of sensors.
 
 We give lower bounds on the minimax risk (mean squared-error in location) in
-estimating the location of the source, which applies to all estimators, for
-\textcolor{red}{compactly supported (am I using this correctly?)}
-Lipschitz-continuous impulse responses of the low-pass filter, when using a
-unformly distributed sensor array. We show that the minimax error decays to
-zero inversely in the number of sensors. We also perform a preliminary
-numerical analysis for a more physical model that views sensors as integrators,
-wherein the bound saturates before going to zero for large sensor numbers. The
-benefit of increased sensor density is seen only when the signal-to-noise ratio
-is high. Our bounds are the first to give a scaling in terms of the number of
-sensors used.
+estimating the location of the source, which apply to all estimators, for
+\textcolor{blue}{certain classes} of impulse responses of the low-pass filter,
+when using a unformly distributed sensor array. We show that
+\textcolor{blue}{for sensors of a fixed size}, the lower bound decays with
+increasing numbers of sensors. We also perform a preliminary numerical analysis
+to understand the effect of increasing the number of sensors to infinity by
+shrinking their size, wherein the bound saturates for large sensor numbers.
+\textcolor{blue}{In the second scenario, it is seen that there is greater
+benefit to increasing the number of sensors} as the signal-to-noise increases.
+Our bounds are the first to give a scaling for the minimax risk in terms of the
+number of sensors used.
 
-While our results are shown for sources located on a one-dimensional circular
-domain, they can be easily extended to sources on one-dimensional line segments
-and d-dimensional boxes. The technique for deriving these minimax bounds also
-sheds light on the sensor placement problem: increased resolution in a narrow
-region can be obtained by placing sensors \emph{around} the region of interest.
+%While our results are derived for sources located on a one-dimensional circular
+%domain, they can be easily extended to sources on one-dimensional line segments
+%and d-dimensional boxes. The technique for deriving these minimax bounds also
+%sheds light on the sensor placement problem: increased resolution in a narrow
+%region can be obtained by placing sensors \emph{around} the region of interest.
 
 \end{abstract}
 
@@ -129,137 +128,83 @@ region can be obtained by placing sensors \emph{around} the region of interest.
 %- Cite Fisher's book on circular domain signals somewhere (statistical analysis
 %  of circular data)
 
-The source localization problem is one that arises in many fields in different
-forms. Our principal motivation comes from Electroencephalography (EEG), a
-non-invasive brain measurement modality which uses sensors (electrodes) placed
-on the scalp to sense electric potentials produced by neuronal activity within
-the brain~\cite{Nunez2006Electric}. The neurons (or groups of neurons) which
-produce this activity are frequently modeled as current dipoles, and it is
-often of clinical or neuroscientific interest to estimate their
+The source localization problem arises in many fields in different forms. Our
+principal motivation comes from Electroencephalography (EEG), a non-invasive
+brain measurement modality which uses electrodes placed on the scalp to sense
+electric potentials produced by neuronal activity within the
+brain~\cite{Nunez2006Electric}. The neurons (or groups of neurons) which
+produce this activity are usually modeled as current dipoles, and it is often
+of clinical or neuroscientific interest to estimate their
 locations~\cite{Baillet2001Electromagnetic}. For a single activated dipole
-within the brain (which is modeled as being localized to a point), the
-electrodes effectively sample a diffuse (blurred) representation of the point
-source, as a result of the spatial low-pass filtering effect of the different
-layers between the brain surface and scalp surface (cerebrospinal fluid, skull
-and skin).
+within the brain (which is modeled as a point source), the electrodes
+effectively sample a diffuse (blurred) representation of the dipole, as a
+result of the spatial low-pass filtering effect of the different layers between
+the brain surface and scalp surface (cerebrospinal fluid, skull and skin).
 
 Recent developments~\cite{Grover2016Information} have suggested that source
 localization can benefit greatly from an increase in sensor density. This
 conclusion is based primarily on a Nyquist rate analysis, and on an
-information-theoretic bound (first derived in~\cite{Grover2016Fundamental}) on
-the accuracy of source localization algorithms. This information-theoretic
-bound, however, was derived for the unsampled, continuous-space potential on
-the scalp. In other words, it was a result asymptotic in the number of sensors.
-The claim in~\cite{Grover2016Information} is therefore not fully substantiated
-by this analysis, since it does not provide a lower bound showing improvement
-with increasing sensor density.
+information-theoretic bound~\cite{Grover2016Fundamental} on the accuracy of
+source localization algorithms. This information-theoretic bound, however, was
+derived for the unsampled, continuous-space potential on the scalp, or
+equivalently, in the limit of the number of sensors going to infinity. The
+claim that source localization can benefit from increased sensor density is,
+therefore, not fully substantiated by the information-theoretic bound, since
+the latter does not provide a lower bound showing improvement with increasing
+sensor density.
 
-Earlier work by Mosher et al.~\cite{Mosher1993Error} also sought to derive
-lower bounds on source localization error by deriving Cramer-Rao lower bounds.
-They also give some preliminary numerical results showing improvement with
-increased numbers of sensors. However, this result is also not completely
-satisfactory because Cramer-Rao bounds do not apply to biased estimators.
-Commonly used source localization algorithms (such as the Minimum Norm
-Estimate~\cite{Hamalainen1994Interpreting}) on the other hand, are \emph{known}
-to be biased~\cite{Lin2006Assessing}.
+Earlier work by Mosher et al.~\cite{Mosher1993Error} also gave numerical lower
+bounds on source localization error. However, the Cramer-Rao lower bounds
+derived by them do not apply to biased estimators, including several commonly
+used source localization
+algorithms~\cite{Hamalainen1994Interpreting,Lin2006Assessing}.
 
 This paper seeks to address the shortcomings of earlier methods by deriving
 lower bounds on the minimax risk for the source localization problem, which
-apply to \emph{all} estimators (biased \emph{and} unbiased), and which can give
-a scaling in terms of the number of sensors used (for a fixed sensor placement
-configuration). Computing the lower bound for the ``real brain model'' (where
-the complete geometry of the brain surface is accounted for) is rendered very
-difficult since analytical solutions for the EEG signal, given the brain
-activity, do not exist. Previous lower bounds are based on ``spherical head
-models''~\cite{Nunez2006Electric,Grover2016Information} which \emph{have}
-analytical solutions. But these are still not easily amenable to analytical
-lower bounds because the spherical surface does not permit uniform
-sampling~\cite{Heath1956Thirteen}, and because the solution is expressed in
-terms of special functions. We therefore restrict our analysis to a source
-localization problem on a one-dimensional domain (to be described in detail in
-Section~\ref{sec:source-localization}).
+apply to \emph{all} estimators (biased \emph{and} unbiased), and which captures
+how the bound scales with increasing numbers of sensors. Previous lower bounds
+are based on ``spherical head
+models''~\cite{Nunez2006Electric,Grover2016Information}, which admit analytical
+solutions for the potential of a single dipole. But spherical models are not
+easily amenable to analytical lower bounds which seek to capture scaling in the
+number of sensors, because the spherical surface does not permit uniform
+sampling~\cite{Heath1956Thirteen}. We therefore restrict our analysis to a
+source localization problem on a one-dimensional ``circular'' domain (to be
+described in detail in Section~\ref{sec:source-localization}).
 
 The one-dimensional toy problem is an effective tool for understanding bounds
-on source localization accuracy in other settings as well, such as auditory
-localization of a sound using a microphone array (although typically, very
-different approaches are employed there, when compared to EEG source
-localization). A vast literature on linear inverse problems
-(see~\cite{Bal2012Introduction} for an introduction to this field) and
-deconvolution algorithms exists, and has addressed the reduced one-dimensional
-problem in broad settings
+on source localization accuracy in other settings as well, \textcolor{red}{such
+	as auditory localization of a sound using a microphone array (although
+	typically, very different approaches are employed there, when compared to
+EEG source localization) <shall I remove this?>}. A vast literature on linear
+inverse problems and deconvolution algorithms exists
+(see~\cite{Bal2012Introduction} for an introduction to this field), and has
+addressed the reduced one-dimensional problem in broad settings
 (see~\cite{Cavalier2002Sharp,Efromovich1997Robust,Ibragimov1981Statistical} and
 references therein). However, our setting and interpretation appears to be
 unique, since most prior work focuses on recovering a whole function (given
-certain smoothness constraints), rather than locating a point source. Work that
-does address point sources, to our knowledge, does not address scaling in the
-number of sensors, since problem settings and applications differ greatly.
+certain smoothness constraints), rather than locating a point
+source~\cite{Cavalier2002Sharp}. \textcolor{blue}{The error metric used when
+recovering the whole function is the mean-squared error in the space of
+square-integrable functions, rather than the distance between the true and
+estimated locations}. Work that \emph{does} address point sources and
+location-based error metrics~\cite{Ibragimov1981Statistical} does not, to our
+knowledge, address scaling in the number of sensors.
 
 Hence, we believe that this paper is the first to give lower bounds on source
 localization error (measured in an $\ell_2$-distance sense) in estimating the
 location of a one-dimensional point source, which is observed by sensors
 through a diffusive medium (treated as a low-pass filter), and corrupted by
-additive Gaussian noise. We describe the problem setting in detail in
-Section~\ref{sec:source-localization}, the minimax techniques and our main
-results in Section~\ref{sec:minimax-lower-bounds}. Finally, we conclude in
+additive white Gaussian noise. We describe the problem setting in detail in
+Section~\ref{sec:source-localization} and the minimax techniques and our main
+results in Section~\ref{sec:minimax-lower-bounds}. We conclude in
 Section~\ref{sec:discussion} with a discussion on how our results can be
-extended to other simple settings, and on implications for sensor placement.
+extended to other simple settings.
 
-%\textcolor{red}{Introduction needs to be re-written.}
-
-%Electroencephalograhy (EEG) is a system used to record the electrical activity
-%of the brain. It is a non-invasive system, which may use anywhere from around
-%10 to 250 electrodes placed on the scalp, to sense electric potentials. These
-%potentials are generated by neuronal activity within the
-%brain~\cite{Buzsaki2012Origin}. These sources of neural activity -- neurons or
-%groups of neurons -- are usually modeled as current
-%dipoles~\cite{Nunez2006Electric}.
-
-%Often, it is of clinical or scientific interest to reconstruct brain activity
-%patterns from EEG sensor measurements. This process is what is broadly referred
-%to when we speak of the term ``source localization''. In this paper, I restrict
-%the discussion to that of localizing a \emph{single} dipole, and refer to this
-%process as ``dipole source localization''. Several algorithms for source
-%localization have been proposed over the years
-%(see~\cite{Baillet2001Electromagnetic} for an excellent review). However, until
-%recently, there has been only one work that has theoretically examined the
-%fundamental limits of source localization accuracy.
-
-%Mosher et.\ al.~\cite{Mosher1993Error} first propounded Cramer-Rao lower bounds
-%for unbiased source localization algorithms. Their work also forms the basis
-%for setting up the source localization problem and deriving more universally
-%applicable bounds in this paper. The Cramer-Rao lower bound is not in itself a
-%completely satisfactory answer to the question of fundamental limits for source
-%localization accuracy. This is because Cramer-Rao bounds only apply to unbiased
-%estimators (or to estimators of \emph{known} bias). In practice, however, many
-%popular source localization algorithms have been shown to be biased, e.g.\
-%the Minimum Norm Estimate (MNE)~\cite{Hamalainen1994Interpreting} is known to
-%bias the solution towards the surface of the head~\cite{Lin2006Assessing}. It
-%is also known that unbiased estimators can have worse mean-squared-error
-%performance than biased estimators. So Cramer-Rao bounds are useful only to a
-%degree, and there may be benefit in deriving bounds that hold for all
-%estimators.
-
-%To this end, Grover~\cite{Grover2016Fundamental} recently proposed a new lower
-%bound for the error in localizing a single dipole. This bound used techniques
-%from information theory, for bounding the source localization error by
-%expressing it in terms of the mutual information across some channel, and then
-%bounding the mutual information by the capacity of the channel. In deriving
-%this bound, however, the scalp potential was never sampled; equivalently, it
-%was assumed that an \emph{infinite} number of sensors was available to sample
-%the EEG signal at every point on the scalp. Clearly, this is a poor assumption
-%and could result in a very loose bound, because it allows for more information
-%to be available at the receiver than otherwise possible. The lower bound also
-%relies on certain relaxations that allow the dipole to distribute its power in
-%non-physical ways in frequency domain. This once again makes the bound loose by
-%assigning the channel a higher capacity than what it could otherwise have.
-
-%To address the shortcomings of the Cramer-Rao and information theoretic lower
-%bounds, I apply two minimax methods to the problem of computing a lower bound
-%for localization error in the idealized EEG dipole source localization problem.
-%I briefly review two minimax methods -- Le Cam's, and Fano's local
-%method~\cite{Duchi2015Information} -- and describe my approach in deriving the
-%minimax lower bound using each of these for spherical and one-dimensional head
-%models.
+For the application of EEG source localization, it might be possible to find
+algorithms which achieve similar scalings as the lower bounds presented here.
+It is also hoped that the techniques presented here will help us derive bounds
+in more difficult settings, such as spherical and realistic brain models.
 
 \section{The source localization problem}
 \label{sec:source-localization}
@@ -269,14 +214,13 @@ source localization problem.
 
 \subsection{Description of the domain}
 
-We assume that the point source is located on a circle of circumference $S$ (a
-circular domain enables us to use symmetry arguments to simplify the proof). We
-can view this domain as a line, on which signals are periodic with period $S$.
-The point source is therefore located somewhere within one period. We denote
-the set of possible locations by $\Theta = [0, S)$. Due to the periodic nature
-of the domain, a source located at position $\theta \in \Theta$ implies the
-presence of sources at $s = \theta + kS$,~$\forall \, k \in \mathbb Z$ (using
-`$s$' for the spatial variable).
+We assume that the point source is located on a circle of circumference $S$. We
+use the variable `$s$' to represent a general point on this domain. We can also
+view this domain as a line, on which signals are periodic with period $S$.  The
+point source is therefore located somewhere within one period. We denote the
+set of possible locations by $\Theta = [0, S)$. Due to the periodic nature of
+the domain, a source located at position $\theta \in \Theta$ implies the
+presence of sources at $s = \theta + kS$,~$\forall \, k \in \mathbb Z$.
 
 \subsection{Sensor configuration}
 
@@ -287,7 +231,7 @@ generality we take it to be 0). The periodicity of the space ensures that we
 automatically also have sensors at $S$, $S{+}S/m$,~\dots\@ The lower bounds we
 provide are for \emph{this specific sensor configuration}. For a discussion on
 why this configuration might be an appropriate choice in the minimax setting,
-and on non-uniform sensor placement, see section~\ref{sec:discussion}.
+see section~\ref{sec:discussion}.
 
 \subsection{Signal model}
 \label{sec:signal-model}
@@ -298,17 +242,20 @@ represented by the impulse signal, $f(s;\theta) = \delta(s - \theta)$, where
 $\delta(\cdot)$ is the Dirac delta function.  The sensors observe this signal
 through the diffusive medium, which, intuitively speaking, blurs the impulse.
 More concretely, we assume that the medium is linear and shift-invariant, so
-that it can be represented by a spatial impulse response (blurring would then
-correspond to low-pass filtering). Let this impulse response be given by
+that it can be represented by a spatial impulse response. Then, blurring would
+correspond to low-pass filtering.  Let this impulse response be given by
 $g(s)$. Then, the noiseless, continuous-space signal (post-filtering and
 pre-sampling) is given by the convolution, $x(s; \theta) = (g*f)(s) = g(s -
 \theta)$. Here, we further make the simplifying assumption that $g(s)$ has a
 sufficiently restricted support, so that aliasing effects are avoided, and
 $x(s; \theta)$ is always well-defined. To be precise, $g(s) = 0$ when $\abs{s}
 > w/2$, where the ``width'' $w$ of the impulse response satisfies $w < S / 2$
-(the reason for the factor of $1/2$ will become clear in a later section).
+(the reason for the factor of $1/2$ will become clear in a later section). For
+the proof, $g(s)$ is also assumed to be Lipschitz continuous with parameter
+$\kappa$. This implies that $\abs{g(u) - g(v)} \leq \kappa \abs{u - v} \;
+\forall \;\; u, v \in \Theta$.
 
-The sensors sample this continuous-space shifted impulse response, with some
+The sensors sample the continuous-space shifted impulse response, with some
 additive noise. We denote the noiseless sampled version of $x(s; \theta)$ by
 the $m$-length vector $\v x(\theta)$:
 \begin{equation} \label{eq:sampled-signal}
@@ -320,32 +267,37 @@ noisy samples are represented by $\v y$:
 \begin{equation} \label{eq:sensor-obs}
 	\v y = \v x(\theta) + \v \epsilon
 \end{equation}
+In the source localization problem, we receive $n$ trials\footnote{The word
+``trials'' comes from neuroscience literature, where several trials of an
+experiment are run with a single participant. The participant is given the same
+stimulus in each trial, evoking the same response in the brain (usually with
+some trial-to-trial variability). For our purposes, we assume that trials are
+effectively i.i.d. realizations of sensor noise, with no trial-to-trial
+variability.} (i.e., $n$ realizations) of $\v y$ according to
+equation~\eqref{eq:sensor-obs}, for the same point source $\theta$, using which
+we need to estimate the location of the source.
+
 The complete signal model described in this section is summarized in
 Fig.~\ref{fig:signal-model}.
 
 \subsection{Channel model}
 \label{sec:channel-model}
 
-The noise $\v \epsilon$, introduced in equation~\eqref{eq:sensor-obs}, is
-the only source of uncertainty in the problem. For our purposes, we assume that
-$\v \epsilon$ is zero-mean and Gaussian, $\v \epsilon \sim \mathcal{N}(\v 0, \m
-\Sigma)$. Two kinds of covariance matrices are of particular interest. The
-first is dubbed the ``sensor noise'' setting, wherein $\m\Sigma = \sigma^2 \m
-I$, i.e. the sensors are afflicted by i.i.d.\ noise. The second is called the
-``source noise'' setting, wherein $\m\Sigma$ has off-diagonal terms. \textcolor{blue}{We
-restrict our attention to the sensor noise setting in this paper.}
+The noise $\v \epsilon$, introduced in equation~\eqref{eq:sensor-obs}, is the
+only source of uncertainty in the problem. For our purposes, we assume that $\v
+\epsilon$ is zero-mean and Gaussian, $\v \epsilon \sim \mathcal{N}(\v 0, \m
+\Sigma)$. We restrict our analysis to the ``sensor noise'' setting, wherein
+$\m\Sigma = \sigma^2 \m I$, i.e. the sensors are afflicted by i.i.d.\ noise.
 
 With the addition of Gaussian noise, each possible source location $\theta$
-gives rise to a different distribution at the sensors, denoted by
-\begin{equation} \label{eq:p-theta}
-	P(\theta) = \mathcal{N}(\v x(\theta), \m \Sigma).
-\end{equation}
-$\v y$ is therefore one sample from $P(\theta)$. The space of distributions
-produced by all possible source locations is $\mathcal{P} = \{P(\theta) :
-\theta \in \Theta \}$. We are interested in computing lower bounds for the loss
-function $\Phi(\rho(\theta, \hat\theta)) = \abs{\theta - \hat\theta}^2$, where
-$\hat\theta$ is some estimate of the location based on $n$ trials (i.e. $n$
-realizations) of the noisy sensor observations $\v y$.
+gives rise to a different distribution at the sensors, denoted by $P(\theta) =
+\mathcal{N}(\v x(\theta), \m \Sigma)$. $\v y$ is therefore one sample from the
+distribution $P(\theta)$. The space of distributions produced by all possible
+source locations is $\mathcal{P} = \{P(\theta) : \theta \in \Theta \}$.
+
+The noise is also assumed to be i.i.d.\ across trials, i.e., the $n$
+realizations of $\v y$ are independently drawn from $P(\theta)$, for the
+same location parameter $\theta$.
 
 \begin{figure}[tp] %  figure placement: here, top, bottom, or page
 	\centering
@@ -360,12 +312,9 @@ realizations) of the noisy sensor observations $\v y$.
 
 \subsection{Preliminaries}
 
-\textcolor{blue}{
 Several techniques for deriving lower bounds on the minimax risk are described
-in~\cite{Tsybakov2009Introduction}. We follow the excellent tutorial written by
-John Duchi~\cite{Duchi2015Information} to briefly outline the steps involved in
-deriving these bounds.
-}
+in~\cite{Tsybakov2009Introduction}. We follow the excellent tutorial of John
+Duchi~\cite{Duchi2015Information} to outline the steps involved.
 
 Consider the following estimation problem: we have $n$ i.i.d.\ random samples
 $Y^n$ from a distribution $P$, which is indexed by a parameter $\theta \in
@@ -436,6 +385,14 @@ P_0^n}_{TV}$ appropriately, to derive the tightest possible bound.
 
 \subsection{Lower bounds using Le Cam's method}
 \label{sec:lecam-lb}
+
+Recall that we are interested in computing lower bounds on the minimax risk for
+the source localization problem defined in
+Section~\ref{sec:source-localization}. We measure \emph{risk} in terms of the
+squared-distance between the true location and the estimated location. Hence,
+our loss function is $\Phi(\rho(\theta, \hat\theta)) = \abs{\theta -
+\hat\theta}^2$, where $\hat\theta$ is some estimate of the location based on
+$n$ trials of the noisy sensor observations $\v y$.
 
 We now state the main result of this paper.
 \begin{theorem} \label{thm:main-lb}
@@ -532,12 +489,10 @@ repetition from the period $[S, 2S)$, at the right edge of the domain.} Also
 note that the two signals $x(s;\theta_0)$ and $x(s;\theta_1)$ overlap at most
 once, since $w < S/2$, as stated in section~\ref{sec:signal-model}.
 
-The upper bound in~\eqref{eq:delta-bound} translates into a lower
-bound for~\eqref{eq:lb-after-pinsker}:
-\begin{align}
-	\mathfrak{M}_n(\mathcal{P}, \Phiorho) &\geq \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{n \cdot 4 \kappa^2 \delta^2}{2\sigma^2} \bigg( \frac{(w + 2\delta) m}{S} + 1\bigg)} \Bigg] \\
-	&= \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{\frac{2n \kappa^2 \delta^2}{\sigma^2} \bigg( \frac{(w + 2\delta) m}{S} + 1\bigg)} \Bigg] \label{eq:lb-after-delta-bound}
-\end{align}
+Combining equations~\eqref{eq:lb-after-pinsker} and~\eqref{eq:delta-bound},
+\begin{equation} \label{eq:lb-after-delta-bound}
+	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{\delta^2}{2} \Bigg[1 - \sqrt{\frac{2n \kappa^2 \delta^2}{\sigma^2}\bigg(\!\frac{(w{+}2\delta) m}{S} + 1\!\bigg)} \Bigg].
+\end{equation}
 Asymptotically, we choose smaller values of $\delta$ as the number of sensors
 grows large. Hence, \textcolor{blue}{neglecting edge effects} and terms of order $\delta^3$, we
 tighten the bound by choosing $\delta$ as a function of the remaining variables
@@ -713,16 +668,16 @@ S{+}w/2]$. For extending to $d$-dimensions, it suffices to apply Assouad's
 Lemma~\cite{Tsybakov2009Introduction} to separate the problem into $d$
 independent 1D problems.
 
-The lower bounding \emph{technique} itself gives certain inisights on the issue
-of sensor placement. Suppose we wanted to achieve a higher resolution in a
-restricted interval of the parameter space, i.e.\ $\theta \in [a, b] \subset
-\Theta$, such that $\abs{b - a} \ll w$. Then, it might be of greatest benefit
-to place sensors \emph{not} precisely over $[a, b]$, but rather in the region
-\emph{surrounding} $[a, b]$, corresponding to the \emph{largest change} in the
-impulse response. Indeed, it is possible to derive an approximate lower bound
-using Taylor's approximation, which shows that the KL-divergence between
-distributions is maximized (and hence error minimized) at regions where the
-slope of $x(s;\theta)$ is largest.
+%The lower bounding \emph{technique} itself gives certain inisights on the issue
+%of sensor placement. Suppose we wanted to achieve a higher resolution in a
+%restricted interval of the parameter space, i.e.\ $\theta \in [a, b] \subset
+%\Theta$, such that $\abs{b - a} \ll w$. Then, it might be of greatest benefit
+%to place sensors \emph{not} precisely over $[a, b]$, but rather in the region
+%\emph{surrounding} $[a, b]$, corresponding to the \emph{largest change} in the
+%impulse response. Indeed, it is possible to derive an approximate lower bound
+%using Taylor's approximation, which shows that the KL-divergence between
+%distributions is maximized (and hence error minimized) at regions where the
+%slope of $x(s;\theta)$ is largest.
 
 Another point on sensor placement bears repeating: the bounds derived in this
 paper apply to only a specific sensor configuration, i.e., the uniform one.
@@ -731,17 +686,6 @@ however, since any non-uniform placement will have one or more points which is
 far from all sensors. The ``maximization'' over $\theta \in \Theta$ would then
 select a $\theta$ for which the value of the impulse response at the sensors is
 smallest, so that SNR is minimized.
-
-For the application of EEG source localization, it might be possible to find
-algorithms which achieve similar scalings as the lower bounds presented here.
-It is also hoped that the techniques presented here will help us derive
-analytical bounds in the more difficult setting.
-
-\section*{Acknowledgements}
-
-Praveen Venkatesh is partially supported by the Dowd Fellowship from the
-College of Engineering at Carnegie Mellon University. The authors would like to
-thank Philip and Marsha Dowd for their support and encouragement.
 
 %\IEEEtriggeratref{8}
 
