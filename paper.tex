@@ -8,6 +8,7 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{mathtools}
+\usepackage{nicefrac}
 \usepackage{array}
 \usepackage{enumitem}
 \usepackage{color}
@@ -55,16 +56,17 @@
 
 \author{
 	\IEEEauthorblockN{
-		Praveen Venkatesh\IEEEauthorrefmark{1}
-		and Pulkit Grover\IEEEauthorrefmark{2}
+		\textcolor{blue}{Praveen Venkatesh %\IEEEauthorrefmark{1}
+		and Pulkit Grover} %\IEEEauthorrefmark{2}
 	}
-	\IEEEauthorblockA{
-		Electrical \& Computer Engineering,
-		and the Center for the Neural Basis of Cognition,
-		Carnegie Mellon University \\
-		\IEEEauthorrefmark{1}\href{mailto:vpraveen@cmu.edu}{\texttt{vpraveen@cmu.edu}}
-		\IEEEauthorrefmark{2}\href{mailto:pulkit@cmu.edu}{\texttt{pulkit@cmu.edu}}
-	}
+	%\IEEEauthorblockA{
+	%    Electrical \& Computer Engineering,
+	%    and the Center for the Neural Basis of Cognition,
+	%    Carnegie Mellon University
+	%    \\
+	%    \IEEEauthorrefmark{1}\href{mailto:vpraveen@cmu.edu}{\texttt{vpraveen@cmu.edu}}
+	%    \IEEEauthorrefmark{2}\href{mailto:pulkit@cmu.edu}{\texttt{pulkit@cmu.edu}}
+	%}
 }
 
 \begin{document}
@@ -76,7 +78,6 @@
 \begin{abstract}
 
 To be considered for the 2017 IEEE Jack Keil Wolf ISIT Student Paper Award.
-
 The ``source localization'' problem is one in which we estimate the location of
 a point source observed through a diffusive medium using an array of sensors.
 
@@ -309,7 +310,7 @@ source locations is $\mathcal{P} = \{P(\theta) : \theta \in \Theta \}$.
 	\label{fig:signal-model}
 \end{figure}
 
-\section{Minimax lower bounds for the one-dimensional model}
+\section{Lower bounds on the minimax risk for the one-dimensional model}
 \label{sec:minimax-lower-bounds}
 
 \subsection{Preliminaries}
@@ -352,7 +353,7 @@ to define a $2\delta$-packing:%
 	$\mathcal{V}$, and $\psi$ is our estimate of the hypothesis.
 \end{theorem}
 For a proof of this theorem, we refer the reader to Proposition~13.3
-in~\cite{Duchi2015Information}.  Intuitively, Theorem~\ref{thm:est-to-testing}
+in~\cite{Duchi2015Information}. Intuitively, Theorem~\ref{thm:est-to-testing}
 says that the error in estimating $\theta_i$ is likely to be large if it is
 difficult to distinguish $\theta_i$ from $\theta_j$, i.e.\ if the probability
 of error is high.
@@ -370,7 +371,7 @@ and use what is known as Le Cam's method:
 	$\norm{\cdot}_{TV} = \frac{1}{2} \norm{\cdot}_1$.
 \end{theorem}
 For a proof, we refer the reader to Proposition~2.11
-in~\cite{Duchi2015Information}.  Intuitively, Theorem~\ref{thm:le-cam} states
+in~\cite{Duchi2015Information}. Intuitively, Theorem~\ref{thm:le-cam} states
 that the minimum achievable error probability in a binary hypothesis testing
 problem is related to the distance between the distributions corresponding to
 the two hypotheses.
@@ -507,7 +508,7 @@ choosing $\sqrt{\frac{2n\kappa^2\delta^2wm}{\sigma^2 S}} = \frac{1}{2}$. This
 is achieved for $\delta = \sqrt{\frac{\sigma^2 S}{8nm\kappa^2 w}}$, so that for
 $\Phi(\delta) = \delta^2$, equation~\eqref{eq:lb-after-delta-bound} becomes
 \begin{equation}
-	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{1}{32} \frac{\sigma^2 S}{nm\kappa^2 w}.
+	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \gtrsim \frac{1}{32} \frac{\sigma^2 S}{nm\kappa^2 w}.
 \end{equation}
 This completes the proof.
 \end{IEEEproof}
@@ -516,66 +517,78 @@ This completes the proof.
 
 The bound in Theorem~\ref{thm:main-lb} may mislead one to think that the error
 in source localization goes to zero, as the number of sensors goes to infinity.
+\textcolor{blue}{
 This observation is qualitatively different from the information-theoretic
 lower bound given in~\cite{Grover2016Fundamental}, where even with an infinite
 number of sensors, the lower bound is strictly greater than zero. This
 indicates that the bound in section~\ref{sec:lecam-lb} is failing to capture
 some effect which leads to saturation of error, as the number of sensors
 increases.
+}
 
 Indeed, the bound in Theorem~\ref{thm:main-lb} assumes that an arbitrarily
 large number of sensors can be squeezed into a finite amount of space, and that
 these sensors \emph{still} give us i.i.d.\ observations, with the same noise
-variance. This is aphysical, since in reality, sensors have a certain width,
-and the signal measured by them is the integral of the continuous-space signal
+variance. This is aphysical, since in reality, each sensor has a certain width,
+and the value measured by it is the integral of the continuous-space signal
 within that width (analogous to a sample-and-hold circuit, which integrates a
 continuous-\emph{time} signal over a short period).  If the width of a sensor
-is decreased, then effectively, its signal-to-noise ratio reduces. This is
+is decreased, then effectively, its signal-to-noise ratio reduces.  This is
 intuitively evident in the sample-and-hold analogy: to compute the signal
 value, the integral must be divided by the time interval over which the
 integration is performed; this division amplifies noise as the time interval
 gets smaller.
 
-We performed a preliminary study to understand the effect of viewing sensors
-as integrators. In the new sensor model, sensors have a finite width, which
-decreases as the number of sensors increases, in order to allow their number to
-grow unbounded. Concretely, the $k$-th sensor which is located at $s = kS/m$
-extends from $(k{-}\frac{1}{2})S/m$ to $(k{+}\frac{1}{2})S/m$. The signal
-sensed by this sensor is the $k$-th element of $\v x(\theta)$, now given by
+We performed a preliminary study to understand the effect of viewing sensors as
+integrators. In the new sensor model, sensors have a width which decreases as
+their number grows to infinity. Concretely, the $k$-th sensor which is located
+at $s = kS/m$ extends from $(k{-}\frac{1}{2})S/m$ to $(k{+}\frac{1}{2})S/m$.
+The signal sensed by this sensor is the $k$-th element of $\v x(\theta)$, now
+given by
 \begin{equation}
 	x_k(\theta) = \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} x(s;\theta) ds
 \end{equation}
+\textcolor{blue}{
 The noise vector $\v \epsilon$ is also generated similarly, by integrating over
 small sections of a wide-sense-stationary white noise process, which is assumed
-to additively corrupt the signal. This leads to i.i.d.\ noise values at sensors
-(since they do not overlap), with variance inversely proportional to $m$, i.e.,
-$\sigma(m) \propto 1/\sqrt{m}$.
+to additively corrupt the continuous-space signal $x(s;\theta)$ prior to
+sampling. This leads to i.i.d.\ noise values at sensors (since they do not
+overlap), with variance inversely proportional to $m$, i.e., $\sigma(m) \propto
+1/\sqrt{m}$.
+}
 
 The bounding technique used in section~\ref{sec:lecam-lb} no longer easily
-admits a solution which gives a bound for all values of $m$. We can compute the
-bound numerically, however, using exact expressions for error probability in a
+admits a solution which gives a bound for all values of $m$. We instead compute
+the bound numerically, using exact expressions for error probability in a
 binary hypothesis test. For gaussian distributions of equal variance and a
-uniform prior on the hypotheses, the best possible error probability (over all
-tests) is a Q-function~\cite{Qfunction} in the distance between their
+uniform prior on the hypotheses, the minimum possible error probability (over
+all tests) is a Q-function in the distance between their
 means~\cite{NPLemmaOrSimilar},
 \begin{equation}
 	P_e = \inf_\psi \mathbb P(\psi(Y^n) \neq V) = Q\bigg(\frac{\norm{\v\mu_0 - \v\mu_1}}{2\sigma(m)}\bigg).
 \end{equation}
-The minimax estimation risk is lower bounded by the risk in hypothesis testing,
-hence
+where $Q(x) = \int_x^\infty \frac{1}{\sqrt{2\pi u}} e^{-u^2/2} du$. Hence, from
+Theorem~\ref{thm:est-to-testing},
 \begin{equation}
 	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \Phi(\delta) P_e = \delta^2 Q\bigg(\frac{\norm{\v x(\theta_0) - \v x(\theta_1)}}{2\sigma(m)}\bigg).
 \end{equation}
-This bound is valid for any pair of hypotheses $\theta_0$ and $\theta_1$,
-separated by a distance of $2\delta$. As the $\delta$ increases, it becomes
-easier to distinguish between the two hypotheses, so $P_e$ falls. When
-numerically evaluating the bound, therefore, we have to \emph{manually}
-trade-off between $\delta$ and $P_e$ to find the tightest possible bound. This
-comes down to choosing $\theta_0$ and $\theta_1$ so that they are the hardest
-hypotheses to distinguish between. To make the simulation easier, we can relax
-the process of finding the least discernable hypothesis pair by fixing
-$\theta_0$. Then, we need only optimize over $\delta$, making the process more
-tractable. This comes at the cost of loosening the lower bound.
+This bound is valid for any $\{\theta_0, \theta_1\}$ constituting a
+$2\delta$-packing of $\Theta$. To numerically optimize over all possible
+packings, we relax the process by fixing $\theta_0 = 0$ and optimizing over
+$\theta_1 = 2\delta$.  We compute sensor values by performing numerical
+integration, and find the best possible $\delta$ by grid search.
+
+%This bound is valid for any pair of hypotheses $\theta_0$ and $\theta_1$,
+%separated by a distance of $2\delta$.
+%As $\delta$ increases, it becomes
+%easier to distinguish between the two hypotheses, so $P_e$ falls. When
+%numerically evaluating the bound, therefore, we have to \emph{manually}
+%trade-off between $\delta$ and $P_e$ to find the tightest possible bound. This
+%comes down to choosing $\theta_0$ and $\theta_1$ so that they are the hardest
+%hypotheses to distinguish between. To make the simulation easier, we can relax
+%the process of finding the least discernable hypothesis pair by fixing
+%$\theta_0$. Then, we need only optimize over $\delta$, making the process more
+%tractable. This comes at the cost of loosening the lower bound.
 
 \begin{figure}[t]
 	\centering
@@ -597,17 +610,17 @@ Plotting this numerically computed bound for different numbers of trials (see
 Fig.~\ref{fig:numerical}) reveals some interesting trends. First, the bound
 saturates as $m$ grows large, matching the behaviour presented
 in~\cite{Grover2016Fundamental}. Second, the lower bound on error is larger for
-smaller numbers of sensors, as we expect. With fewer sensors, it is harder to
-estimate the location of the point source. Third and most importantly, the
-point at which the bound begins to saturate increases when we use
-more trials. Recall that the number of ``trials'' is the number of i.i.d.\
-sensor observations we receive. Intuitively, estimation is eased with more
-trials, as we could perform more averaging, and increase SNR. \emph{With higher
-SNR, there is greater benefit in using a larger number of sensors.} This
-matches the intuition given in~\cite{Grover2016Information}, where it is
-propounded that using more sensors allows us to sample a greater number of
-high-frequency components of the source signal, and hence get a better estimate
-of its location.
+smaller numbers of sensors, as we expect. Third and most importantly, as the
+number of trials increases, bound begins to saturate only for larger numbers of
+sensors. In other words, there is increased benefit in using larger numbers of
+sensors, when we also have more trials\footnote{Recall that the number of
+``trials'' is the number of i.i.d.\ sensor observations we receive, per
+equation~\ref{eq:sensor-obs}.}. This substantiates the intuition given
+in~\cite{Grover2016Information}, which addresses this issue using a
+Nyquist-rate perspective. A larger number of sensors will sample a larger
+number of high-frequency components of the source signal (and hence allow us to
+locate it better), but only if the noise floor is sufficiently low. Noise
+variance, in turn, can be reduced by averaging over multiple trials.
 
 %\section{Extensions}
 %\label{sec:extensions}
@@ -672,9 +685,18 @@ one-dimensional circular domain, extensions to a one-dimensional linear domain
 fairly straightforward, under certain conditions. For a 1D linear domain, we
 require that sensors capture the entirety of the impulse response even at the
 edges of the domain. Hence, sensors must be placed uniformly in $[-w/2,
-S{+}w/2]$. For extending to $d$-dimensions, it suffices to apply Assouad's
+S{+}w/2]$. For extending to $d$ dimensions, it suffices to apply Assouad's
 Lemma~\cite{Tsybakov2009Introduction} to separate the problem into $d$
-independent 1D problems.
+independent one-dimensional problems.
+
+Another point on sensor placement bears repeating: the bounds derived in this
+paper apply to only a specific sensor configuration, i.e., the uniform one.
+Intuitively, this is the correct choice in the minimax setting, since any
+non-uniform placement will have one or more points which is far from all
+sensors. The ``maximization'' over $\theta \in \Theta$ would then select a
+$\theta$ for which the value of the impulse response at the sensors is
+smallest, so that the ratio of mean-sensor-value to noise variance (a form of
+``SNR'') is minimized.
 
 %The lower bounding \emph{technique} itself gives certain inisights on the issue
 %of sensor placement. Suppose we wanted to achieve a higher resolution in a
@@ -686,14 +708,6 @@ independent 1D problems.
 %using Taylor's approximation, which shows that the KL-divergence between
 %distributions is maximized (and hence error minimized) at regions where the
 %slope of $x(s;\theta)$ is largest.
-
-Another point on sensor placement bears repeating: the bounds derived in this
-paper apply to only a specific sensor configuration, i.e., the uniform one.
-This would intuitively seem to be an appropriate choice in the minimax setting,
-however, since any non-uniform placement will have one or more points which is
-far from all sensors. The ``maximization'' over $\theta \in \Theta$ would then
-select a $\theta$ for which the value of the impulse response at the sensors is
-smallest, so that SNR is minimized.
 
 %\IEEEtriggeratref{8}
 
