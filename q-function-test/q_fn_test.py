@@ -85,5 +85,6 @@ if __name__ == '__main__':
     plt.text(40, 3e-4, '$n = 10$', fontsize=18)
     plt.text(40, 2e-6, '$n = 100$', fontsize=18)
     plt.text(40, 2e-7, '$n = 1000$', fontsize=18)
+    plt.text(1, 1e-7, '$\sigma^2 = 10^{-4}$', fontsize=18)
     plt.tight_layout()
     plt.show()
