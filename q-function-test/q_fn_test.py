@@ -67,8 +67,6 @@ def compute_bound(M):
 
     return np.max(bound, axis=-1)
 
-    #plt.plot(bound.T)
-    #plt.show()
 
 if __name__ == '__main__':
     Ms = np.r_[2:60:2]
@@ -77,16 +75,15 @@ if __name__ == '__main__':
         print(M)
         bound.append(compute_bound(M))
     plt.semilogy(Ms, np.vstack(bound), linewidth=2)
-    plt.title('Lower bound vs. number of sensors', fontsize=20)
-    plt.xlabel('$m$', fontsize=20)
-    plt.ylabel('$\mathfrak{M} = \delta^2 P_e$', fontsize=20)
-    #ax = plt.gca()
-    #box = ax.get_position()
-    #ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
-    #ax.legend(('$\sigma_0^2/n = 10^{-2}$', '$\sigma_0^2/n = 10^{-3}$',
-    #           '$\sigma_0^2/n = 10^{-4}$', '$\sigma_0^2/n = 10^{-5}$'),
-    #          loc='center left', bbox_to_anchor=(1, 0.5))
-    #plt.legend(('$\sigma_0^2/n = 10^{-2}$', '$\sigma_0^2/n = 10^{-3}$',
-    #            '$\sigma_0^2/n = 10^{-4}$', '$\sigma_0^2/n = 10^{-5}$'),
-    #           loc='upper right')
+    plt.title('Numerically computed lower bound vs.\nnumber of sensors',
+              fontsize=20)
+    plt.xlabel('Number of sensors, $m$', fontsize=20)
+    plt.ylabel('Lower bound, $\sup_{0<\delta<S/4} \delta^2 P_e$', fontsize=20)
+    ax = plt.gca()
+    ax.tick_params(axis='both', which='major', labelsize=12)
+    plt.text(40, 4e-3, '$n = 1$', fontsize=18)
+    plt.text(40, 3e-4, '$n = 10$', fontsize=18)
+    plt.text(40, 2e-6, '$n = 100$', fontsize=18)
+    plt.text(40, 2e-7, '$n = 1000$', fontsize=18)
+    plt.tight_layout()
     plt.show()
