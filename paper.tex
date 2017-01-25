@@ -83,8 +83,8 @@ a point source observed through a diffusive medium using an array of sensors.
 
 We give lower bounds on the minimax risk (mean squared-error in location) in
 estimating the location of the source, which apply to all estimators, for
-\textcolor{blue}{certain classes} of impulse responses of the low-pass filter,
-when using a unformly distributed sensor array. We show that
+\textcolor{blue}{certain classes of diffusive media represented by low-pass
+filters}, when using a unformly distributed sensor array. We show that
 \textcolor{blue}{for sensors of a fixed size}, the lower bound decays with
 increasing numbers of sensors. We also perform a preliminary numerical analysis
 to understand the effect of increasing the number of sensors to infinity by
@@ -200,14 +200,17 @@ location of a one-dimensional point source, which is observed by sensors
 through a diffusive medium (treated as a low-pass filter), and corrupted by
 additive white Gaussian noise. We describe the problem setting in detail in
 Section~\ref{sec:source-localization} and the minimax techniques and our main
-results in Section~\ref{sec:minimax-lower-bounds}. We conclude in
-Section~\ref{sec:discussion} with a discussion on how our results can be
-extended to other simple settings.
+results \textcolor{blue}{(for a naive and then for a more physical sensor
+model)} in Section~\ref{sec:minimax-lower-bounds}. We conclude in
+Section~\ref{sec:discussion} with a discussion on the goodness of our bounds,
+and on how our results can be extended to other simple settings.
 
-For the application of EEG source localization, it might be possible to find
-algorithms which achieve similar scalings as the lower bounds presented here.
-It is also hoped that the techniques presented here will help us derive bounds
-in more difficult settings, such as spherical and realistic brain models.
+\textcolor{blue}{
+For EEG source localization, we hope to find algorithms that achieve scalings
+close to the bounds we present.  We also expect to build upon the techniques
+presented in this paper to derive bounds for spherical and realistic brain
+models.
+}
 
 \section{The source localization problem}
 \label{sec:source-localization}
@@ -239,9 +242,10 @@ see section~\ref{sec:discussion}.
 \subsection{Signal model}
 \label{sec:signal-model}
 
-All signals on the aforementioned circular domain are of the form
-$f:\Theta\mapsto\mathbb{R}$.  The point source located at $\theta$ is
-represented by the impulse signal, $f(s;\theta) = \delta(s - \theta)$, where
+%All ``continuous-space'' signals (analogous to continuous- and
+	%discrete-\emph{time} signals) on the aforementioned circular domain are
+All signals of the form $f:\Theta\mapsto\mathbb{R}$.  The point source located at $\theta$
+is represented by the impulse signal, $f(s;\theta) = \delta(s - \theta)$, where
 $\delta(\cdot)$ is the Dirac delta function.  The sensors observe this signal
 through the diffusive medium, which, intuitively speaking, blurs the impulse.
 More concretely, we assume that the medium is linear and shift-invariant, so
@@ -255,10 +259,10 @@ $x(s; \theta)$ is always well-defined. To be precise, $g(s) = 0$ when $\abs{s}
 > w/2$, where the ``width'' $w$ of the impulse response satisfies $w < S / 2$
 (the reason for the factor of $1/2$ will become clear in a later section). For
 the proof, $g(s)$ is also assumed to be Lipschitz continuous with parameter
-$\kappa$. This implies that $\abs{g(u) - g(v)} \leq \kappa \abs{u - v} \;
-\forall \;\; u, v \in \Theta$.
+$\kappa$, i.e., $\abs{g(u) - g(v)} \leq \kappa \abs{u - v} \; \forall \;\; u, v
+\in \Theta$.
 
-The sensors sample the continuous-space shifted impulse response, with some
+The sensors sample the shifted continuous-space impulse response, with some
 additive noise. We denote the noiseless sampled version of $x(s; \theta)$ by
 the $m$-length vector $\v x(\theta)$:
 \begin{equation} \label{eq:sampled-signal}
@@ -279,7 +283,6 @@ effectively i.i.d. realizations of sensor noise, with no trial-to-trial
 variability.} (i.e., $n$ realizations) of $\v y$ according to
 equation~\eqref{eq:sensor-obs}, for the same point source $\theta$, using which
 we need to estimate the location of the source.
-
 The complete signal model described in this section is summarized in
 Fig.~\ref{fig:signal-model}.
 
@@ -334,7 +337,7 @@ where $\Phi$ is any non-decreasing function (e.g.\ $\Phi(\rho) = \rho^2$).
 
 \textcolor{blue}{We start by lower bounding the maximum risk of the estimation problem with the
 average risk of a multiple hypothesis testing problem.} For this, we first need
-to define a $2\delta$-packing:%
+to define a $2\delta$-packing.%
 \begin{definition}
 	A set $\Theta_{\mathcal{V}} = \{ \theta_v : v \in \mathcal{V} \}$ for some
 	finite index set $\mathcal{V} \subset \mathbb N$ is said to be a
@@ -689,6 +692,7 @@ S{+}w/2]$. For extending to $d$ dimensions, it suffices to apply Assouad's
 Lemma~\cite{Tsybakov2009Introduction} to separate the problem into $d$
 independent one-dimensional problems.
 
+\textcolor{blue}{
 Another point on sensor placement bears repeating: the bounds derived in this
 paper apply to only a specific sensor configuration, i.e., the uniform one.
 Intuitively, this is the correct choice in the minimax setting, since any
@@ -697,6 +701,7 @@ sensors. The ``maximization'' over $\theta \in \Theta$ would then select a
 $\theta$ for which the value of the impulse response at the sensors is
 smallest, so that the ratio of mean-sensor-value to noise variance (a form of
 ``SNR'') is minimized.
+}
 
 %The lower bounding \emph{technique} itself gives certain inisights on the issue
 %of sensor placement. Suppose we wanted to achieve a higher resolution in a
