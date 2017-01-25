@@ -11,13 +11,13 @@ def compute_bound(M):
     S = 1
     w = 0.1
     sigma2 = 1
-    n = np.logspace(2, 5, 4)[:, np.newaxis]
+    n = np.logspace(4, 7, 4)[:, np.newaxis]
 
     #M = 10
-    delta = np.linspace(0, 0.25, 1000)
+    delta = np.linspace(0, 0.25, 1000, endpoint=False)
 
     # Define the space
-    num_s = 10000
+    num_s = 50000
     s = np.linspace(0, S, num_s, endpoint=False)
 
     # Assume theta0 = 0, so that theta1 = 2*delta
@@ -57,30 +57,35 @@ def compute_bound(M):
     #plt.show()
 
     dmin_by_2 = np.sqrt(np.sum((x1 - x0) ** 2, axis=-1)) / 2
-    Pe = 0.5 - 0.5 * spl.erf(dmin_by_2 / np.sqrt(2 * sigma2 / M / n))
+    Pe = 0.5 - 0.5 * spl.erf(dmin_by_2 / np.sqrt(sigma2 / M / n))
 
     bound = delta**2 * Pe
+    plt.figure()
+    plt.semilogy(bound.T)
+    plt.savefig('opt-%d.png' % M)
+    plt.close()
+
     return np.max(bound, axis=-1)
 
     #plt.plot(bound.T)
     #plt.show()
 
 if __name__ == '__main__':
-    Ms = np.arange(2, 50, 2)
+    Ms = np.r_[2:60:2]
     bound = []
     for M in Ms:
         print(M)
         bound.append(compute_bound(M))
-    plt.plot(Ms, np.vstack(bound), linewidth=2)
+    plt.semilogy(Ms, np.vstack(bound), linewidth=2)
     plt.title('Lower bound vs. number of sensors', fontsize=20)
     plt.xlabel('$m$', fontsize=20)
     plt.ylabel('$\mathfrak{M} = \delta^2 P_e$', fontsize=20)
-    ax = plt.gca()
-    box = ax.get_position()
-    ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
-    ax.legend(('$\sigma_0^2/n = 10^{-2}$', '$\sigma_0^2/n = 10^{-3}$',
-               '$\sigma_0^2/n = 10^{-4}$', '$\sigma_0^2/n = 10^{-5}$'),
-              loc='center left', bbox_to_anchor=(1, 0.5))
+    #ax = plt.gca()
+    #box = ax.get_position()
+    #ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+    #ax.legend(('$\sigma_0^2/n = 10^{-2}$', '$\sigma_0^2/n = 10^{-3}$',
+    #           '$\sigma_0^2/n = 10^{-4}$', '$\sigma_0^2/n = 10^{-5}$'),
+    #          loc='center left', bbox_to_anchor=(1, 0.5))
     #plt.legend(('$\sigma_0^2/n = 10^{-2}$', '$\sigma_0^2/n = 10^{-3}$',
     #            '$\sigma_0^2/n = 10^{-4}$', '$\sigma_0^2/n = 10^{-5}$'),
     #           loc='upper right')
