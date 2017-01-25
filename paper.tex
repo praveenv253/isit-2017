@@ -493,7 +493,7 @@ saturation of error as the number of sensors increases.
 
 Indeed, the bound in Theorem~\ref{thm:main-lb} assumes that an arbitrarily
 large number of sensors can be squeezed into a finite amount of space, and that
-these sensors \emph{still} have the same SNR.  This is aphysical, since in
+these sensors \emph{still} have the same SNR.  This is non-physical, since in
 reality, each sensor has a certain width, and the value measured by it is the
 integral of the continuous-space signal within that width (analogous to a
 sample-and-hold circuit, which integrates a continuous-\emph{time} signal over
@@ -539,18 +539,6 @@ packings, we relax the process by fixing $\theta_0 = 0$ and optimizing over
 $\theta_1 = 2\delta$.  We compute sensor values by performing numerical
 integration, and find the best possible $\delta$ by grid search.
 
-%This bound is valid for any pair of hypotheses $\theta_0$ and $\theta_1$,
-%separated by a distance of $2\delta$.
-%As $\delta$ increases, it becomes
-%easier to distinguish between the two hypotheses, so $P_e$ falls. When
-%numerically evaluating the bound, therefore, we have to \emph{manually}
-%trade-off between $\delta$ and $P_e$ to find the tightest possible bound. This
-%comes down to choosing $\theta_0$ and $\theta_1$ so that they are the hardest
-%hypotheses to distinguish between. To make the simulation easier, we can relax
-%the process of finding the least discernable hypothesis pair by fixing
-%$\theta_0$. Then, we need only optimize over $\delta$, making the process more
-%tractable. This comes at the cost of loosening the lower bound.
-
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=2.8in]{lb-vs-m-annotated}
@@ -582,6 +570,58 @@ Nyquist-rate perspective. A larger number of sensors will sample a larger
 number of high-frequency components of the source signal (and hence allow us to
 locate it better), but only if the noise floor is sufficiently low. Noise
 variance, in turn, can be reduced by averaging over multiple trials.
+
+\section{Discussion}
+\label{sec:discussion}
+
+While the lower bound presented in section~\ref{sec:lecam-lb} is non-physical
+for a large number of sensors, it still gives some important insights. For
+instance, if we assume that sensors have a constant width $c$, then even if we
+view sensors as integrators, the bound tells us something about the scaling of
+error with number of sensors, up to $m = \floor*{\frac{S}{c}}$. Beyond this
+point, averaging noise by increasing the number of trials may help one get to a
+target mean squared error in location. An analytical derivation of the
+trade-off between $m$ and $n$ in achieving a certain target MSE is relegated to
+future work.
+
+We also note that the minimax bounds from compressive sensing
+literature~\cite{AriasCastro2013Fundamental} do not apply in our setting,
+because those consider the problem of recovering the whole source signal,
+$x(s;\theta)$. The loss function used there is hence the energy of the
+difference signal $\int \abs{x(s) - \hat x(s)}^2 ds$. We, on the other hand,
+are interested in bounding the minimax error in \emph{location}, i.e.,
+$\abs{\theta - \hat\theta}^2$.
+
+While the bounds in section~\ref{sec:lecam-lb} were derived for a
+one-dimensional circular domain, extensions to a one-dimensional linear domain
+(of fixed length) and to a $d$-dimensional domain (circular or linear) are
+fairly straightforward, under certain conditions. For a 1D linear domain, we
+require that sensors capture the entirety of the impulse response even at the
+edges of the domain. Hence, sensors must be placed uniformly in $[-w/2,
+S{+}w/2]$. For extending to $d$ dimensions, it suffices to apply Assouad's
+Lemma~\cite{Tsybakov2009Introduction} to separate the problem into $d$
+independent one-dimensional problems. Such extensions substantially broaden the
+number of settings in which this bound applies.
+
+Another point on sensor placement bears repeating: the bounds derived in this
+paper apply to only a specific sensor configuration, i.e., the uniform one.
+Intuitively, this is the correct choice in the minimax setting, since any
+non-uniform placement will have one or more points which is far from all
+sensors. The ``maximization'' over $\theta \in \Theta$ would then select a
+$\theta$ for which the value of the impulse response at the sensors is
+smallest, so that the ratio of mean-sensor-value to noise variance (a form of
+SNR) is minimized.
+
+%The lower bounding \emph{technique} itself gives certain inisights on the issue
+%of sensor placement. Suppose we wanted to achieve a higher resolution in a
+%restricted interval of the parameter space, i.e.\ $\theta \in [a, b] \subset
+%\Theta$, such that $\abs{b - a} \ll w$. Then, it might be of greatest benefit
+%to place sensors \emph{not} precisely over $[a, b]$, but rather in the region
+%\emph{surrounding} $[a, b]$, corresponding to the \emph{largest change} in the
+%impulse response. Indeed, it is possible to derive an approximate lower bound
+%using Taylor's approximation, which shows that the KL-divergence between
+%distributions is maximized (and hence error minimized) at regions where the
+%slope of $x(s;\theta)$ is largest.
 
 %\section{Extensions}
 %\label{sec:extensions}
@@ -626,49 +666,6 @@ variance, in turn, can be reduced by averaging over multiple trials.
 %the manner described in~\cite{Duchi2015Information}, we can split the minimax
 %risk along each of the $d$ dimensions, and bound each separately using Le Cam's
 %method.
-
-\section{Discussion}
-\label{sec:discussion}
-
-While the lower bound presented in section~\ref{sec:lecam-lb} is non-physical
-for a large number of sensors, it still gives some important insights. For
-instance, if we assume that sensors have a constant width $c$, then even if we
-view sensors as integrators, the bound tells us something about the scaling of
-error with number of sensors, up to $m = \floor*{\frac{S}{c}}$. Beyond this
-point, averaging noise by increasing the number of trials may help one get to a
-target mean squared error in location. An analytical derivation of the
-trade-off between $m$ and $n$ in achieving a certain target MSE is relegated to
-future work.
-
-While the bounds in section~\ref{sec:lecam-lb} were derived for a
-one-dimensional circular domain, extensions to a one-dimensional linear domain
-(of fixed length) and to a $d$-dimensional domain (circular or linear) are
-fairly straightforward, under certain conditions. For a 1D linear domain, we
-require that sensors capture the entirety of the impulse response even at the
-edges of the domain. Hence, sensors must be placed uniformly in $[-w/2,
-S{+}w/2]$. For extending to $d$ dimensions, it suffices to apply Assouad's
-Lemma~\cite{Tsybakov2009Introduction} to separate the problem into $d$
-independent one-dimensional problems.
-
-Another point on sensor placement bears repeating: the bounds derived in this
-paper apply to only a specific sensor configuration, i.e., the uniform one.
-Intuitively, this is the correct choice in the minimax setting, since any
-non-uniform placement will have one or more points which is far from all
-sensors. The ``maximization'' over $\theta \in \Theta$ would then select a
-$\theta$ for which the value of the impulse response at the sensors is
-smallest, so that the ratio of mean-sensor-value to noise variance (a form of
-SNR) is minimized.
-
-%The lower bounding \emph{technique} itself gives certain inisights on the issue
-%of sensor placement. Suppose we wanted to achieve a higher resolution in a
-%restricted interval of the parameter space, i.e.\ $\theta \in [a, b] \subset
-%\Theta$, such that $\abs{b - a} \ll w$. Then, it might be of greatest benefit
-%to place sensors \emph{not} precisely over $[a, b]$, but rather in the region
-%\emph{surrounding} $[a, b]$, corresponding to the \emph{largest change} in the
-%impulse response. Indeed, it is possible to derive an approximate lower bound
-%using Taylor's approximation, which shows that the KL-divergence between
-%distributions is maximized (and hence error minimized) at regions where the
-%slope of $x(s;\theta)$ is largest.
 
 %\IEEEtriggeratref{8}
 
