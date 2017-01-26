@@ -51,14 +51,11 @@ def compute_bound(M):
         x0[j] = np.sum(x0_c[i]) * ds
         x1[:, j] = np.sum(x1_c[:, i], axis=1) * ds
 
-    #print(x0.shape)
-    #print(x1.shape)
-    #plt.plot(x1[100] - x0)
-    #plt.show()
-
+    # Compute min. distance and error probability
     dmin_by_2 = np.sqrt(np.sum((x1 - x0) ** 2, axis=-1)) / 2
     Pe = 0.5 - 0.5 * spl.erf(dmin_by_2 / np.sqrt(sigma2 / M / n))
 
+    # Plot bound before optimization to check proper maximiza available
     bound = delta**2 * Pe
     plt.figure()
     plt.semilogy(bound.T)

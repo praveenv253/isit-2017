@@ -85,16 +85,15 @@ a point source observed through a diffusive medium using an array of sensors.
 
 We give lower bounds on the minimax risk (mean squared-error in location) in
 estimating the location of the source, which apply to all estimators, for
-certain classes of diffusive media represented by low-pass
-filters, when using a uniformly distributed sensor array. We show that
-for sensors of a fixed size, the lower bound decays with
+certain classes of diffusive media, when using a uniformly distributed sensor
+array. We show that for sensors of a fixed size, the lower bound decays with
 increasing numbers of sensors. We also perform a preliminary numerical analysis
 to understand the effect of increasing the number of sensors to infinity by
-shrinking their size, wherein the bound saturates for large sensor numbers.
-In the second scenario, it is seen that there is greater
-benefit to increasing the number of sensors as the signal-to-noise increases.
-Our bounds are the first to give a scaling for the minimax risk in terms of the
-number of sensors used.
+shrinking their size, wherein the bound saturates for large sensor numbers.  In
+the second scenario, it is seen that there is greater benefit to increasing the
+number of sensors as the signal-to-noise ratio increases.  Our bounds are the
+first to give a scaling for the minimax risk in terms of the number of sensors
+used.
 
 %While our results are derived for sources located on a one-dimensional circular
 %domain, they can be easily extended to sources on one-dimensional line segments
@@ -114,10 +113,10 @@ brain~\cite{Nunez2006Electric}. The neurons (or groups of neurons) which
 produce this activity are usually modeled as current dipoles, and it is often
 of clinical or neuroscientific interest to estimate their
 locations~\cite{Baillet2001Electromagnetic}. For a single activated dipole
-within the brain (which is modeled as a point source), the electrodes
-effectively sample a diffuse (blurred) representation of the dipole, as a
-result of the spatial low-pass filtering effect of the different layers between
-the brain surface and scalp surface (cerebrospinal fluid, skull and skin).
+within the brain (which is modeled as a point source), the electrodes sample a
+diffuse (blurred) representation of the dipole, as a result of the spatial
+low-pass filtering effect of the different layers of the skull, between the
+brain and scalp.
 
 Recent developments~\cite{Grover2016Information} have suggested that source
 localization can benefit greatly from an increase in sensor density. This
@@ -163,23 +162,20 @@ source~\cite{Cavalier2002Sharp}. Work that \emph{does} address point sources
 and location-based error metrics~\cite[Ch.~7, Sec.~2]{Ibragimov1981Statistical}
 does not, to our knowledge, address scaling in the number of sensors.
 
-Hence, we believe that this paper is the first to give lower bounds on source
-localization error (measured in an $\ell_2$-distance sense) in estimating the
-location of a one-dimensional point source, which is observed by sensors
-through a diffusive medium (treated as a low-pass filter), and corrupted by
-additive white Gaussian noise. We are also the first to analyze the
-implications physical sensor models on such lower bounds. A simplistic
-theoretical model might assume that the number of sensors can increase
-unbounded, while maintaining a fixed SNR at each sensor. We show that this is
-not physically possible in our setting, and derive numerical bounds which have
-radically different asymptotic behaviour.
+Hence, we believe that this paper is the first to give lower bounds on the
+minimax error in estimating the location of a point source, which is observed
+by sensors through a diffusive medium, and corrupted by additive white Gaussian
+noise. We are also the first to analyze the implications physical sensor models
+on such lower bounds. A simplistic theoretical model might assume that the
+number of sensors can increase unbounded, while maintaining a fixed SNR at each
+sensor. We show that this is not physically possible in our setting, and derive
+numerical bounds which have radically different asymptotic behaviour.
 
-We describe the problem setting in detail in
-Section~\ref{sec:source-localization} and the minimax techniques and our main
-results (for a na\"ive and then for a more physical sensor model) in
-Section~\ref{sec:minimax-lower-bounds}. We conclude in
-Section~\ref{sec:discussion} with a discussion on the goodness of our bounds,
-and on how our results can be extended to other simple settings.
+We describe the problem setting in Section~\ref{sec:source-localization} and
+the minimax techniques and our main results (for a na\"ive and then for a more
+physical sensor model) in Section~\ref{sec:minimax-lower-bounds}. We conclude
+in Section~\ref{sec:discussion} with a discussion on the goodness of our
+bounds, and on how our results can be extended to other settings.
 
 For EEG source localization, we hope to find algorithms that achieve scalings
 close to the bounds we present.  We also expect to build upon the techniques
@@ -243,7 +239,7 @@ We consider two sensor models: a simplistic ``point sensor'' model and an
 ``integrator sensor'' model, to be used in sections~\ref{sec:lecam-lb}
 and~\ref{sec:physical-model} respectively.
 
-In the ``point sensor model'', sensors \emph{sample} the shifted
+In the ``point sensor'' model, sensors \emph{sample} the shifted
 continuous-space impulse response, with some additive noise. We denote the
 noiseless sampled version of $x(s; \theta)$ by the $m$-length vector $\v
 x(\theta)$,
@@ -261,31 +257,21 @@ setting, wherein $\m\Sigma = \sigma^2 \m I$, i.e., noise is i.i.d.\ across
 sensors.
 
 In the ``integrator sensor'' model, sensors have a \emph{width} which decreases
-as their number grows to infinity. Concretely, the $k$-th sensor which is
-located at $s = kS/m$ \emph{occupies} the space $((k{-}\frac{1}{2})S/m,
+as their number grows to infinity. Concretely, the \mbox{$k$-th} sensor which
+is located at $s = kS/m$ \emph{occupies} the space $((k{-}\frac{1}{2})S/m,
 (k{+}\frac{1}{2})S/m)$.  The signal sensed by this sensor is given by the
 $k$-th element of $\v x(\theta)$,
 \begin{equation}
 	x_k(\theta) = \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} x(s;\theta) ds.
 \end{equation}
-In this model, the noise vector $\v \epsilon$ is also generated similarly, by
-integrating over small sections of a white noise process, which is assumed to
-additively corrupt the continuous-space signal $x(s;\theta)$ \emph{prior} to
-sampling (see Fig.~\ref{fig:signal-model}). This leads to i.i.d.\ noise values
-at sensors (since sensors have no overlap), with variance inversely
-proportional to $m$, i.e., $\sigma(m) \propto 1/\sqrt{m}$.
-
-In the source localization problem, we receive $n$ ``trials''\footnote{The word
-	``trials'' comes from neuroscience literature, where multiple trials of an
-	experiment are run, with the same stimulus being given to the participant
-	in each trial, evoking the same response in the brain (with some
-trial-to-trial variability, which we ignore). For our purposes, we assume that
-trials are effectively i.i.d.\ realizations of sensor noise.} (i.e., $n$
-realizations) of $\v y$ according to equation~\eqref{eq:sensor-obs}, for the
-\emph{same} point source $\theta$, using which we need to estimate the location
-of the source.  The noise is also assumed to be i.i.d.\ across trials, i.e.,
-the $n$ realizations of $\v y$ are independently drawn from $P(\theta)$, for
-the same location parameter $\theta$.
+Here, a white noise process $\epsilon(s)$ additively corrupts the
+continuous-space signal $x(s;\theta)$ prior to sampling (see
+Fig.~\ref{fig:signal-model}). $\v \epsilon$ is generated by integrating
+$\epsilon(s)$ over a sensor width. This leads to i.i.d.\ noise values at
+sensors (since sensors have no overlap), with variance inversely proportional
+to $m$, i.e., $\sigma(m) \propto 1/\sqrt{m}$ (refer
+Appendix~\ref{app:integrator-snr} in the full version of this
+paper~\cite{FullVersion} for an explanation).
 
 With the addition of Gaussian noise, each possible source location $\theta$
 gives rise to a different distribution at the sensors, denoted by $P(\theta) =
@@ -293,10 +279,21 @@ gives rise to a different distribution at the sensors, denoted by $P(\theta) =
 distribution $P(\theta)$. The space of distributions produced by all possible
 source locations is $\mathcal{P} = \{P(\theta) : \theta \in \Theta \}$.
 
+In the source localization problem, we receive $n$ ``trials''\footnote{The word
+	``trials'' comes from neuroscience literature, where multiple trials of an
+	experiment are run, with the same stimulus being given to the participant
+	in each trial, evoking the same response in the brain (with some
+trial-to-trial variability, which we ignore). For our purposes, we assume that
+trials are i.i.d.\ realizations of sensor noise.} of $\v y$ according to
+equation~\eqref{eq:sensor-obs}, for the \emph{same} point source $\theta$,
+using which we need to estimate the location of the source. Note that noise is
+assumed to be i.i.d.\ across trials, i.e., the $n$ realizations of $\v y$ are
+independently drawn from $P(\theta)$, for the same location parameter $\theta$.
+
 \begin{figure}[tp] %  figure placement: here, top, bottom, or page
 	\centering
-	\includegraphics[width=3.5in]{block-diagram}
-	\caption{A diagrammatic representation of the signal model described in
+	\includegraphics[width=3.2in]{block-diagram}
+	\caption{A block diagram of the two sensor models described in
 	section~\ref{sec:signal-model}.}
 	\label{fig:signal-model}
 \end{figure}
@@ -529,15 +526,14 @@ full version of this paper~\cite{FullVersion}).
 %integration is performed; this division amplifies noise as the time interval
 %gets smaller.
 
-We performed a preliminary study to understand the effect of using the
-``integrator sensor'' model defined in section~\ref{sec:sensor-model}.  The
-bounding technique used in section~\ref{sec:lecam-lb} no longer easily admits a
-closed-form solution which gives a bound for all values of $m$. We instead
-compute the bound numerically, using exact expressions for error probability in
-a binary hypothesis test. For Gaussian distributions of equal variance and a
-uniform prior on the hypotheses, the minimum possible error probability (over
-all tests) is a $Q$-function in the distance between their
-means~\cite[Ch.~7]{Scharf1991Statistical},
+This observation motivates the ``integrator sensor'' model defined in
+section~\ref{sec:sensor-model}. With this model, the bounding technique used in
+section~\ref{sec:lecam-lb} no longer easily admits a closed-form solution which
+gives a bound for all values of $m$. We instead compute the bound numerically,
+using exact expressions for error probability in a binary hypothesis test. For
+Gaussian distributions of equal variance and a uniform prior on the hypotheses,
+the minimum possible error probability (over all tests) is a $Q$-function in
+the distance between their means~\cite[Ch.~7]{Scharf1991Statistical},
 \begin{equation}
 	P_e = \inf_\psi \mathbb P(\psi(Y^n) \neq V) = Q\bigg(\frac{\norm{\v\mu_0 - \v\mu_1}}{2\sigma(m)}\bigg).
 \end{equation}
@@ -558,29 +554,31 @@ $\delta$ by grid search.
 	\includegraphics[width=2.8in]{lb-vs-m-annotated}
 	\caption{A numerically generated plot of the lower bound on minimax risk of
 		source localization, against the number of uniformly distributed
-		sensors, $m$, used to estimate the location. The different curves are
-		for different numbers of ``trials'', $n$ (number of i.i.d.\ sensor
-		observations). The bound saturates for large $m$, indicating that for
-		a \emph{fixed} number of trials, there is decreasing benefit to using
-		more sensors.  However, with more trials, the bound saturates at
-		increasingly larger numbers of sensors. Thus, there may be benefit to
-	increasing the number of sensors when you have more trials.}
+		sensors, $m$, used to estimate the location (code available
+		online~\cite{Code}). The different curves are for different numbers of
+		``trials'', $n$ (number of i.i.d.\ sensor observations). The bound
+		saturates for large $m$, indicating that for a \emph{fixed} number of
+		trials, there is decreasing benefit to using more sensors.  However,
+	with more trials, the bound saturates at increasingly larger numbers of
+sensors. Thus, there may be benefit to increasing the number of sensors when
+you have more trials.}
 	\label{fig:numerical}
 \end{figure}
 
-Plotting this numerically computed bound for different numbers of trials (see
-Fig.~\ref{fig:numerical}) reveals some interesting trends. First, the bound
-saturates as $m$ grows large, matching the behaviour presented
-in~\cite{Grover2016Fundamental}. Second, the lower bound on error is larger for
+Plotting this numerically-computed bound for different numbers of trials
+reveals some interesting trends (see Fig.~\ref{fig:numerical}). First, the
+bound saturates as $m$ grows large, matching the behaviour of the
+information-theoretic bound. Second, the lower bound on error is larger for
 smaller numbers of sensors, as we expect. Third and most importantly, as the
-number of trials increases, bound begins to saturate only for larger numbers of
-sensors. In other words, there is increased benefit in using larger numbers of
-sensors, when we also have more trials. This substantiates the intuition given
-in~\cite{Grover2016Information}, which addresses this issue using a
-Nyquist-rate perspective. A larger number of sensors will sample a larger
-number of high-frequency components of the source signal (and hence allow us to
-locate it better), but only if the noise floor is sufficiently low. Noise
-variance, in turn, can be reduced by averaging over multiple trials.
+number of trials increases, the bound begins to saturate only at a larger
+number of sensors. In other words, there is \emph{increased} benefit in using
+larger numbers of sensors, when we \emph{also} have more trials. This
+substantiates the intuition given in~\cite{Grover2016Information}, which makes
+this point using a Nyquist-rate argument: a larger number of sensors will
+sample a larger number of high-frequency components of the source signal (and
+hence allow us to locate it better), but only if the noise floor is
+sufficiently low. Noise variance, in turn, can be reduced by averaging over
+multiple trials.
 
 \section{Discussion}
 \label{sec:discussion}
@@ -596,11 +594,11 @@ trade-off between $m$ and $n$ in achieving a certain target MSE is relegated to
 future work.
 
 We also note that the minimax bounds from compressive sensing
-literature~\cite{AriasCastro2013Fundamental} do not apply in our setting,
-because those consider the problem of recovering the whole source signal,
-$x(s;\theta)$. The loss function used there is hence the energy of the
-difference signal $\int \abs{x(s) - \hat x(s)}^2 ds$. We, on the other hand,
-are interested in bounding the minimax error in \emph{location}, i.e.,
+literature~\cite{AriasCastro2013Fundamental} \emph{do not} apply in our
+setting, because those consider the problem of recovering the \emph{whole}
+source signal, $x(s;\theta)$. The loss function used there is hence the energy
+of the difference signal, $\int \abs{x(s) - \hat x(s)}^2 ds$. We, on the other
+hand, are interested in bounding the minimax error in \emph{location}, i.e.,
 $\abs{\theta - \hat\theta}^2$.
 
 While the bounds in section~\ref{sec:lecam-lb} were derived for a
@@ -615,11 +613,11 @@ independent 1D problems. Such extensions substantially broaden the number of
 settings in which this bound applies.
 
 Also note, the bounds derived in this paper apply only when sensors are
-uniformly distributed.  Intuitively, this is the correct choice in the minimax
-setting, since any non-uniform placement will have one or more points which is
-far from all sensors. The ``maximization'' over $\theta \in \Theta$ would then
-select a $\theta$ for which the value of the impulse response at the sensors is
-smallest, so that SNR is minimized.
+uniformly distributed.  Intuitively, this is the \emph{correct} choice in the
+minimax setting, since any non-uniform placement will have one or more points
+which is far from all sensors. The ``maximization'' over $\theta \in \Theta$
+would then select a $\theta$ for which the value of the impulse response at the
+sensors is smallest, so that SNR is minimized.
 
 %The lower bounding \emph{technique} itself gives certain inisights on the issue
 %of sensor placement. Suppose we wanted to achieve a higher resolution in a
