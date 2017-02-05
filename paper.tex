@@ -686,4 +686,32 @@ sensors is smallest, so that SNR is minimized.
 \section{SNR in the integrator model}
 \label{app:integrator-snr}
 
+In the integrator model of sensors, recall that the samples are given by
+equation~\eqref{eq:samples-int-model}. We compute the SNR approximately at the
+$k$-th sensor as follows. The power of the signal is given by
+\begin{align}
+	\abs{x_k(\theta)}^2 &= \abs*{\int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} x(s;\theta) ds.}^2 \\
+	&\approx \abs*{\frac{S}{m} x\Big(\frac{kS}{m}; \theta\Big)}^2 \\
+	&= \frac{S^2}{m^2} \abs*{x\Big(\frac{kS}{m}; \theta\Big)}^2
+\end{align}
+where in the approximation, we have assumed that the signal is roughly constant
+in a small interval, taking the value of the signal at $s = kS/m$. The constant
+itself is not relevant; it suffices to note at this point that the signal power
+diminishes as $1/m^2$ since the sensor size \emph{must} diminish as $1/m$, if
+the number of sensors has to increase to infinity.
+
+The noise variance at the $k$-th sensor is computed similarly:
+\begin{align}
+	\mathbb E[\epsilon_k^2] &= \mathbb E \Bigg[ \bigg(\int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \epsilon(s)\bigg)^2 \Bigg] \\
+	&= \mathbb E \Bigg[ \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \epsilon(s) ds \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \epsilon(s') ds' \Bigg] \\
+	&= \mathbb E \Bigg[ \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \epsilon(s) \epsilon(s') ds ds' \Bigg] \\
+	&= \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \mathbb E[\epsilon(s) \epsilon(s')] ds ds' \\
+	&= \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} R_\epsilon(s, s') ds ds' \\
+	&= \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \delta(s - s') ds ds' \\
+	&= \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} ds \\
+	&= \frac{S}{m}
+\end{align}
+where $R_\epsilon(s, s') = \delta(s - s')$ is the autocorrelation function of
+the white noise process.
+
 \end{document}
