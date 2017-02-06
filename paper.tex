@@ -681,6 +681,14 @@ sensors is smallest, so that SNR is minimized.
 
 \newpage
 
+\section*{Acknowledgements}
+
+This work was supported in part by Systems on Nanoscale Information fabriCs
+(SONIC), one of the six SRC STARnet Centers, sponsored by MARCO and DARPA.
+Praveen Venkatesh was supported (in part) by the Dowd Fellowship from the
+College of Engineering at Carnegie Mellon University. The authors would like to
+thank Philip and Marsha Dowd for their financial support and encouragement.
+
 \appendices
 
 \section{SNR in the integrator model}
@@ -690,9 +698,8 @@ In the integrator model of sensors, recall that the samples are given by
 equation~\eqref{eq:samples-int-model}. We compute the SNR approximately at the
 $k$-th sensor as follows. The power of the signal is given by
 \begin{align}
-	\abs{x_k(\theta)}^2 &= \abs*{\int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} x(s;\theta) ds.}^2 \\
-	&\approx \abs*{\frac{S}{m} x\Big(\frac{kS}{m}; \theta\Big)}^2 \\
-	&= \frac{S^2}{m^2} \abs*{x\Big(\frac{kS}{m}; \theta\Big)}^2
+	\abs{x_k(\theta)}^2 &= \bigg(\int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} x(s;\theta) ds\bigg)^2 \\
+	&\approx \bigg(\frac{S}{m} \; x\Big(\frac{kS}{m}; \theta\Big)\bigg)^2 = \frac{S^2}{m^2} \bigg(x\Big(\frac{kS}{m}; \theta\Big)\bigg)^2 \label{eq:signal-power-k},
 \end{align}
 where in the approximation, we have assumed that the signal is roughly constant
 in a small interval, taking the value of the signal at $s = kS/m$. The constant
@@ -702,16 +709,27 @@ the number of sensors has to increase to infinity.
 
 The noise variance at the $k$-th sensor is computed similarly:
 \begin{align}
-	\mathbb E[\epsilon_k^2] &= \mathbb E \Bigg[ \bigg(\int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \epsilon(s)\bigg)^2 \Bigg] \\
-	&= \mathbb E \Bigg[ \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \epsilon(s) ds \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \epsilon(s') ds' \Bigg] \\
-	&= \mathbb E \Bigg[ \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \epsilon(s) \epsilon(s') ds ds' \Bigg] \\
-	&= \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \mathbb E[\epsilon(s) \epsilon(s')] ds ds' \\
-	&= \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} R_\epsilon(s, s') ds ds' \\
-	&= \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} \delta(s - s') ds ds' \\
-	&= \int_{(k-\frac{1}{2}S/m)}^{(k+\frac{1}{2}S/m)} ds \\
-	&= \frac{S}{m}
+	\mathbb E[\epsilon_k^2] &= \mathbb E \Bigg[ \bigg(\int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \epsilon(s)\bigg)^2 \Bigg] \\
+	&= \mathbb E \Bigg[ \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \epsilon(s) ds \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \epsilon(s') ds' \Bigg] \\
+	&= \mathbb E \Bigg[ \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \epsilon(s) \epsilon(s') ds ds' \Bigg] \\
+	&= \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \mathbb E[\epsilon(s) \epsilon(s')] ds ds' \\
+	&= \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} R_\epsilon(s, s') ds ds' \\
+	&= \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \sigma^2 \delta(s - s') ds ds' \\
+	&= \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \sigma^2 ds \\
+	&= \sigma^2 \frac{S}{m}, \label{eq:noise-var-k}
 \end{align}
-where $R_\epsilon(s, s') = \delta(s - s')$ is the autocorrelation function of
-the white noise process.
+where $R_\epsilon(s, s') = \sigma^2 \delta(s - s')$ is the autocorrelation
+function of the white noise process, and $\sigma^2$ is the amplitude of the
+white noise power spectral density.
+
+We can understand how the SNR at the $k$-th sensor scales with $m$, therefore,
+by taking the ratio of~\eqref{eq:signal-power-k} and~\eqref{eq:noise-var-k}
+\begin{align}
+	\text{SNR}(k) &= \frac{S^2}{m^2} \bigg(x\Big(\frac{kS}{m}; \theta\Big)\bigg)^2 \cdot \frac{m}{S\sigma^2} \\
+	&= \frac{S}{m\sigma^2} \bigg(x\Big(\frac{kS}{m}; \theta\Big)\bigg)^2 \propto 1/m.
+\end{align}
+Hence, as the number of sensors $m$ grows to infinity, their sizes must
+necessarily reduce inversely with $m$, and as a result, their SNR also falls
+inversely with $m$, when we view these sensors as integrators.
 
 \end{document}
