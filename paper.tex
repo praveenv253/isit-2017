@@ -56,6 +56,8 @@
 % correct bad hyphenation here
 %\hyphenation{op-tical net-works semi-conduc-tor}
 
+\IEEEoverridecommandlockouts
+
 \title{Lower Bounds on the Minimax Risk for the \\ Source Localization Problem}
 
 \author{
@@ -64,13 +66,22 @@
 		and Pulkit Grover (\href{mailto:pulkit@cmu.edu}{\texttt{pulkit@cmu.edu}}) %\IEEEauthorrefmark{2}
 	}
 	\IEEEauthorblockA{
-		\textcolor{red}{Electrical \& Computer Engineering,
+		Electrical \& Computer Engineering,
 		and the Center for the Neural Basis of Cognition,
-		Carnegie Mellon University}
+		Carnegie Mellon University
 		%\\
 		%\IEEEauthorrefmark{1}\href{mailto:vpraveen@cmu.edu}{\texttt{vpraveen@cmu.edu}}
 		%\IEEEauthorrefmark{2}\href{mailto:pulkit@cmu.edu}{\texttt{pulkit@cmu.edu}}
 	}
+	\thanks{This work was supported in part by Systems on Nanoscale
+	Information fabriCs (SONIC), one of the six SRC STARnet Centers, sponsored
+	by MARCO and DARPA.  Praveen Venkatesh was supported (in part) by the Dowd
+	Fellowship from the College of Engineering at Carnegie Mellon University.
+	The authors would like to thank Philip and Marsha Dowd for their financial
+	support and encouragement. The authors thank Prof.\ Aarti Singh for her
+	useful comments on a preliminary draft of this paper.
+	}
+	\vspace{-0.25in}
 }
 
 \begin{document}
@@ -148,11 +159,10 @@ easily amenable to analytical lower bounds which seek to capture scaling in the
 number of sensors, because the spherical surface does not permit uniform
 sampling~\cite{Heath1956Thirteen}. We therefore restrict our analysis to a
 source localization problem on a one-dimensional ``circular'' domain (to be
-described in detail in Section~\ref{sec:source-localization}).
-\textcolor{red}{While this simplified model makes crucial assumptions (such as
-	shift-invariance) that are invalid in more realistic brain models, we hope
-	that the techniques presented here will pave the way for deriving numerical
-	bounds in more complex settings.}
+described in detail in Section~\ref{sec:source-localization}).  While this
+simplified model makes crucial assumptions (such as shift-invariance) that are
+invalid in more realistic brain models, we hope that the techniques presented
+here will pave the way for deriving numerical bounds in more complex settings.
 
 The one-dimensional toy problem is an effective tool for understanding bounds
 on source localization accuracy in other settings as well. A vast literature on
@@ -168,30 +178,27 @@ and location-based error metrics~\cite[Ch.~7, Sec.~2]{Ibragimov1981Statistical}
 does not, to our knowledge, address scaling in the number of sensors.
 
 Hence, we believe that this paper is the first to give lower bounds on the
-minimax error in estimating the location of a point source, which is observed
-by sensors through a diffusive medium, and corrupted by additive white Gaussian
-noise. We are also the first to analyze the implications physical sensor models
-have on such lower bounds. A simplistic theoretical model might assume that the
-number of sensors can increase unbounded, while maintaining a fixed SNR at each
+minimax error in estimating the location of a point source observed by sensors
+through a diffusive medium, and corrupted by additive white Gaussian noise. We
+are also the first to analyze the implications of physical sensor models on
+such lower bounds. A simplistic theoretical model might assume that the number
+of sensors can increase unbounded, while maintaining a fixed SNR at each
 sensor. We show that this is not physically possible in our setting, and derive
-numerical bounds which have radically different asymptotic behaviour.
+numerical bounds which have very different asymptotic behaviour.
 
 We describe the problem setting in Section~\ref{sec:source-localization} and
-the minimax techniques and our main results (for a na\"ive and then for a more
-physical sensor model) in Section~\ref{sec:minimax-lower-bounds}. We conclude
-in Section~\ref{sec:discussion} with a discussion on the goodness of our
-bounds, and on how our results can be extended to other settings.
+the minimax techniques and our main results in
+Section~\ref{sec:minimax-lower-bounds}. We conclude in
+Section~\ref{sec:discussion} with a discussion on the goodness of our bounds,
+and on possible extensions.
 
 For EEG source localization, we hope to find algorithms that achieve scalings
 close to the bounds we present.  We also expect to build upon the techniques
 presented in this paper to derive bounds for spherical and realistic brain
 models.
 
-\section{\textcolor{red}{The source localization problem} \textcolor{green}{Source Localization in 1D}}
+\section{Source Localization in 1D}
 \label{sec:source-localization}
-
-\textcolor{red}{\sout{We start by giving a detailed description of the one-dimensional setting of the
-source localization problem.}}
 
 \subsection{Description of the domain}
 
@@ -200,21 +207,16 @@ use the variable `$s$' (for \emph{s}pace) to represent a general point on this
 domain. We can also view this domain as a line, on which signals are periodic
 with period $S$.  The point source is therefore located somewhere within one
 period. We denote the set of possible locations by $\Theta = [0, S)$.
-\textcolor{red}{\sout{Due to
-the periodic nature of the domain, a source located at position $\theta \in
-\Theta$ implies the presence of sources at $s = \theta + kS$,~$\forall \, k \in
-\mathbb Z$.}}
 
 \subsection{Sensor configuration}
 
 Sensors are assumed to be uniformly distributed over the domain, i.e., if there
 are $m$ sensors, they are placed at locations $s = 0$, $S/m$, $2S/m$,~\dots,
 $(m{-}1)S/m$ (the offset of the first sensor is arbitrary, so without loss of
-generality we take it to be 0). \textcolor{red}{\sout{The periodicity of the space ensures that we
-automatically also have sensors at $S$, $S{+}S/m$,~\dots\@}} The lower bounds we
-provide are for \emph{this specific sensor configuration}. For a discussion on
-why this configuration might be an appropriate choice in the minimax setting,
-see section~\ref{sec:discussion}.
+generality we take it to be 0). The lower bounds we provide are for \emph{this
+	specific sensor configuration}. For a discussion on why this configuration
+might be an appropriate choice in the minimax setting, see
+section~\ref{sec:discussion}.
 
 \subsection{Signal model}
 \label{sec:signal-model}
@@ -226,18 +228,18 @@ represented by the impulse signal, $f(s;\theta) = \delta(s - \theta)$, where
 $\delta(\cdot)$ is the Dirac delta function.  The sensors observe this signal
 through the diffusive medium, which, intuitively speaking, blurs the impulse.
 More concretely, we assume that the medium is linear and shift-invariant, so
-that it can be \textcolor{red}{characterized} by a spatial impulse response.
-Then, blurring would correspond to low-pass filtering.  Let this impulse
-response be given by $g(s)$. Then, the noiseless, continuous-space signal
-(post-filtering and pre-sampling) is given by the convolution, $x(s; \theta) =
-(g*f)(s) = g(s - \theta)$. Here, we further make the simplifying assumption
-that $g(s)$ has a sufficiently restricted support, so that aliasing effects are
-avoided, and $x(s; \theta)$ is always well-defined. To be precise, $g(s) = 0$
-when $\abs{s} > w/2$, where the ``width'' $w$ of the impulse response satisfies
-$w < S / 2$ (the reason for the extra factor of $1/2$ will become clear in a
-later section). For the proof, $g(s)$ is also assumed to be Lipschitz
-continuous with parameter $\kappa$, i.e., $\abs{g(u) - g(v)} \leq \kappa \abs{u
-- v} \; \forall \;\; u, v \in \Theta$.
+that it can be characterized by a spatial impulse response.  Then, blurring
+would correspond to low-pass filtering.  Let this impulse response be given by
+$g(s)$. Then, the noiseless, continuous-space signal (post-filtering and
+pre-sampling) is given by the convolution, $x(s; \theta) = (g*f)(s) = g(s -
+\theta)$. Here, we further make the simplifying assumption that $g(s)$ has a
+sufficiently restricted support, so that aliasing effects are avoided, and
+$x(s; \theta)$ is always well-defined. To be precise, $g(s) = 0$ when $\abs{s}
+> w/2$, where the ``width'' $w$ of the impulse response satisfies $w < S / 2$
+(the reason for the extra factor of $1/2$ will become clear in a later
+section). For the proof, $g(s)$ is also assumed to be Lipschitz continuous with
+parameter $\kappa$, i.e., $\abs{g(u) - g(v)} \leq \kappa \abs{u - v} \; \forall
+\;\; u, v \in \Theta$.
 
 \subsection{Sensor and noise models}
 \label{sec:sensor-model}
@@ -300,6 +302,7 @@ independently drawn from $P(\theta)$, for the same location parameter $\theta$.
 \begin{figure}[tp] %  figure placement: here, top, bottom, or page
 	\centering
 	\includegraphics[width=3.2in]{block-diagram}
+	\vspace{-3pt}
 	\caption{A block diagram of the two sensor models described in
 	section~\ref{sec:signal-model}.}
 	\label{fig:signal-model}
@@ -347,9 +350,9 @@ to define a $2\delta$-packing.%
 	where $V$ is the unknown true hypothesis which takes values uniformly from
 	$\mathcal{V}$, and $\psi$ is our estimate of the hypothesis.
 \end{theorem}
-\textcolor{red}{For a proof of this theorem, we refer the reader
+For a proof of this theorem, we refer the reader
 to~\cite[Sec.~2.2]{Tsybakov2009Introduction}, or
-to~\cite[Prop.~13.3]{Duchi2015Information}}. Intuitively,
+to~\cite[Prop.~13.3]{Duchi2015Information}. Intuitively,
 Theorem~\ref{thm:est-to-testing} says that the error in estimating $\theta_i$
 is likely to be large if it is difficult to distinguish $\theta_i$ from
 $\theta_j$, i.e.\ if the probability of error is high.
@@ -366,8 +369,8 @@ and use what is known as Le Cam's method:
 	the total variation distance between the two distributions, defined as
 	$\norm{\cdot}_{TV} = \frac{1}{2} \norm{\cdot}_1$.
 \end{theorem}
-\textcolor{red}{For a proof, we refer the reader to~\cite[Thm.~2.2]{Tsybakov2009Introduction},
-or to~\cite[Prop.~2.11]{Duchi2015Information} for a more readable account.}
+For a proof, we refer the reader to~\cite[Thm.~2.2]{Tsybakov2009Introduction},
+or to~\cite[Prop.~2.11]{Duchi2015Information} for a more readable account.
 Intuitively, Theorem~\ref{thm:le-cam} states that the minimum achievable error
 probability in a binary hypothesis testing problem is related to the distance
 between the distributions corresponding to the two hypotheses.
@@ -388,6 +391,7 @@ P_0^n}_{TV}$ appropriately, to derive the tightest possible bound.
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=2.6in]{overlap-middle-pics}
+	\vspace{-3pt}
 	\caption{Depiction of the continuous-space signals produced by two
 		hypotheses, $\theta_0$ and $\theta_1$. Note that each signal is a
 		shifted impulse response, and therefore has a support of size $w$.
@@ -398,6 +402,7 @@ P_0^n}_{TV}$ appropriately, to derive the tightest possible bound.
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=2.6in]{delta-sampled-pics}
+	\vspace{-3pt}
 	\caption{Plot of the samples of the difference signal, $\Delta(k)$. The
 		total size of the support of the difference signal is $w+2\delta$,
 		hence at most $\floor*{\frac{(w + 2\delta)m}{S} + 1}$ samples of
@@ -427,8 +432,8 @@ result of this paper.
 \begin{IEEEproof}
 Starting from equation~\eqref{eq:le-cam-bound}, we proceed to derive the total
 variation distance for the distributions of interest. Using Pinsker's
-inequality~\cite{Kullback1967Lower} and the convenient tensorization of the
-KL-divergence~\cite{Duchi2015Information}, we see that:
+inequality~\cite[Lemma~2.5]{Tsybakov2009Introduction} and the convenient
+tensorization of the KL-divergence~\cite{Duchi2015Information}, we see that:
 \begin{equation} \label{eq:pinsker-tensorization}
 	\norm{P_1^n - P_0^n}_{TV}^2 \leq \frac{1}{2} D_{KL}(P_0^n \Vert P_1^n) = \frac{n}{2} D_{KL}(P_0 \Vert P_1)
 \end{equation}
@@ -561,6 +566,7 @@ $\delta$ by grid search.
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=2.8in]{lb-vs-m-annotated}
+	\vspace{-3pt}
 	\caption{A numerically generated plot of the lower bound on minimax risk of
 		source localization, against the number of uniformly distributed
 		sensors, $m$, used to estimate the location (code available
@@ -592,18 +598,14 @@ turn, can be reduced by averaging over multiple trials.
 \label{sec:discussion}
 
 While the lower bound presented in section~\ref{sec:lecam-lb} is non-physical
-for a large number of sensors, it still gives some important insights.
-\textcolor{red}{\sout{For instance, if we assume that sensors have a constant
-		width $c$, then even if we view sensors as integrators, the bound tells
-		us something about the scaling of error with number of sensors, up to
-		$m = \floor*{\frac{S}{c}}$.} The bound tells us how the error scales
-	with the number of sensors up to $m = \floor*{\frac{S}{c}}$, for sensors of
-	a constant width $c$.} \textcolor{red}{\sout{Beyond this point, averaging
-		noise by increasing the number of trials may help one get to a target
-		mean squared error in location.} Averaging noise over a larger number
-	of trials $n$ may help one achieve a target mean squared error in
-	location}. An analytical derivation of the trade-off between $m$ and $n$ in
-achieving a certain target MSE is relegated to future work. \textcolor{red}{Further, more sophisticated techniques for deriving lower bounds, such as Fano's method~\cite[Sec.~2.7.1]{Tsybakov2009Introduction} are yet to be analyzed.}
+for a large number of sensors, it still gives some important insights.  The
+bound tells us how the error scales with the number of sensors up to $m =
+\floor*{\frac{S}{c}}$, for sensors of a constant width $c$. Averaging noise
+over a larger number of trials $n$ may help one achieve a target mean squared
+error in location. An analytical derivation of the trade-off between $m$ and
+$n$ in achieving a certain target MSE is relegated to future work. Further,
+more sophisticated techniques for deriving lower bounds, such as Fano's
+method~\cite[Sec.~2.7.1]{Tsybakov2009Introduction} are yet to be analyzed.
 
 We also note that the minimax bounds from compressive sensing
 literature~\cite{AriasCastro2013Fundamental} \emph{do not} apply in our
@@ -622,8 +624,7 @@ the domain. Hence, sensors must be placed uniformly in $[-w/2, S{+}w/2]$. For
 extending to $d$ dimensions, it suffices to apply Assouad's
 Lemma~\cite[Sec.~2.7.2]{Tsybakov2009Introduction} to separate the problem into
 $d$ independent 1D problems. Such extensions substantially broaden the
-\textcolor{red}{\sout{number of settings in which this bound applies.}
-	application domains where this bound could be useful.}
+application domains where this bound could be useful.
 
 Also note, the bounds derived in this paper apply only when sensors are
 uniformly distributed.  Intuitively, this is the \emph{correct} choice in the
@@ -687,24 +688,23 @@ sensors is smallest, so that SNR is minimized.
 %risk along each of the $d$ dimensions, and bound each separately using Le Cam's
 %method.
 
-\section*{Acknowledgements}
+%\section*{Acknowledgments}
 
-\textcolor{red}{The authors thank Prof.\ Aarti Singh for her useful comments on
-	a preliminary draft of this paper.}
-\textcolor{blue}{
-This work was supported in part by Systems on Nanoscale Information fabriCs
-(SONIC), one of the six SRC STARnet Centers, sponsored by MARCO and DARPA.
-Praveen Venkatesh was supported (in part) by the Dowd Fellowship from the
-College of Engineering at Carnegie Mellon University. The authors would like to
-thank Philip and Marsha Dowd for their financial support and encouragement.
-}
+%This work was supported in part by Systems on Nanoscale Information fabriCs
+%(SONIC), one of the six SRC STARnet Centers, sponsored by MARCO and DARPA.
+%Praveen Venkatesh was supported (in part) by the Dowd Fellowship from the
+%College of Engineering at Carnegie Mellon University.
+%The authors thank Prof.\ Aarti Singh for her useful comments on a preliminary
+%draft of this paper.
+%The authors would like to thank Philip and Marsha Dowd for their financial
+%support and encouragement.
 
 %\IEEEtriggeratref{8}
 
 \bibliographystyle{IEEEtran}
 \bibliography{IEEEabrv,references}
 
-\newpage
+%\newpage
 
 \appendices
 
