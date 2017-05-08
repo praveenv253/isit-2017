@@ -12,8 +12,8 @@
 \usepackage{array}
 \usepackage{enumitem}
 \usepackage{color}
-\usepackage{url}
-\usepackage[colorlinks=true,allcolors=black,urlcolor=blue]{hyperref}
+%\usepackage{url}
+%\usepackage[colorlinks=true,allcolors=black,urlcolor=blue]{hyperref}
 
 \usepackage[normalem]{ulem}
 
@@ -62,8 +62,8 @@
 
 \author{
 	\IEEEauthorblockN{
-		Praveen Venkatesh (\href{mailto:vpraveen@cmu.edu}{\texttt{vpraveen@cmu.edu}}) %\IEEEauthorrefmark{1}
-		and Pulkit Grover (\href{mailto:pulkit@cmu.edu}{\texttt{pulkit@cmu.edu}}) %\IEEEauthorrefmark{2}
+		Praveen Venkatesh (\texttt{vpraveen@cmu.edu}) %(\href{mailto:vpraveen@cmu.edu}{\texttt{vpraveen@cmu.edu}}) %\IEEEauthorrefmark{1}
+		and Pulkit Grover (\texttt{pulkit@cmu.edu}) %(\href{mailto:pulkit@cmu.edu}{\texttt{pulkit@cmu.edu}}) %\IEEEauthorrefmark{2}
 	}
 	\IEEEauthorblockA{
 		Electrical \& Computer Engineering,
@@ -73,13 +73,16 @@
 		%\IEEEauthorrefmark{1}\href{mailto:vpraveen@cmu.edu}{\texttt{vpraveen@cmu.edu}}
 		%\IEEEauthorrefmark{2}\href{mailto:pulkit@cmu.edu}{\texttt{pulkit@cmu.edu}}
 	}
-	\thanks{This work was supported in part by Systems on Nanoscale
-	Information fabriCs (SONIC), one of the six SRC STARnet Centers, sponsored
-	by MARCO and DARPA.  Praveen Venkatesh was supported (in part) by the Dowd
-	Fellowship from the College of Engineering at Carnegie Mellon University.
-	The authors would like to thank Philip and Marsha Dowd for their financial
-	support and encouragement. The authors thank Prof.\ Aarti Singh for her
-	useful comments on a preliminary draft of this paper.
+	\thanks{
+	\textcolor{red}{The full version of this paper is available online~\cite{FullVersion}.}
+
+	This work was supported in part by NSF CNS-1702694 and by Systems on
+	Nanoscale Information fabriCs (SONIC), one of the six SRC STARnet Centers,
+	sponsored by MARCO and DARPA.  Praveen Venkatesh was supported (in part) by
+	the Dowd Fellowship from the College of Engineering at Carnegie Mellon
+	University.  The authors would like to thank Philip and Marsha Dowd for
+	their financial support and encouragement. The authors thank Prof.\ Anand
+	Sarwate and Prof.\ Aarti Singh for their useful comments.
 	}
 	\vspace{-0.25in}
 }
@@ -94,13 +97,12 @@
 
 The ``source localization'' problem is one in which we estimate the location of
 a point source observed through a diffusive medium using an array of sensors.
-
-We give lower bounds on the minimax risk (mean squared-error in location) in
+We obtain lower bounds on the minimax risk (mean squared-error in location) in
 estimating the location of the source, which apply to all estimators, for
 certain classes of diffusive media, when using a uniformly distributed sensor
-array. We show that for sensors of a fixed size, the lower bound decays with
-increasing numbers of sensors. We also analyze a more physical sensor model to
-understand the effect of shrinking the size of sensors as their number
+array. We show that for sensors of a fixed size, the lower bound decays to zero
+with increasing numbers of sensors. We also analyze a more physical sensor
+model to understand the effect of shrinking the size of sensors as their number
 increases to infinity, wherein the bound saturates for large sensor numbers.
 In this scenario, it is seen that there is greater benefit to increasing the
 number of sensors as the signal-to-noise ratio increases.  Our bounds are the
@@ -127,25 +129,74 @@ of clinical or neuroscientific interest to estimate their
 locations~\cite{Baillet2001Electromagnetic}. For a single activated dipole
 within the brain (which is modeled as a point source), the electrodes sample a
 diffuse (blurred) representation of the dipole, as a result of the spatial
-low-pass-filtering effect of the different layers of the skull, between the
+low-pass-filtering effect of the different layers of the head, between the
 brain and scalp.
 
-Recent developments~\cite{Grover2016Information} have suggested that source
-localization can benefit greatly from an increase in sensor density. This
-conclusion is based primarily on a Nyquist rate analysis, and on an
+\textcolor{red}{
+\sout{Recent developments} Our recent work~\cite{Grover2016Information}
+\sout{have suggested} suggests that source localization can benefit greatly
+from an increase in sensor density. \sout{This conclusion is based primarily on
+	a Nyquist rate analysis} Revisiting the Nyquist rate arguments presented
+in~\cite{Nunez2006Electric} revealed that the question of how source imaging
+resolution is affected by sensor density has not been addressed. We argued
+intuitively that under appropriate conditions the right algorithms might be
+able to recover the brain signal with much higher fidelity if more sensors were
+used. To follow up on these intuitive arguments, Grover provides an
 information-theoretic bound~\cite{Grover2016Fundamental} on the accuracy of
-source localization algorithms. This information-theoretic bound, however, was
+source localization algorithms.} This information-theoretic bound, however, was
 derived for the unsampled, continuous-space potential on the scalp, or
-equivalently, in the limit of the number of sensors going to infinity. The
+equivalently, in the limit of the number of sensors going to infinity. \textcolor{red}{\sout{The
 claim that source localization can benefit from increased sensor density is,
-therefore, not fully substantiated by the information-theoretic bound, since
-the latter does not provide a lower bound showing improvement with increasing
-sensor density.
+therefore, not fully substantiated by the information-theoretic bound, since it
+does not provide a lower bound that shows improvement with increasing sensor
+density.} Hence, this bound does not substantiate the claim that source
+localization can benefit from increased sensor density.}
 
+%\textcolor{blue}{[NEW VER.1]
+%Our recent work~\cite{Grover2016Information} has suggested that EEG source
+%localization can benefit greatly from an increase in sensor density. Prior
+%work~\cite{Nunez2006Electric} relied on spatial Nyquist rate analyses to
+%understand what sensor density is required to reconstruct the EEG signal on the
+%\emph{surface of the scalp} to within a given mean squared error.  However,
+%that line of research neglected to describe what sensor density is needed to
+%recover the signal on the \emph{surface of the brain}; this second question
+%also requires an understanding of the noise power spectral density of scalp
+%EEG, which has been little-studied. Hence, it is still unknown what the maximum
+%imaging resolution attainable with a given number of sensors is, and lower
+%bounds providing this understanding do not yet exist.
+%}
+
+%\textcolor{green}{[NEW VER.2]
+%Three questions naturally arise in such a setting: (1) What algorithms for
+%source localization are good? (2) What is the best achievable imaging
+%resolution? (3) How does sensor density affect resolution? The first question
+%has been addressed by a vast literature on source localization
+%algorithms~\cite{Baillet2001Electromagnetic}. The second question calls for
+%lower bounds, of which there is as yet very little
+%understanding~\cite{Grover2016Fundamental,Mosher1993Error}. The question of
+%sensor density has received a lot of attention, but according to us, it still
+%remains an open problem. \cite{Nunez2006Electric} uses Nyquist rate arguments
+%to understand the number of sensors required to reconstruct the EEG signal on
+%the \emph{surface of the scalp} to within a certain MSE. However, they fail to
+%address the more relevant question of the number of sensors needed for
+%\emph{source localization}, i.e., the number of sensors needed to recover the
+%signal on the \emph{surface of the brain}. We show
+%in~\cite{Grover2016Information} that this second question begs an understanding
+%of the spatial noise power spectral density of scalp EEG, and that under
+%appropriate conditions the right algorithms might be able to recover the brain
+%signal with much higher fidelity if more sensors were used.
+%\cite{Grover2016Information} does not, however, provide rigorous lower bounds
+%to substantiate these observations.
+%}
+
+%\textcolor{red}{Recent work by Grover~\cite{Grover2016Fundamental} has sought to provide
+%    analytical lower bounds on the accuracy of source localization algorithms using an information-theoretic method.
+%    but did not provide a lower bound showing if and how this accuracy improves
+%    with increasing sensor density.}
 Earlier work by Mosher et al.~\cite{Mosher1993Error} also gave numerical lower
-bounds on source localization error. However, the Cramer-Rao lower bounds
-derived by them do not apply to biased estimators, including several commonly
-used source localization
+bounds on source localization error, with \emph{some} discussion on sensor
+density. However, the Cramer-Rao lower bounds derived by them do not apply to
+biased estimators, including several commonly used source localization
 algorithms~\cite{Hamalainen1994Interpreting,Lin2006Assessing}.
 
 This paper seeks to address the shortcomings of earlier methods by deriving
@@ -159,10 +210,10 @@ easily amenable to analytical lower bounds which seek to capture scaling in the
 number of sensors, because the spherical surface does not permit uniform
 sampling~\cite{Heath1956Thirteen}. We therefore restrict our analysis to a
 source localization problem on a one-dimensional ``circular'' domain (to be
-described in detail in Section~\ref{sec:source-localization}).  While this
-simplified model makes crucial assumptions (such as shift-invariance) that are
-invalid in more realistic brain models, we hope that the techniques presented
-here will pave the way for deriving numerical bounds in more complex settings.
+described in detail in Section~\ref{sec:source-localization}). \textcolor{red}{While this
+simplified model makes crucial assumptions (such as shift-invariance) that do
+not hold in realistic brain models, the techniques presented here extend
+naturally for deriving numerical bounds in more complex settings.}
 
 The one-dimensional toy problem is an effective tool for understanding bounds
 on source localization accuracy in other settings as well. A vast literature on
@@ -182,9 +233,9 @@ minimax error in estimating the location of a point source observed by sensors
 through a diffusive medium, and corrupted by additive white Gaussian noise. We
 are also the first to analyze the implications of physical sensor models on
 such lower bounds. A simplistic theoretical model might assume that the number
-of sensors can increase unbounded, while maintaining a fixed SNR at each
-sensor. We show that this is not physically possible in our setting, and derive
-numerical bounds which have very different asymptotic behaviour.
+of sensors can increase without bound, while still maintaining a fixed SNR at
+each sensor. We show that this is non-physical in our setting, and derive
+numerical bounds which have radically different asymptotic behaviour.
 
 We describe the problem setting in Section~\ref{sec:source-localization} and
 the minimax techniques and our main results in
@@ -588,11 +639,11 @@ smaller numbers of sensors, as we expect. Third and most importantly, as the
 number of trials increases, the bound begins to saturate only at a larger
 number of sensors. In other words, there is \emph{increased} benefit in using
 more sensors, when we \emph{also} have more trials. This substantiates the
-intuition given in~\cite{Grover2016Information}, which makes this point using a
-Nyquist-rate argument: a larger number of sensors will sample a larger number
-of high-frequency components of the source signal (and hence allow us to locate
-it better), but only if the noise floor is sufficiently low. Noise variance, in
-turn, can be reduced by averaging over multiple trials.
+intuition given in~\cite{Grover2016Information}: a larger number of sensors
+will sample a larger number of high-frequency components of the source signal
+(and hence allow us to locate it better), but only if the noise floor is
+sufficiently low. Noise variance, in turn, can be reduced by averaging over
+multiple trials.
 
 \section{Discussion}
 \label{sec:discussion}
