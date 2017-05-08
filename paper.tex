@@ -8,14 +8,13 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{mathtools}
-\usepackage{nicefrac}
 \usepackage{array}
 \usepackage{enumitem}
 \usepackage{color}
 %\usepackage{url}
 %\usepackage[colorlinks=true,allcolors=black,urlcolor=blue]{hyperref}
 
-\usepackage[normalem]{ulem}
+%\usepackage[normalem]{ulem}
 
 %\usepackage{caption}
 %\usepackage{subcaption}
@@ -74,7 +73,7 @@
 		%\IEEEauthorrefmark{2}\href{mailto:pulkit@cmu.edu}{\texttt{pulkit@cmu.edu}}
 	}
 	\thanks{
-	\textcolor{red}{The full version of this paper is available online~\cite{FullVersion}.}
+	The full version of this paper is available online~\cite{FullVersion}.
 
 	This work was supported in part by NSF CNS-1702694 and by Systems on
 	Nanoscale Information fabriCs (SONIC), one of the six SRC STARnet Centers,
@@ -84,7 +83,7 @@
 	their financial support and encouragement. The authors thank Prof.\ Anand
 	Sarwate and Prof.\ Aarti Singh for their useful comments.
 	}
-	\vspace{-0.25in}
+	%\vspace{-0.25in}
 }
 
 \begin{document}
@@ -132,25 +131,19 @@ diffuse (blurred) representation of the dipole, as a result of the spatial
 low-pass-filtering effect of the different layers of the head, between the
 brain and scalp.
 
-\textcolor{red}{
-\sout{Recent developments} Our recent work~\cite{Grover2016Information}
-\sout{have suggested} suggests that source localization can benefit greatly
-from an increase in sensor density. \sout{This conclusion is based primarily on
-	a Nyquist rate analysis} Revisiting the Nyquist rate arguments presented
-in~\cite{Nunez2006Electric} revealed that the question of how source imaging
-resolution is affected by sensor density has not been addressed. We argued
-intuitively that under appropriate conditions the right algorithms might be
-able to recover the brain signal with much higher fidelity if more sensors were
-used. To follow up on these intuitive arguments, Grover provides an
-information-theoretic bound~\cite{Grover2016Fundamental} on the accuracy of
-source localization algorithms.} This information-theoretic bound, however, was
-derived for the unsampled, continuous-space potential on the scalp, or
-equivalently, in the limit of the number of sensors going to infinity. \textcolor{red}{\sout{The
-claim that source localization can benefit from increased sensor density is,
-therefore, not fully substantiated by the information-theoretic bound, since it
-does not provide a lower bound that shows improvement with increasing sensor
-density.} Hence, this bound does not substantiate the claim that source
-localization can benefit from increased sensor density.}
+Our recent work~\cite{Grover2016Information} suggests that source localization
+can benefit greatly from an increase in sensor density. Revisiting the Nyquist
+rate arguments presented in~\cite{Nunez2006Electric} revealed that the question
+of how source imaging resolution is affected by sensor density has not been
+addressed. We argued intuitively that under appropriate conditions, the right
+algorithms might be able to recover the brain signal with much higher fidelity
+if more sensors were used. To follow up on these intuitive arguments, Grover
+provides an information-theoretic bound~\cite{Grover2016Fundamental} on the
+accuracy of source localization algorithms. This information-theoretic bound,
+however, was derived for the unsampled, continuous-space potential on the
+scalp, or equivalently, in the limit of the number of sensors going to
+infinity. Hence, this bound does not substantiate the claim that source
+localization can benefit from increased sensor density.
 
 %\textcolor{blue}{[NEW VER.1]
 %Our recent work~\cite{Grover2016Information} has suggested that EEG source
@@ -210,10 +203,10 @@ easily amenable to analytical lower bounds which seek to capture scaling in the
 number of sensors, because the spherical surface does not permit uniform
 sampling~\cite{Heath1956Thirteen}. We therefore restrict our analysis to a
 source localization problem on a one-dimensional ``circular'' domain (to be
-described in detail in Section~\ref{sec:source-localization}). \textcolor{red}{While this
+described in detail in Section~\ref{sec:source-localization}). While this
 simplified model makes crucial assumptions (such as shift-invariance) that do
 not hold in realistic brain models, the techniques presented here extend
-naturally for deriving numerical bounds in more complex settings.}
+naturally for deriving numerical bounds in more complex settings.
 
 The one-dimensional toy problem is an effective tool for understanding bounds
 on source localization accuracy in other settings as well. A vast literature on
