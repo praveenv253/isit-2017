@@ -1,4 +1,4 @@
-\documentclass[conference,letterpaper]{IEEEtran}
+\documentclass[conference,a4paper]{IEEEtran}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -236,7 +236,7 @@ Section~\ref{sec:minimax-lower-bounds}. We conclude in
 Section~\ref{sec:discussion} with a discussion on the goodness of our bounds,
 and on possible extensions.
 
-For EEG source localization, we hope to find algorithms that achieve scalings
+For EEG source localization, we intend to find algorithms that achieve scalings
 close to the bounds we present.  We also expect to build upon the techniques
 presented in this paper to derive bounds for spherical and realistic brain
 models.
@@ -260,7 +260,7 @@ $(m{-}1)S/m$ (the offset of the first sensor is arbitrary, so without loss of
 generality we take it to be 0). The lower bounds we provide are for \emph{this
 	specific sensor configuration}. For a discussion on why this configuration
 might be an appropriate choice in the minimax setting, see
-section~\ref{sec:discussion}.
+Section~\ref{sec:discussion}.
 
 \subsection{Signal model}
 \label{sec:signal-model}
@@ -289,7 +289,7 @@ parameter $\kappa$, i.e., $\abs{g(u) - g(v)} \leq \kappa \abs{u - v} \; \forall
 \label{sec:sensor-model}
 
 We consider two sensor models: a simplistic ``point sensor'' model and an
-``integrator sensor'' model, to be used in sections~\ref{sec:lecam-lb}
+``integrator sensor'' model, to be used in Sections~\ref{sec:lecam-lb}
 and~\ref{sec:physical-model} respectively.
 
 In the ``point sensor'' model, sensors \emph{sample} the shifted
@@ -462,7 +462,7 @@ $n$ trials of the noisy sensor observations $\v y$. We now state the main
 result of this paper.
 \begin{theorem} \label{thm:main-lb}
 	For a source localization problem as defined in
-	section~\ref{sec:source-localization} under the point sensor model, the
+	Section~\ref{sec:source-localization} under the point sensor model, the
 	minimax risk in estimating the location of a point source is lower bounded
 	by
 	\begin{equation*}
@@ -477,23 +477,23 @@ result of this paper.
 Starting from equation~\eqref{eq:le-cam-bound}, we proceed to derive the total
 variation distance for the distributions of interest. Using Pinsker's
 inequality~\cite[Lemma~2.5]{Tsybakov2009Introduction} and the convenient
-tensorization of the KL-divergence~\cite{Duchi2015Information}, we see that:
+tensorization of the KL-divergence~\cite{Duchi2015Information}, we see that
 \begin{equation} \label{eq:pinsker-tensorization}
-	\norm{P_1^n - P_0^n}_{TV}^2 \leq \frac{1}{2} D_{KL}(P_0^n \Vert P_1^n) = \frac{n}{2} D_{KL}(P_0 \Vert P_1)
+	\norm{P_1^n - P_0^n}_{TV}^2 \leq \frac{1}{2} D_{KL}(P_0^n \Vert P_1^n) = \frac{n}{2} D_{KL}(P_0 \Vert P_1).
 \end{equation}
 For multivariate normal distributions with the same covariance, the
 KL-divergence is given by
 \begin{equation} \label{eq:kl-div-normal}
-	D_{KL}(P_0 \Vert P_1) = (\v \mu_0 - \v \mu_1)^T \m \Sigma^{-1} (\v \mu_0 - \v \mu_1)
+	D_{KL}(P_0 \Vert P_1) = (\v \mu_0 - \v \mu_1)^T \m \Sigma^{-1} (\v \mu_0 - \v \mu_1),
 \end{equation}
 where $\v \mu_0$ and $\v \mu_1$ are the means of $P_0$ and $P_1$
 respectively~\cite{DuchiDerivation}. For the case of sensor noise, $P_i =
 \mathcal{N}(\v x(\theta_i), \sigma^2 \m I)$, as described in
-section~\ref{sec:sensor-model}. Hence, combining
+Section~\ref{sec:sensor-model}. Hence, combining
 equations~\eqref{eq:le-cam-bound}, \eqref{eq:pinsker-tensorization} and
 \eqref{eq:kl-div-normal}, we see that
 \begin{equation} \label{eq:lb-after-pinsker}
-	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{ \frac{n}{2\sigma^2} \norm*{\v x(\theta_0) - \v x(\theta_1)}^2 } \Bigg]
+	\mathfrak{M}_n(\mathcal{P}, \Phiorho) \geq \frac{\delta^2}{2} \Bigg[ 1 - \sqrt{ \frac{n}{2\sigma^2} \norm*{\v x(\theta_0) - \v x(\theta_1)}^2 } \Bigg].
 \end{equation}
 Let $\v \Delta \overset{\text{def.}}{=} \v x(\theta_0) - \v x(\theta_1)$ for
 brevity. Also, let $\Delta(k)$ denote the $k$-th element of $\v\Delta$, and
@@ -505,7 +505,7 @@ $\mathbb I_A(k)$ denote the indicator function of $k$ belonging to the set $A$
 	&= \sum_{k=0}^{m-1} \abs[\Big]{g\Big(\frac{kS}{m} - \theta_0\Big) - g\Big(\frac{kS}{m} - \theta_1\Big)}^2 \mathbb I_{\{\ell: \abs{\Delta(\ell)} \neq 0\}}(k)
 \end{align}
 where $x(s;\theta_i)$ is the continuous-space filtered signal described in
-section~\ref{sec:signal-model}. For an impulse response $g$ which is Lipschitz
+Section~\ref{sec:signal-model}. For an impulse response $g$ which is Lipschitz
 continuous with parameter $\kappa$, we can upper bound the term within the
 summation:
 \begin{equation}
@@ -533,7 +533,7 @@ example). In such a case, one part of the signal $x(s;\theta_0)$ will appear at
 the left edge of the domain, and the remaining part will appear as the
 repetition from the period $[S, 2S)$, at the right edge of the domain. Also
 note that the two signals $x(s;\theta_0)$ and $x(s;\theta_1)$ overlap at most
-once, since $w < S/2$, as stated in section~\ref{sec:signal-model}.
+once, since $w < S/2$, as stated in Section~\ref{sec:signal-model}.
 
 Combining equations~\eqref{eq:lb-after-pinsker} and~\eqref{eq:delta-bound},
 \begin{equation} \label{eq:lb-after-delta-bound}
@@ -566,7 +566,7 @@ in source localization goes to zero, as the number of sensors goes to infinity.
 This observation contradicts the information-theoretic lower bound given
 in~\cite{Grover2016Fundamental}, where even with an infinite number of sensors,
 the lower bound is strictly greater than zero. This indicates that the bound in
-section~\ref{sec:lecam-lb} is failing to capture some effect which leads to
+Section~\ref{sec:lecam-lb} is failing to capture some effect which leads to
 saturation of error as the number of sensors increases.
 
 Indeed, the bound in Theorem~\ref{thm:main-lb} assumes that an arbitrarily
@@ -585,8 +585,8 @@ full version of this paper~\cite{FullVersion}).
 %gets smaller.
 
 This observation motivates the ``integrator sensor'' model defined in
-section~\ref{sec:sensor-model}. With this model, the bounding technique used in
-section~\ref{sec:lecam-lb} no longer easily admits a closed-form solution which
+Section~\ref{sec:sensor-model}. With this model, the bounding technique used in
+Section~\ref{sec:lecam-lb} no longer easily admits a closed-form solution which
 gives a bound for all values of $m$. We instead compute the bound numerically,
 using exact expressions for error probability in a binary hypothesis test. For
 Gaussian distributions of equal variance and a uniform prior on the hypotheses,
@@ -604,7 +604,7 @@ This bound is valid for any $\{\theta_0, \theta_1\}$ constituting a
 $2\delta$-packing of $\Theta$. To numerically optimize over all possible
 packings, we relax the process by fixing $\theta_0 = 0$ and optimizing over
 $\theta_1 = 2\delta$.  We compute sensor values for a triangular impulse
-response, by performing numerical integration, and find the best possible
+response by performing numerical integration, and find the best possible
 $\delta$ by grid search.
 
 \begin{figure}[t]
@@ -613,7 +613,7 @@ $\delta$ by grid search.
 	\vspace{-3pt}
 	\caption{A numerically generated plot of the lower bound on minimax risk of
 		source localization, against the number of uniformly distributed
-		sensors, $m$, used to estimate the location (code available
+		sensors, $m$, following the ``integrator sensor'' model (code available
 		online~\cite{FullVersion}). The different curves are for different
 		numbers of ``trials'', $n$ (number of i.i.d.\ sensor observations). The
 		bound saturates for large $m$, indicating that for a \emph{fixed}
@@ -641,7 +641,7 @@ multiple trials.
 \section{Discussion}
 \label{sec:discussion}
 
-While the lower bound presented in section~\ref{sec:lecam-lb} is non-physical
+While the lower bound presented in Section~\ref{sec:lecam-lb} is non-physical
 for a large number of sensors, it still gives some important insights.  The
 bound tells us how the error scales with the number of sensors up to $m =
 \floor*{\frac{S}{c}}$, for sensors of a constant width $c$. Averaging noise
@@ -659,7 +659,7 @@ of the difference signal, $\int \abs{f(s) - \hat f(s)}^2 ds$. We, on the other
 hand, are interested in bounding the minimax error in \emph{location}, i.e.,
 $\abs{\theta - \hat\theta}^2$.
 
-While the bounds in section~\ref{sec:lecam-lb} were derived for a
+While the bounds in Section~\ref{sec:lecam-lb} were derived for a
 one-dimensional circular domain, extensions to a 1D linear domain (of fixed
 length $S$) and to a $d$-dimensional domain (circular or linear) are fairly
 straightforward, under certain conditions. For a 1D linear domain, we require
@@ -699,7 +699,7 @@ sensors is smallest, so that SNR is minimized.
 %So, if $\theta$ were restricted to the region $[0, S)$ (now on a linear,
 %non-periodic domain), and if sensors were available to sense the signal from
 %$[-w/2, S{+}w/2)$ (for an impulse response with restricted support as described
-%in section~\ref{sec:signal-model}), then the proof for sensor noise would still
+%in Section~\ref{sec:signal-model}), then the proof for sensor noise would still
 %fall through, albeit with slightly different constants.
 
 %\subsection{From Lipschitz to $\alpha$-Holder continuous impulse responses}
