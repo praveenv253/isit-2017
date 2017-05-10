@@ -40,6 +40,7 @@
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter\round{\lfloor}{\rceil}
 
 \newcommand{\Phiorho}{\Phi\!\circ\!\rho}
 
@@ -644,12 +645,13 @@ multiple trials.
 While the lower bound presented in Section~\ref{sec:lecam-lb} is non-physical
 for a large number of sensors, it still gives some important insights.  The
 bound tells us how the error scales with the number of sensors up to $m =
-\floor*{\frac{S}{c}}$, for sensors of a constant width $c$. Averaging noise
-over a larger number of trials $n$ may help one achieve a target mean squared
-error in location. An analytical derivation of the trade-off between $m$ and
-$n$ in achieving a certain target MSE is relegated to future work. Further,
-more sophisticated techniques for deriving lower bounds, such as Fano's
-method~\cite[Sec.~2.7.1]{Tsybakov2009Introduction} are yet to be analyzed.
+\floor*{\frac{S}{c}}$, for sensors of a constant width $c$. Beyond this,
+averaging noise over a larger number of trials $n$ may help one achieve a
+target mean squared error in location. An analytical derivation of the
+trade-off between $m$ and $n$ in achieving a certain target MSE is relegated to
+future work. Further, more sophisticated techniques for deriving lower bounds,
+such as Fano's method~\cite[Sec.~2.7.1]{Tsybakov2009Introduction} are yet to be
+analyzed.
 
 We also note that the minimax bounds from compressive sensing
 literature~\cite{AriasCastro2013Fundamental} \emph{do not} apply in our
@@ -755,27 +757,44 @@ sensors is smallest, so that SNR is minimized.
 \section{SNR in the integrator model}
 \label{app:integrator-snr}
 
-\textcolor{red}{[This section needs some proofreading. The main issue here is
-	that as the number of sensors $m$ goes to infinity, the number $k$ should
-	also go to infinity. i.e., what is constant is the location of the sensor,
-	not its ``number''. So we should say something along the lines of ``the SNR
-	of the sensor placed at the point $s_0$, with size determined by the number
-	of sensors, is proportional to $1/m$''.]}
+In the integrator model of sensors defined in Section~\ref{sec:sensor-model},
+recall that the samples are given by equation~\eqref{eq:samples-int-model}.
+Consider a sensor located at the point $s_0 \in [0, S)$ and with a width of
+$S/m$. That is, we assume each of the $m$ sensors occupies the maximum area
+that it can, $1/m$ of the total. As $m$ grows large, the size of each sensor
+must shrink in order to accommodate their larger number.
 
-In the integrator model of sensors, recall that the samples are given by
-equation~\eqref{eq:samples-int-model}. We compute the SNR approximately at the
-$k$-th sensor as follows. The power of the signal is given by
+In order to remain consistent with our previous notation, we first define the
+\emph{index}, $k$, of the sensor located at $s_0$. (Note that as $m$ increases,
+the index $k$ must grow while keeping the position of the sensor fixed, so that
+we're seeing how the SNR changes at the same point).
+\begin{equation}
+	k = \round*{\frac{m s_0}{S}},
+\end{equation}
+where $\round{z}$ is read as ``round of $z$'', denoting the closest integer to
+the point $z \in \mathbb{R}$. Note that as $m$ grows large, $kS/m \to s_0$.
+
+We now compute the approximate SNR of the sensor located at $s_0$ as follows.
+The power of the signal is given by the squared absolute value of the samples,
 \begin{align}
-	\abs{x_k(\theta)}^2 &= \bigg(\int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} x(s;\theta) ds\bigg)^2 \\
-	&\approx \bigg(\frac{S}{m} \; x\Big(\frac{kS}{m}; \theta\Big)\bigg)^2 = \frac{S^2}{m^2} \bigg(x\Big(\frac{kS}{m}; \theta\Big)\bigg)^2 \label{eq:signal-power-k},
+	\abs{x_k(\theta)}^2 &= \bigg(\int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} x(s;\theta) ds\bigg)^2 \label{eq:int-sensor-power} \\
+	&\overset{(a)}{\approx} \bigg(\frac{S}{m} \; x\Big(\frac{kS}{m}; \theta\Big)\bigg)^2 \\
+	&\overset{(b)}{\approx} \frac{S^2}{m^2} \big(x(s_0; \theta)\big)^2 \label{eq:signal-power-k},
 \end{align}
-where in the approximation, we have assumed that the signal is roughly constant
-in a small interval, taking the value of the signal at $s = kS/m$. The constant
-itself is not relevant; it suffices to note at this point that the signal power
-diminishes as $1/m^2$ since the sensor size \emph{must} diminish as $1/m$, if
-the number of sensors has to increase to infinity.
+where in approximation (a), we have assumed that the signal is roughly constant
+in the small interval $\big((k{-}\frac{1}{2})S/m, (k{+}\frac{1}{2})S/m\big)$,
+taking the value of the signal at $s = kS/m$. In approximation (b), we make use
+of the fact that for sufficiently large $m$, $kS/m \approx s_0$. Note a key
+step in the power computation: the integrand in
+equation~\eqref{eq:int-sensor-power} is \emph{not} $\abs{x(s; \theta)}^2$,
+because the sensor will average out the signal as a part of its sensing
+process.
 
-The noise variance at the $k$-th sensor is computed similarly:
+Hence, irrespective of the location of the sensor, $s_0$, the signal power
+diminishes as $1/m^2$ since the sensor size \emph{must} diminish at least as
+fast as $1/m$, if the number of sensors has to increase to infinity.
+
+The noise variance of the sensor located at $s_0$ is computed similarly:
 \begin{align}
 	\mathbb E[\epsilon_k^2] &= \mathbb E \Bigg[ \bigg(\int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \epsilon(s)\bigg)^2 \Bigg] \\
 	&= \mathbb E \Bigg[ \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \epsilon(s) ds \int_{(k-\frac{1}{2})S/m}^{(k+\frac{1}{2})S/m} \epsilon(s') ds' \Bigg] \\
@@ -790,14 +809,15 @@ where $R_\epsilon(s, s') = \sigma^2 \delta(s - s')$ is the autocorrelation
 function of the white noise process, and $\sigma^2$ is the amplitude of the
 white noise power spectral density.
 
-We can understand how the SNR at the $k$-th sensor scales with $m$, therefore,
-by taking the ratio of~\eqref{eq:signal-power-k} and~\eqref{eq:noise-var-k}
+We can understand how the SNR of the sensor at $s_0$ scales with $m$,
+therefore, by taking the ratio of~\eqref{eq:signal-power-k}
+and~\eqref{eq:noise-var-k}
 \begin{align}
-	\text{SNR}(k) &= \frac{S^2}{m^2} \bigg(x\Big(\frac{kS}{m}; \theta\Big)\bigg)^2 \cdot \frac{m}{S\sigma^2} \\
-	&= \frac{S}{m\sigma^2} \bigg(x\Big(\frac{kS}{m}; \theta\Big)\bigg)^2 \propto 1/m.
+	\text{SNR}(s_0) &= \frac{S^2}{m^2} \big(x(s_0; \theta)\big)^2 \cdot \frac{m}{S\sigma^2} \\
+	&= \frac{S}{m\sigma^2} \big(x(s_0; \theta)\big)^2 \propto \frac{1}{m}.
 \end{align}
 Hence, as the number of sensors $m$ grows to infinity, their sizes must
-necessarily reduce inversely with $m$, and as a result, their SNR also falls
-inversely with $m$, when we view these sensors as integrators.
+necessarily reduce at least as fast as $1/m$, and as a result, their SNR also
+falls at least as fast as $1/m$, when we view these sensors as integrators.
 
 \end{document}
