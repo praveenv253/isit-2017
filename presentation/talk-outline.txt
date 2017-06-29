@@ -1,0 +1,28 @@
+- Introduce the problem (most of this can come from qual talk)
+  - What is EEG?
+    (and perhaps other brain measurement modalities:
+        hint at the bigger picture; invite people to poster)
+  - Source localization: forward and inverse problems, reconstructing the
+    dipole
+- Simplifying the brain model:
+  real brain -> spherical -> one-dimensional model
+  => reiterate what the key aspects in the problem were, and how they have
+     been retained (low-pass filtering effect, circular nature of domain, etc.)
+- Quickly talk about previous work:
+  - CRLB (did not apply to biased estimators)
+  - Info theory bound (did not give scaling in number of sensors)
+- Our bound:
+  - Give the bound expression and state implications
+    => EEG resolution can improve with increase in # of sensors, and reduced
+       noise
+  - Explain the proof by diagrams: show two sources and explain when you are
+    best able to distinguish them
+    => Key thing here is to express the distance between the shifted kernels
+       as a function of the extent of the shift i.e. Delta(s) in terms of delta
+- Future work / Other bounding techniques:
+  - Why not Ziv-Zakai?
+  - Why not Fano?
+  - Bound for the spherical head model
+  - Going to real brains?
+  - Possible ways to apply this more broadly (1D non-circular, nD)
+- Summary
